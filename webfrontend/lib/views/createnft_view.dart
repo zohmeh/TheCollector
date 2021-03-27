@@ -40,12 +40,11 @@ class _CreateNFTViewState extends State<CreateNFTView> {
     );
   }
 
-  Future _addIPFS(List _arguments) async {
+  Future _createNewNFT(List _arguments) async {
     //Putting the file on IPFS
-    var promise = addToIPFS(_arguments[0], widget.nftNameController.text,
+    var promise = createNewNFT(_arguments[0], widget.nftNameController.text,
         widget.nftDescriptionController.text);
-    String result = await promiseToFuture(promise);
-    print(result);
+    var result = await promiseToFuture(promise);
   }
 
   @override
@@ -150,7 +149,7 @@ class _CreateNFTViewState extends State<CreateNFTView> {
             Theme.of(context).buttonColor,
             Theme.of(context).highlightColor,
             "Add to IPFS",
-            _addIPFS,
+            _createNewNFT,
             [data],
           ),
         ],
