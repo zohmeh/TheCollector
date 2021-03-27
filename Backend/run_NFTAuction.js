@@ -23,23 +23,27 @@ bidderPay = {
     value: bid
 };
 
-async function logBalances(_event, _tokenId)
+async function logBalances(_event)
 {
     return new Promise(async (resolve, reject) => {
-      let auctionatorETHBalance = await SCInteraction.getEthBalance(address.account[0]);
-      let bidderETHBalance = await SCInteraction.getEthBalance(address.account[1]);
-      let myNFTAuctionEthBalance = await SCInteraction.getEthBalance(address.myNFTAuction);
-      let auctionatorNFTBalances = await SCInteraction.getNFTBalance([_tokenId], [address.account[0]]);
-      let bidderNFTBalances = await SCInteraction.getNFTBalance([_tokenId], [address.account[1]]);
-      let myNFTAuctionNFTBalances = await SCInteraction.getNFTBalance([_tokenId], [address.myNFTAuction]);
+      //let auctionatorETHBalance = await SCInteraction.getEthBalance(address.account[0]);
+      //let bidderETHBalance = await SCInteraction.getEthBalance(address.account[1]);
+      //let myNFTAuctionEthBalance = await SCInteraction.getEthBalance(address.myNFTAuction);
+      let auctionatorNFTBalances = await SCInteraction.getTokenIdsforOwner(address.account[0]);
+      let auctionatorHashes = await SCInteraction.getMyHashes(address.account[0]);
+      let bidderNFTBalances = await SCInteraction.getTokenIdsforOwner(address.account[1]);
+      let bidderHashes = await SCInteraction.getMyHashes(address.account[0]);
+      //let myNFTAuctionNFTBalances = await SCInteraction.getNFTBalance(address.myNFTAuction);
       
       console.log(_event);
-      console.log("Auctionator Eth Balance:", auctionatorETHBalance);
-      console.log("Bidder Eth Balance:", bidderETHBalance);
-      console.log("MyNFTAuction Eth Balance:", myNFTAuctionEthBalance);
+      //console.log("Auctionator Eth Balance:", auctionatorETHBalance);
+      //console.log("Bidder Eth Balance:", bidderETHBalance);
+      //console.log("MyNFTAuction Eth Balance:", myNFTAuctionEthBalance);
       console.log("Auctionator  NFT Balance:", auctionatorNFTBalances);
+      console.log("Auctionator  Hashes:", auctionatorHashes);
       console.log("Bidder NFT Balance:", bidderNFTBalances);
-      console.log("MyNFTAuction NFT Balance:", myNFTAuctionNFTBalances); 
+      console.log("Bidder  Hashes:", bidderHashes);
+      //console.log("MyNFTAuction NFT Balance:", myNFTAuctionNFTBalances); 
 
       resolve();
     });
@@ -47,21 +51,21 @@ async function logBalances(_event, _tokenId)
 
 async function main() {
 
-    let create = await SCInteraction.createNewNFT(auctionator);
-    let id = create.events.TransferSingle.returnValues._id;
-    console.log("Token Id: " , id);
-    logBalances("After Token Creating", id);
-/*        
-    let mint = await SCInteraction.mintNewNFT(id, [address.myNFTAuction], ["1"], auctionator);
+    //let create = await SCInteraction.createNewNFT(bidder);
+    //let id = create.events.NewCollectorToken.returnValues.tokenId;
+    //console.log("Token Id: " , id);
+    logBalances("After Token Creating");
+        
+    //let mint = await SCInteraction.mintNewNFT(id, [address.account[0]], ["1"], auctionator);
     
-    let tokenList = await SCInteraction.getTokenList.call();
-    console.log(tokenList);
+    //let tokenList = await SCInteraction.getTokenList.call();
+    //console.log(tokenList);
     
-    let creator = await SCInteraction.getCreatorAddress(id);
-    console.log("Token Creator: " , creator);
+    //let creator = await SCInteraction.getCreatorAddress(id);
+    //console.log("Token Creator: " , creator);
 
-    logBalances("After Token Minting", id);
-
+    //logBalances("After Token Minting", id);
+/*
     let auction = await SCInteraction.startNewAuction(id, "10", auctionator);
 
     let bidding = await SCInteraction.bidForNFT(id, bid, bidder);

@@ -1,6 +1,6 @@
-pragma solidity 0.5.0;
+pragma solidity 0.6.2;
 
-import "../erc-1155/contracts/IERC1155.sol";
+//import "../erc-1155/contracts/IERC1155.sol";
 import "./INFTToken.sol";
 
 
@@ -17,13 +17,13 @@ contract MyNFTAuction {
     mapping(uint256 => Auction) auctionList;
     mapping(uint256 => uint256) tokenAmountTracking;
     uint256[] tokenList;
-    IERC1155 private token;
+    //IERC1155 private token;
     INFTToken private nft;
     address public owner;
     
     constructor(address _token) public {
         require(address(this) != address(0));
-        token = IERC1155(_token);
+        //token = IERC1155(_token);
         nft = INFTToken(_token);
         owner = msg.sender;
     }
@@ -63,7 +63,7 @@ contract MyNFTAuction {
         
         uint256 tokenSendingAmount = tokenAmountTracking[_tokenId]; 
         tokenAmountTracking[_tokenId] -= 1;
-        token.safeTransferFrom(address(this), msg.sender, _tokenId, tokenSendingAmount, "");
+        //token.safeTransferFrom(address(this), msg.sender, _tokenId, tokenSendingAmount, "");
         auctionList[_tokenId].creator.transfer(msg.value);
     }
     
@@ -73,9 +73,9 @@ contract MyNFTAuction {
         msg.sender.transfer(address(this).balance);
     }
 
-    function() external payable {
-        msg.sender.transfer(msg.value);
-    }
+    //function() external payable {
+    //    msg.sender.transfer(msg.value);
+    //}
 
 //--------------------Some Getter Functions----------------------------------------------------------------
 

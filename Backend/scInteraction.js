@@ -16,15 +16,8 @@ const nftTokenContract = new web3.eth.Contract(nftTokenABI.abi, address.nftToken
 module.exports = {
     createNewNFT: async function (sendSettings) {
         try {
-            const nftID = await nftTokenContract.methods.create("0", "").send(sendSettings);
+            const nftID = await nftTokenContract.methods.mintNewCollectorNFT("Hallo erster Hash").send(sendSettings);
             return nftID;
-        } catch (error) { console.log(error); }
-    },
-
-    mintNewNFT: async function (_tokenId, _receiver, _quantities, sendSettings) {
-        try {
-            const mint = await nftTokenContract.methods.mint(_tokenId, _receiver, _quantities).send(sendSettings);
-            return mint;
         } catch (error) { console.log(error); }
     },
 
@@ -42,10 +35,34 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
-    getNFTBalance: async function (_tokenId, _owner) {
+    getNFTBalance: async function (_owner) {
         try {
-            const balance = await nftTokenContract.methods.balanceOfBatch(_owner, _tokenId).call();
+            const balance = await nftTokenContract.methods.balanceOf(_owner).call();
             return balance;
+        } catch (error) { console.log(error); }
+    },
+
+    getTokenIdsforOwner: async function (_owner) {
+        var tokens = [];
+        try {
+            const balanceOf = await nftTokenContract.methods.balanceOf(_owner).call();
+            for(var i = 0; i < balanceOf ; i++) {
+                const ownerTokensId = await nftTokenContract.methods.tokenOfOwnerByIndex(_owner, i).call();
+                tokens.push(ownerTokensId);
+            }
+            return tokens;
+        } catch (error) { console.log(error); }
+    },
+
+    getMyHashes: async function (_owner) {
+        var hashes = [];
+        try {
+            const tokenIds = await this.getTokenIdsforOwner(_owner);
+            for(var i = 0; i < tokenIds.length; i++) {
+                const hash = await nftTokenContract.methods.getTokenhash(tokenIds[i]).call();
+                hashes.push(hash);
+            }
+            return hashes;
         } catch (error) { console.log(error); }
     },
 
