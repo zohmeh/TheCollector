@@ -60,29 +60,22 @@ async function main() {
     //let send = await SCInteraction.transferNFT(address.account[0], address.myNFTAuction, "1", auctionator);
     //logBalances("After NFT sending");
 
-    //let creator = await SCInteraction.getCreatorAddress("1");
+    //let creator = await SCInteraction.getCreatorAddress("2");
     //console.log(creator);
 
-    //let auction = await SCInteraction.startNewAuction("1", "1", auctionator);
+    //let auction = await SCInteraction.startNewAuction("1", "2", auctionator);
 
-    let highestBid = await SCInteraction.getHighestBid("1");
-    console.log(highestBid);
+    //let getback = await SCInteraction.getBackNFT("1", auctionator);
+    //logBalances("After Getting back");
+
+    //let highestBid = await SCInteraction.getHighestBid("1");
+    //console.log(highestBid);
 
     //let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
-/*
-    //let isApproved = await SCInteraction.getApproval(address.account[0], address.myNFTAuction);
-    //console.log(isApproved);
 
-    //let aprroval = await SCInteraction.setApproval(address.myNFTAuction, "true", auctionator);
+    let sell = await SCInteraction.sellNFT("1", bidderPay);
+    logBalances("After Selling Token");
 
-    let tokenIdList = await SCInteraction.getTokenList.call();
-    console.log(tokenIdList);
-    logBalances("Before Sending", tokenIdList[0]);
-
-    let sell = await SCInteraction.sellNFT(tokenIdList[0], bidderPay);
-
-    logBalances("After Sending", tokenIdList[0]);
-*/
 }
 
 main();

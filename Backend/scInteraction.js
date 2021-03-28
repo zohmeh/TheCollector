@@ -102,6 +102,13 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
+    getBackNFT: async function(_tokenId, sendSettings) {
+        try {
+            const getback = await nftAuctionContract.methods.getBackNFT(_tokenId).send(sendSettings);
+            return getback;
+        } catch (error) { console.log(error); }
+    },
+
     withdraw: async function(sendSettings) {
         try {
             const withdraw = await nftAuctionContract.methods.withdraw().send(sendSettings);

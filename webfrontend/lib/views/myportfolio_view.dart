@@ -49,7 +49,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     String _tokenId = _arguments[0];
     String _duration = _arguments[1];
     var promise = startNewAuction(_tokenId, _duration);
-    var result = await promiseToFuture(promise);
+    await promiseToFuture(promise);
     setState(() {});
   }
 
@@ -86,7 +86,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       crossAxisSpacing: 50,
                       mainAxisSpacing: 200,
-                      mainAxisExtent: 175,
+                      mainAxisExtent: 200,
                       maxCrossAxisExtent: 400),
                   itemCount: snapshot.data["tokenData"].length,
                   itemBuilder: (ctx, idx) {

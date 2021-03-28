@@ -25,9 +25,11 @@ class MyNFTGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 150,
+          width: 200,
           child: Column(
             children: [
               button(Theme.of(context).buttonColor,
@@ -37,14 +39,14 @@ class MyNFTGridView extends StatelessWidget {
                   Theme.of(context).backgroundColor,
                   button2,
                   function2,
-                  [id, "1"]),
+                  [id, "60"]),
               button(Theme.of(context).buttonColor,
                   Theme.of(context).backgroundColor, button3),
             ],
           ),
         ),
         Container(
-          width: 250,
+          width: 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,7 @@
 pragma solidity 0.6.2;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./INFTToken.sol";
 
 
@@ -11,19 +12,18 @@ contract MyNFTAuction {
         uint256 ending;
         uint256 highestBid;
         address highestBidder;
-        address payable creator;
     }
     
     mapping(uint256 => Auction) auctionList;
-    mapping(uint256 => uint256) tokenAmountTracking;
     uint256[] tokenList;
-    //IERC721 private token;
-    INFTToken private token;
+    INFTToken private collectorToken;
+    IERC721 private nft;
     address public owner;
     
     constructor(address _token) public {
         require(address(this) != address(0));
-        token = INFTToken(_token);
+        collectorToken = INFTToken(_token);
+        nft = IERC721(_token);
         owner = msg.sender;
     }
 
@@ -36,11 +36,11 @@ contract MyNFTAuction {
   }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
-        require(token.getTokenCreator(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
+        require(collectorToken.getTokenCreator(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
         require(auctionList[_tokenId].hasStarted == false, "Auction already started");
         
         auctionList[_tokenId].hasStarted = true;
-        auctionList[_tokenId].ending = now + _duration * 1 hours; 
+        auctionList[_tokenId].ending = now + _duration * 1 minutes; 
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
@@ -57,36 +57,23 @@ contract MyNFTAuction {
         require(msg.value == auctionList[_tokenId].highestBid, "Please send the correct bidding amount");
         require(now > auctionList[_tokenId].ending, "Auction not finished yet");
         
-        uint256 tokenSendingAmount = tokenAmountTracking[_tokenId]; 
-        tokenAmountTracking[_tokenId] -= 1;
-        //token.safeTransferFrom(address(this), msg.sender, _tokenId, tokenSendingAmount, "");
-        auctionList[_tokenId].creator.transfer(msg.value);
+        nft.approve(msg.sender, _tokenId);
+        nft.safeTransferFrom(address(this), msg.sender, _tokenId); 
+        address payable creator = collectorToken.getTokenCreator(_tokenId);
+        creator.transfer(msg.value);
     }
 
     function getBackNFT(uint256 _tokenId) public {
         require(now > auctionList[_tokenId].ending, "Auction not finished yet");
-        require(auctionList[_tokenId].highestBid == 0, "Auction not finished yet");
-    }
-    
-    function withdraw() public {
-        require(msg.sender == owner, "Only the contract owner can withdraw");
-        
-        msg.sender.transfer(address(this).balance);
-    }
+        require(auctionList[_tokenId].highestBid == 0, "There was a bid for your token");
+        require(msg.sender == collectorToken.getTokenCreator(_tokenId), "You are not the creator of this token");
 
-    //function() external payable {
-    //    msg.sender.transfer(msg.value);
-    //}
+        auctionList[_tokenId].hasStarted = false;
+        nft.approve(msg.sender, _tokenId);
+        nft.safeTransferFrom(address(this), msg.sender, _tokenId);
+    }
 
 //--------------------Some Getter Functions----------------------------------------------------------------
-
-    function getTokenAmount(uint256 _tokenId) public returns(uint256) {
-        return tokenAmountTracking[_tokenId];
-    }
-
-    function getCreator(uint256 _tokenId) public returns(address) {
-        return auctionList[_tokenId].creator;
-    }
 
     function getHighestBidder(uint256 _tokenId) public returns(address) {
         return auctionList[_tokenId].highestBidder;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../views/buttonlist_view.dart';
+import '../views/auctiondetail_view.dart';
 import '../routing/route_names.dart';
 import '../views/button3_view.dart';
 import '../views/myportfolio_view.dart';
@@ -21,11 +21,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(CreateNFTView(), settings.name);
     case ButtonListRoute:
       var id = int.tryParse(routingData['id']);
-      var param = routingData['param'];
       return _getPageRoute(
-          ButtonListView(
+          AuctionDetailView(
             id: id,
-            anotherParameter: param,
+            highestBid: routingData['highestBid'],
           ),
           settings.name);
     default:

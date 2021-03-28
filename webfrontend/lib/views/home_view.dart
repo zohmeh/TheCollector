@@ -1,15 +1,12 @@
 import 'dart:convert';
 import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_app_template/widgets/auctionnftgridview.dart';
+import '../widgets/auctionnftgridview.dart';
 import '../widgets/javascript_controller.dart';
-import '../routing/route_names.dart';
 import '../services/navigation_service.dart';
 import '../locator.dart';
-import '../widgets/button.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -22,7 +19,7 @@ class _HomeViewState extends State<HomeView> {
   _changeSide(List _arguments) {
     locator<NavigationService>().navigateTo(_arguments[0], queryParams: {
       "id": _arguments[1].toString(),
-      "param": _arguments[2].toString()
+      "highestBid": _arguments[2]
     });
   }
 
@@ -80,24 +77,31 @@ class _HomeViewState extends State<HomeView> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      crossAxisSpacing: 50,
-                      mainAxisSpacing: 200,
-                      mainAxisExtent: 175,
-                      maxCrossAxisExtent: 400),
-                  itemCount: snapshot.data["tokenData"].length,
-                  itemBuilder: (ctx, idx) {
-                    return AuctionNFTGridView(
-                        id: snapshot.data["tokenId"][idx],
-                        name: snapshot.data["tokenData"][idx]["name"],
-                        description: snapshot.data["tokenData"][idx]
-                            ["description"],
-                        image: snapshot.data["tokenData"][idx]["file"],
-                        button1: "Detail View",
-                        function1: _changeSide);
-                  },
-                );
+                if (snapshot.data["tokenData"].length == 0 ||
+                    snapshot.data == null) {
+                  return Center(
+                    child: Text("No active Auctions"),
+                  );
+                } else {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                        crossAxisSpacing: 50,
+                        mainAxisSpacing: 200,
+                        mainAxisExtent: 400,
+                        maxCrossAxisExtent: 400),
+                    itemCount: snapshot.data["tokenData"].length,
+                    itemBuilder: (ctx, idx) {
+                      return AuctionNFTGridView(
+                          id: snapshot.data["tokenId"][idx],
+                          name: snapshot.data["tokenData"][idx]["name"],
+                          description: snapshot.data["tokenData"][idx]
+                              ["description"],
+                          image: snapshot.data["tokenData"][idx]["file"],
+                          button1: "Detail View",
+                          function1: _changeSide);
+                    },
+                  );
+                }
               }
             }),
       ),

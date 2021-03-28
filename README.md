@@ -1,5 +1,7 @@
 # The Collector
 
+![plot](./images/thecollector.png)
+
 The collector will be a complete universe for creating, selling, swapping and making Auctions with your NFT.
 
 It will have a WEB Frontend and also a Mobile Frontend both written with Flutter.
