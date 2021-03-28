@@ -12,3 +12,5 @@ external dynamic setMeme(String _memeHash);
 external dynamic getMeme();
 external dynamic createNewNFT(var _file, String _name, String _description);
 external dynamic getMyTokens();
+external dynamic getAuctionTokens();
+external dynamic startNewAuction(String _tokenId, String _duration);

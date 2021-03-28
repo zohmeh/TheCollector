@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../views/buttonlist_view.dart';
 import '../routing/route_names.dart';
 import '../views/button3_view.dart';
-import '../views/button4_view.dart';
+import '../views/myportfolio_view.dart';
 import '../views/createnft_view.dart';
 import '../views/home_view.dart';
 import '../widgets/string_extensions.dart';
@@ -16,12 +16,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Button3Route:
       return _getPageRoute(Button3View(), settings.name);
     case Button4Route:
-      return _getPageRoute(Button4View(), settings.name);
+      return _getPageRoute(MyPortfolioView(), settings.name);
     case Button5Route:
       return _getPageRoute(CreateNFTView(), settings.name);
     case ButtonListRoute:
       var id = int.tryParse(routingData['id']);
-      var param = int.tryParse(routingData['param']);
+      var param = routingData['param'];
       return _getPageRoute(
           ButtonListView(
             id: id,

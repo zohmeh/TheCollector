@@ -21,9 +21,9 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
-    setApproval: async function (_operator, _approved, _sendSettings) {
+    setApproval: async function (_operator, _tokenId, _sendSettings) {
         try {
-            const approve = await nftTokenContract.methods.setApprovalForAll(_operator, _approved).send(_sendSettings);
+            const approve = await nftTokenContract.methods.approve(_operator, _tokenId).send(_sendSettings);
             return approve;
         } catch (error) { console.log(error); }
     },
@@ -63,6 +63,13 @@ module.exports = {
                 hashes.push(hash);
             }
             return hashes;
+        } catch (error) { console.log(error); }
+    },
+
+    transferNFT: async function(_from, _to, _tokenId, _sendSettings) {
+        try {
+            const transfer = await await nftTokenContract.methods.safeTransferFrom(_from, _to, _tokenId).send(_sendSettings);
+            return transfer;
         } catch (error) { console.log(error); }
     },
 
@@ -118,8 +125,16 @@ module.exports = {
 
     getCreatorAddress: async function(_tokenId) {
         try {
-            const creator = await nftAuctionContract.methods.getCreator(_tokenId).call();
+            const creator = await nftTokenContract.methods.getTokenCreator(_tokenId).call();
             return creator;
         } catch (error) { console.log(error); }
-    }
+    },
+
+    getHighestBid: async function(_tokenId) {
+        try {
+            const highestBid = await nftAuctionContract.methods.getHighestBid(_tokenId).call();
+            return highestBid;
+        } catch (error) { console.log(error); }
+    },
+
 }

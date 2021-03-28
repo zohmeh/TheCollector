@@ -1,6 +1,6 @@
 pragma solidity 0.6.2;
 
-//import "../erc-1155/contracts/IERC1155.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "./INFTToken.sol";
 
 
@@ -17,34 +17,30 @@ contract MyNFTAuction {
     mapping(uint256 => Auction) auctionList;
     mapping(uint256 => uint256) tokenAmountTracking;
     uint256[] tokenList;
-    //IERC1155 private token;
-    INFTToken private nft;
+    //IERC721 private token;
+    INFTToken private token;
     address public owner;
     
     constructor(address _token) public {
         require(address(this) != address(0));
-        //token = IERC1155(_token);
-        nft = INFTToken(_token);
+        token = INFTToken(_token);
         owner = msg.sender;
     }
 
-    function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4) {
-        tokenList.push(_id);
-        tokenAmountTracking[_id] = _value;
-        return bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"));
-    }
-
-    function onERC1155BatchReceived(address _operator, address _from, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external returns(bytes4) {
-        return bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"));
-    }
+    function onERC721Received(address _operator, address _from, uint256 _tokenId, bytes calldata _data) external returns(bytes4) {
+    _operator;
+    _from;
+    _tokenId;
+    _data;
+    return 0x150b7a02;
+  }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
-        require(msg.sender == nft.getCreator(_tokenId), "Only creator can start the Auction");
+        require(token.getTokenCreator(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
         require(auctionList[_tokenId].hasStarted == false, "Auction already started");
         
         auctionList[_tokenId].hasStarted = true;
-        auctionList[_tokenId].ending = now + _duration * 1 seconds;
-        auctionList[_tokenId].creator = msg.sender;
+        auctionList[_tokenId].ending = now + _duration * 1 hours; 
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
@@ -66,6 +62,11 @@ contract MyNFTAuction {
         //token.safeTransferFrom(address(this), msg.sender, _tokenId, tokenSendingAmount, "");
         auctionList[_tokenId].creator.transfer(msg.value);
     }
+
+    function getBackNFT(uint256 _tokenId) public {
+        require(now > auctionList[_tokenId].ending, "Auction not finished yet");
+        require(auctionList[_tokenId].highestBid == 0, "Auction not finished yet");
+    }
     
     function withdraw() public {
         require(msg.sender == owner, "Only the contract owner can withdraw");
@@ -79,15 +80,19 @@ contract MyNFTAuction {
 
 //--------------------Some Getter Functions----------------------------------------------------------------
 
-    function getTokenList() public returns(uint256[] memory) {
-        return tokenList;
-    }
-
     function getTokenAmount(uint256 _tokenId) public returns(uint256) {
         return tokenAmountTracking[_tokenId];
     }
 
     function getCreator(uint256 _tokenId) public returns(address) {
-        return nft.getCreator(_tokenId);
+        return auctionList[_tokenId].creator;
+    }
+
+    function getHighestBidder(uint256 _tokenId) public returns(address) {
+        return auctionList[_tokenId].highestBidder;
+    }
+
+    function getHighestBid(uint256 _tokenId) public returns(uint256) {
+        return auctionList[_tokenId].highestBid;
     }
 }

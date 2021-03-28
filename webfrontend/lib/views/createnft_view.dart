@@ -44,7 +44,7 @@ class _CreateNFTViewState extends State<CreateNFTView> {
     //Putting the file on IPFS
     var promise = createNewNFT(_arguments[0], widget.nftNameController.text,
         widget.nftDescriptionController.text);
-    var result = await promiseToFuture(promise);
+    await promiseToFuture(promise);
   }
 
   @override
