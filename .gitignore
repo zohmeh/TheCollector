@@ -49,3 +49,4 @@ app.*.map.json
 addresses.json
 /Backend/node_modules
 /Backend/build
+/webfrontend/web/addresses.js
