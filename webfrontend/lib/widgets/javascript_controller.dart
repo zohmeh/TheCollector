@@ -15,3 +15,4 @@ external dynamic startNewAuction(String _tokenId, String _duration);
 external dynamic gettingHighestBid(String _tokenId);
 external dynamic getHighestBidder(String _tokenId);
 external dynamic getTokenHash(String _tokenId);
+external dynamic bidForNFT(String _tokenId, String _bid);

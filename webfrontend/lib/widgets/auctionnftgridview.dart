@@ -26,13 +26,13 @@ class AuctionNFTGridView extends StatefulWidget {
 }
 
 class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
-  var highestBid = "";
+  double highestBid;
 
   Future _gettingHighestBid() async {
     var promise = gettingHighestBid(widget.id);
     var result = await promiseToFuture(promise);
     setState(() {
-      highestBid = result;
+      highestBid = double.parse(result);
     });
   }
 
@@ -97,12 +97,21 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
             Container(
                 child: Flexible(
               child: Text(
-                "Highest Bid: ",
+                "Highest Bid in Eth: ",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             )),
             SizedBox(width: 2),
-            Container(child: Flexible(child: Text(highestBid))),
+            Container(
+                child: Flexible(
+              child: highestBid != null
+                  ? Text(
+                      (highestBid / 1000000000000000000).toString(),
+                    )
+                  : Text(
+                      ("0"),
+                    ),
+            )),
           ],
         ),
         Row(
@@ -126,7 +135,7 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                 widget.function1, [
           ButtonListRoute,
           widget.id,
-          highestBid,
+          highestBid.toString(),
         ]))
       ],
     );
