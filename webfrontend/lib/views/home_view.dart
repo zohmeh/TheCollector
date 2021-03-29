@@ -93,9 +93,6 @@ class _HomeViewState extends State<HomeView> {
                     itemBuilder: (ctx, idx) {
                       return AuctionNFTGridView(
                           id: snapshot.data["tokenId"][idx],
-                          name: snapshot.data["tokenData"][idx]["name"],
-                          description: snapshot.data["tokenData"][idx]
-                              ["description"],
                           image: snapshot.data["tokenData"][idx]["file"],
                           button1: "Detail View",
                           function1: _changeSide);

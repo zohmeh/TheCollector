@@ -20,11 +20,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Button5Route:
       return _getPageRoute(CreateNFTView(), settings.name);
     case ButtonListRoute:
-      var id = int.tryParse(routingData['id']);
+      var id = routingData['id'];
       return _getPageRoute(
           AuctionDetailView(
             id: id,
-            highestBid: routingData['highestBid'],
           ),
           settings.name);
     default:

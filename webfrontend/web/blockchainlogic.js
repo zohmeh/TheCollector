@@ -75,13 +75,19 @@ async function getAuctionTokens() {
     } catch (error) { console.log(error); }
 }
 
-async function getHighestBidder(_tokenId) {
+async function getBackNFT(_tokenId) {
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+    };
+
     try {
         window.web3 = await Moralis.Web3.enable();
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["myNFTAuction"]);
 
-        let highestBid = await NFTAuctioncontractInstance.methods.getHighestBidder(_tokenId).call();
-        return highestBid;
+        let getBack = await NFTAuctioncontractInstance.methods.getBackNFT(_tokenId).send(sendsettings);
+        return getBack;
     } catch (error) { console.log(error); }
 }
 
@@ -115,15 +121,28 @@ async function getMyTokens() {
     } catch (error) { console.log(error); }
 }
 
-async function gettingHighestBid(_tokenId) {
+//async function gettingHighestBid(_tokenId) {
+//    try {
+//        window.web3 = await Moralis.Web3.enable();
+//        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["myNFTAuction"]);
+//
+//        let highestBid = await NFTAuctioncontractInstance.methods.getHighestBid(_tokenId).call();
+//        return highestBid;
+//    } catch (error) { console.log(error); }
+//}
+
+
+async function getAuctionData(_tokenId) {
     try {
         window.web3 = await Moralis.Web3.enable();
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["myNFTAuction"]);
 
-        let highestBid = await NFTAuctioncontractInstance.methods.getHighestBid(_tokenId).call();
-        return highestBid;
+        let data = await NFTAuctioncontractInstance.methods.getAuctionData(_tokenId).call();
+        console.log(data);
+        return [data[0], data[1], data[2]];
     } catch (error) { console.log(error); }
 }
+
 
 async function getTokenHash(_tokenId) {
     try {
@@ -155,6 +174,23 @@ async function login() {
 async function logout() {
     try {
         user = await Moralis.User.logOut();
+    } catch (error) { console.log(error); }
+}
+
+async function sellNFT(_tokenId, _price) {
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+        value: _price
+    };
+
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["myNFTAuction"]);
+
+        let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send(sendsettings);
+        return sellNFT;
     } catch (error) { console.log(error); }
 }
 

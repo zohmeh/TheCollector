@@ -57,6 +57,9 @@ contract MyNFTAuction {
         require(msg.value == auctionList[_tokenId].highestBid, "Please send the correct bidding amount");
         require(now > auctionList[_tokenId].ending, "Auction not finished yet");
         
+        auctionList[_tokenId].hasStarted = false;
+        auctionList[_tokenId].highestBid = 0;
+        auctionList[_tokenId].highestBidder = address(0);
         nft.approve(msg.sender, _tokenId);
         nft.safeTransferFrom(address(this), msg.sender, _tokenId); 
         address payable creator = collectorToken.getTokenCreator(_tokenId);
@@ -81,5 +84,9 @@ contract MyNFTAuction {
 
     function getHighestBid(uint256 _tokenId) public returns(uint256) {
         return auctionList[_tokenId].highestBid;
+    }
+
+    function getAuctionData(uint256 _tokenId) public view returns(uint256, uint256, address) {
+        return (auctionList[_tokenId].ending, auctionList[_tokenId].highestBid, auctionList[_tokenId].highestBidder);
     }
 }
