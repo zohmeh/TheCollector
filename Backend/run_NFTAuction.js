@@ -33,7 +33,7 @@ async function logBalances(_event)
       //let auctionatorHashes = await SCInteraction.getMyHashes(address.account[0]);
       let bidderNFTBalances = await SCInteraction.getTokenIdsforOwner(address.account[1]);
       //let bidderHashes = await SCInteraction.getMyHashes(address.account[0]);
-      let myNFTAuctionNFTBalances = await SCInteraction.getTokenIdsforOwner(address.myNFTAuction);
+      let myNFTAuctionNFTBalances = await SCInteraction.getTokenIdsforOwner(address.marketplace);
       
       console.log(_event);
       //console.log("Auctionator Eth Balance:", auctionatorETHBalance);
@@ -50,31 +50,27 @@ async function logBalances(_event)
   };
 
 async function main() {
+/*
+    let create = await SCInteraction.createNewNFT(auctionator);
+    let id = create.events.NewCollectorToken.returnValues.tokenId;
+    console.log("Token Id: " , id);
+    logBalances("After Token Creating");
 
-    //let create = await SCInteraction.createNewNFT(auctionator);
-    //let id = create.events.NewCollectorToken.returnValues.tokenId;
-    //console.log("Token Id: " , id);
-    //logBalances("After Token Creating");
+    let approve = await SCInteraction.setApproval(address.marketplace, "1", auctionator);
+    let auction = await SCInteraction.startNewAuction("1", "1", auctionator);
 
-    //let approve = await SCInteraction.setApproval(address.myNFTAuction, "1", auctionator);
-    //let send = await SCInteraction.transferNFT(address.account[0], address.myNFTAuction, "1", auctionator);
-    //logBalances("After NFT sending");
+    let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
+*/
+    let sell = await SCInteraction.sellNFT("1", bidderPay);
+    logBalances("After Selling Token");
 
-    //let creator = await SCInteraction.getCreatorAddress("2");
+    //let creator = await SCInteraction.getOwnerAddress("1");
     //console.log(creator);
-
-    //let auction = await SCInteraction.startNewAuction("1", "2", auctionator);
-
-    //let getback = await SCInteraction.getBackNFT("1", auctionator);
-    //logBalances("After Getting back");
-
+  
     //let highestBid = await SCInteraction.getHighestBid("1");
     //console.log(highestBid);
 
-    //let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
-
-    let sell = await SCInteraction.sellNFT("1", bidderPay);
-    logBalances("After Selling Token");
+    
 
 }
 

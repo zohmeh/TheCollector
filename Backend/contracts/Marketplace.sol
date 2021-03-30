@@ -2,10 +2,9 @@ pragma solidity 0.6.2;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "./INFTToken.sol";
+import "./TheCollector.sol";
 
-
-contract MyNFTAuction {
+contract Marketplace is TheCollector {
 
     struct Auction {
         bool hasStarted;
@@ -16,14 +15,10 @@ contract MyNFTAuction {
     
     mapping(uint256 => Auction) auctionList;
     uint256[] tokenList;
-    INFTToken private collectorToken;
-    IERC721 private nft;
     address public owner;
     
-    constructor(address _token) public {
+    constructor() public {
         require(address(this) != address(0));
-        collectorToken = INFTToken(_token);
-        nft = IERC721(_token);
         owner = msg.sender;
     }
 
@@ -36,7 +31,7 @@ contract MyNFTAuction {
   }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
-        require(collectorToken.getTokenCreator(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
+        require(ownerOf(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
         require(auctionList[_tokenId].hasStarted == false, "Auction already started");
         
         auctionList[_tokenId].hasStarted = true;
@@ -60,20 +55,11 @@ contract MyNFTAuction {
         auctionList[_tokenId].hasStarted = false;
         auctionList[_tokenId].highestBid = 0;
         auctionList[_tokenId].highestBidder = address(0);
-        nft.approve(msg.sender, _tokenId);
-        nft.safeTransferFrom(address(this), msg.sender, _tokenId); 
-        address payable creator = collectorToken.getTokenCreator(_tokenId);
-        creator.transfer(msg.value);
-    }
-
-    function getBackNFT(uint256 _tokenId) public {
-        require(now > auctionList[_tokenId].ending, "Auction not finished yet");
-        require(auctionList[_tokenId].highestBid == 0, "There was a bid for your token");
-        require(msg.sender == collectorToken.getTokenCreator(_tokenId), "You are not the creator of this token");
-
-        auctionList[_tokenId].hasStarted = false;
-        nft.approve(msg.sender, _tokenId);
-        nft.safeTransferFrom(address(this), msg.sender, _tokenId);
+        
+        approve(msg.sender, _tokenId);
+        address payable originalOwner = payable(ownerOf(_tokenId));
+        safeTransferFrom(originalOwner, msg.sender, _tokenId); 
+        originalOwner.transfer(msg.value);
     }
 
 //--------------------Some Getter Functions----------------------------------------------------------------
