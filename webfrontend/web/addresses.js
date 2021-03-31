@@ -1,7 +1,7 @@
 addresses = {
-    "myNFTAuction": "0xae31663a56f5B9d9452c12750A09c51C40Bf3Ad0",
-    "nftToken": "0xD8A720842a4aD8a990E7df84A9F44f66CDee17a0",
-    "account": ["0x7e6fC38ab92DD6755BDB2A6a2dE86aEA8Bf253Ea", "0x5EC8b286E577C2488EE24537A45FA3D615731b17"],
+    "thecollector": "0xF7e19428371dFa58e2274C94d107458cea7e16f1",
+    "marketplace": "0xd29fb824b84050c817165Fd93B366B26F3e854F2",
+    "account": ["0x621fFd421a301087048CA79621f335B271700FB8", "0xF4925e1240A0da1d11AE9789dd82044df66Df05D"],
     "key": "0x1eb8c810ad16b73f69b0bd9a169f938d4c3f88d039d3b1ad3d8c0ebe5245be57",
     "https": "https://kovan.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3"
 }

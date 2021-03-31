@@ -17,35 +17,38 @@ class _HomeViewState extends State<HomeView> {
   ScrollController _scrollController = ScrollController();
 
   _changeSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0], queryParams: {
-      "id": _arguments[1].toString(),
-      "highestBid": _arguments[2]
-    });
+    locator<NavigationService>().navigateTo(_arguments[0],
+        queryParams: {"id": _arguments[1].toString()});
   }
 
   Future _getAuctionNFTs() async {
-    var promise = getAuctionTokens();
+    var promise = getAllActiveAuctions();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var myTokens = await _getAuctionNFTs();
-    var myTokensdecoded = json.decode(myTokens);
-    var nftHashes = myTokensdecoded["tokenHash"];
+    var allAuctions = await _getAuctionNFTs();
+    List tokenHashes = [];
     List<dynamic> nftData = [];
 
-    for (var i = 0; i < nftHashes.length; i++) {
+    for (var i = 0; i < allAuctions.length; i++) {
+      var promise = getTokenHash(allAuctions[i]);
+      var auctionTokenHashes = await promiseToFuture(promise);
+      tokenHashes.add(auctionTokenHashes);
+    }
+
+    for (var i = 0; i < tokenHashes.length; i++) {
       var data = await http.get(
         Uri.parse(
-          nftHashes[i].toString(),
+          tokenHashes[i].toString(),
         ),
       );
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
     }
     Map<String, dynamic> nftvalues = {
-      "tokenId": myTokensdecoded["tokenId"],
+      "tokenId": allAuctions,
       "tokenData": nftData
     };
     return (nftvalues);

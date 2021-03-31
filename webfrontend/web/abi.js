@@ -497,7 +497,7 @@ window.abi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "_token",
+        "name": "_collector",
         "type": "address"
       }
     ],
@@ -610,46 +610,8 @@ window.abi = [
         "type": "uint256"
       }
     ],
-    "name": "getBackNFT",
+    "name": "deleteAuction",
     "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getHighestBidder",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getHighestBid",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -663,6 +625,11 @@ window.abi = [
     ],
     "name": "getAuctionData",
     "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
       {
         "internalType": "uint256",
         "name": "",
@@ -682,5 +649,18 @@ window.abi = [
     "stateMutability": "view",
     "type": "function",
     "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "getAllActiveAuctions",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ]

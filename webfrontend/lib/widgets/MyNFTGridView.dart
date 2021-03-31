@@ -6,6 +6,7 @@ class MyNFTGridView extends StatelessWidget {
   final String id;
   final String name;
   final String description;
+  final bool isAuction;
   final List<dynamic> image;
   final String button1;
   final String button2;
@@ -16,6 +17,7 @@ class MyNFTGridView extends StatelessWidget {
       {this.id,
       this.name,
       this.description,
+      this.isAuction,
       this.image,
       this.button1,
       this.button2,
@@ -97,6 +99,21 @@ class MyNFTGridView extends StatelessWidget {
                   Container(child: Flexible(child: Text(description))),
                 ],
               ),
+              isAuction
+                  ? Row(
+                      children: [
+                        Container(
+                            child: Flexible(
+                          child: Text(
+                            "NFT is in an Auction: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )),
+                        SizedBox(width: 2),
+                        Container(child: Flexible(child: Text("Yes"))),
+                      ],
+                    )
+                  : Container(),
             ],
           ),
         )

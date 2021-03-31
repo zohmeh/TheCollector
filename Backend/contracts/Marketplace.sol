@@ -16,7 +16,7 @@ contract Marketplace {
     
     //tokenId => Auctiondata
     mapping(uint256 => Auction) auctionMap;
-    Auction[] auctionList;
+    uint256[] auctionList;
     address public owner;
     TheCollector collector;
 
@@ -39,17 +39,10 @@ contract Marketplace {
         require(auctionMap[_tokenId].hasStarted == false, "Auction already started");
         require(collector.isApprovedForAll(msg.sender, address(this)), "The Marketplace is not approved as operator for your token");
 
-        Auction memory _auction = Auction({
-            tokenId: _tokenId,
-            hasStarted: true,
-            ending: now + _duration * 1 minutes,
-            highestBid: 0,
-            highestBidder: address(0)
-        });
-
-        auctionList.push(_auction);
-        auctionMap[_tokenId] = _auction;
- 
+        auctionList.push(_tokenId);
+        auctionMap[_tokenId].tokenId = _tokenId;
+        auctionMap[_tokenId].hasStarted = true;
+        auctionMap[_tokenId].ending = now + _duration * 1 minutes; 
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
@@ -74,6 +67,14 @@ contract Marketplace {
         originalOwner.transfer(msg.value);
     }
 
+    function deleteAuction(uint256 _tokenId) public {
+        require(collector.ownerOf(_tokenId) == msg.sender, "Only owner of NFT can end Auction");
+        require(auctionMap[_tokenId].hasStarted == true, "Auction has not started yet");
+        require(auctionMap[_tokenId].highestBid == 0, "There is already a bid for the NFT");
+
+        auctionMap[_tokenId].hasStarted = false;
+    }
+
 //--------------------Some Getter Functions----------------------------------------------------------------
 
     function getAuctionData(uint256 _tokenId) public view returns(bool, uint256, uint256, address) {
@@ -85,8 +86,8 @@ contract Marketplace {
         uint256 _auctionId;
         for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++)
         {
-            if(auctionMap[auctionList[_auctionId].tokenId].hasStarted == true){
-                _result[_auctionId] = auctionList[_auctionId].tokenId;
+            if(auctionMap[auctionList[_auctionId]].hasStarted == true){
+                _result[_auctionId] = auctionList[_auctionId];
             }
         }
         return _result;

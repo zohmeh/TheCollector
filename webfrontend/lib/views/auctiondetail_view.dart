@@ -50,12 +50,6 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
     });
   }
 
-  Future _getBackNFT() async {
-    var promise = getBackNFT(widget.id);
-    var getback = await promiseToFuture(promise);
-    setState(() {});
-  }
-
   Future _sellNFT() async {
     var promise = sellNFT(widget.id, highestBid);
     var sell = await promiseToFuture(promise);
@@ -66,10 +60,10 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
     var promise = getAuctionData(widget.id);
     var result = await promiseToFuture(promise);
     var auctionEnding =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(result[0]) * 1000);
+        DateTime.fromMillisecondsSinceEpoch(int.parse(result[1]) * 1000);
     setState(() {
-      highestBid = result[1];
-      highestBidder = result[2];
+      highestBid = result[2];
+      highestBidder = result[3];
       auctionEndingFormated =
           DateFormat('yyyy-MM-dd - kk:mm').format(auctionEnding);
     });
@@ -231,11 +225,6 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
                             Theme.of(context).backgroundColor,
                             "Buy this NFT after Auction ending",
                             _sellNFT),
-                        button(
-                            Theme.of(context).buttonColor,
-                            Theme.of(context).backgroundColor,
-                            "Getting back this NFT after Auction ending",
-                            _getBackNFT),
                       ],
                     ),
                   )

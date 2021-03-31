@@ -15,11 +15,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(HomeView(), settings.name);
     case Button3Route:
       return _getPageRoute(Button3View(), settings.name);
-    case Button4Route:
+    case MyPortfolioRoute:
       return _getPageRoute(MyPortfolioView(), settings.name);
-    case Button5Route:
+    case CreateNewNFTRoute:
       return _getPageRoute(CreateNFTView(), settings.name);
-    case ButtonListRoute:
+    case AuctionDetailRoute:
       var id = routingData['id'];
       return _getPageRoute(
           AuctionDetailView(

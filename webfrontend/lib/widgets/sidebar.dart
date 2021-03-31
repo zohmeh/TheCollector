@@ -48,10 +48,10 @@ class _SidebarState extends State<Sidebar> {
               _changeSide, [HomeRoute, 0]),
           SizedBox(height: 20),
           button(buttoncolors[1], Theme.of(context).highlightColor,
-              "My Portfolio", _changeSide, [Button4Route, 1]),
+              "My Portfolio", _changeSide, [MyPortfolioRoute, 1]),
           SizedBox(height: 20),
           button(buttoncolors[2], Theme.of(context).highlightColor,
-              "Create New NFT", _changeSide, [Button5Route, 2]),
+              "Create New NFT", _changeSide, [CreateNewNFTRoute, 2]),
         ],
       ),
     );

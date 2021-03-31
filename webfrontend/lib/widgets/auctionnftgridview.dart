@@ -19,14 +19,12 @@ class AuctionNFTGridView extends StatefulWidget {
 
 class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
   double highestBid;
-  String highestBidder;
 
   Future _getAuctionData() async {
     var promise = getAuctionData(widget.id);
     var result = await promiseToFuture(promise);
     setState(() {
-      highestBid = double.parse(result[1]);
-      highestBidder = result[2];
+      highestBid = double.parse(result[2]);
     });
   }
 
@@ -87,11 +85,8 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                 Theme.of(context).buttonColor,
                 Theme.of(context).backgroundColor,
                 widget.button1,
-                widget.function1, [
-          ButtonListRoute,
-          widget.id,
-          highestBid.toString(),
-        ]))
+                widget.function1,
+                [AuctionDetailRoute, widget.id]))
       ],
     );
   }

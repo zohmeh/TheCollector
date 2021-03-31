@@ -27,7 +27,13 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     var myTokensdecoded = json.decode(myTokens);
     var nftHashes = myTokensdecoded["tokenHash"];
     List<dynamic> nftData = [];
+    List<dynamic> isAuction = [];
 
+    for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
+      var promise = getAuctionData(myTokensdecoded["tokenId"][j]);
+      var auction = await promiseToFuture(promise);
+      isAuction.add(auction[0]);
+    }
     for (var i = 0; i < nftHashes.length; i++) {
       var data = await http.get(
         Uri.parse(
@@ -39,8 +45,10 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     }
     Map<String, dynamic> nftvalues = {
       "tokenId": myTokensdecoded["tokenId"],
+      "isAuction": isAuction,
       "tokenData": nftData
     };
+    print(nftvalues);
     return (nftvalues);
     //return (nftData);
   }
@@ -95,6 +103,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                         name: snapshot.data["tokenData"][idx]["name"],
                         description: snapshot.data["tokenData"][idx]
                             ["description"],
+                        isAuction: snapshot.data["isAuction"][idx],
                         image: snapshot.data["tokenData"][idx]["file"],
                         button1: "Sell NFT",
                         button2: "Start Auction",
