@@ -50,27 +50,28 @@ async function logBalances(_event)
   };
 
 async function main() {
-/*
-    let create = await SCInteraction.createNewNFT(auctionator);
-    let id = create.events.NewCollectorToken.returnValues.tokenId;
-    console.log("Token Id: " , id);
-    logBalances("After Token Creating");
 
-    let approve = await SCInteraction.setApproval(address.marketplace, "1", auctionator);
-    let auction = await SCInteraction.startNewAuction("1", "1", auctionator);
+    //let create = await SCInteraction.createNewNFT(auctionator);
+    //let id = create.events.NewCollectorToken.returnValues.tokenId;
+    //console.log("Token Id: " , id);
+    //logBalances("After Token Creating");
 
-    let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
-*/
-    let sell = await SCInteraction.sellNFT("1", bidderPay);
-    logBalances("After Selling Token");
+    //let approve = await SCInteraction.setApproval(address.marketplace, "1", bidder);
+    //let auction = await SCInteraction.startNewAuction("1", "1", bidder);
+
+    //let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
+
+    //let sell = await SCInteraction.sellNFT("1", bidderPay);
+    //logBalances("After Selling Token");
 
     //let creator = await SCInteraction.getOwnerAddress("1");
     //console.log(creator);
-  
-    //let highestBid = await SCInteraction.getHighestBid("1");
-    //console.log(highestBid);
 
+    let auctionList = await SCInteraction.getAllActiveAuctions();
+    console.log(auctionList); 
     
+    let auction = await SCInteraction.getAuctionData("1");
+    console.log(auction); 
 
 }
 

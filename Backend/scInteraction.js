@@ -1,5 +1,6 @@
 //Contract ABIs
 const nftAuctionABI = require("./build/contracts/Marketplace.json");
+const collectorABI = require("./build/contracts/TheCollector.json");
 const address = require("../addresses.json");
 //const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
@@ -10,32 +11,33 @@ const web3 = new Web3("HTTP://127.0.0.1:7545");
 
 // Connecting to SmartContract
 const nftMarketplaceContract = new web3.eth.Contract(nftAuctionABI.abi, address.marketplace);
+const collectorContract = new web3.eth.Contract(collectorABI.abi, address.thecollector);
 
 module.exports = {
     createNewNFT: async function (sendSettings) {
         try {
-            const nftID = await nftMarketplaceContract.methods.mintNewCollectorNFT("Hallo erster Hash").send(sendSettings);
+            const nftID = await collectorContract.methods.mintNewCollectorNFT("Hallo erster Hash").send(sendSettings);
             return nftID;
         } catch (error) { console.log(error); }
     },
 
     setApproval: async function (_operator, _tokenId, _sendSettings) {
         try {
-            const approve = await nftMarketplaceContract.methods.setApprovalForAll(_operator, "true").send(_sendSettings);
+            const approve = await collectorContract.methods.setApprovalForAll(_operator, "true").send(_sendSettings);
             return approve;
         } catch (error) { console.log(error); }
     },
 
     getApproval: async function (_owner, _operator) {
         try {
-            const isApproved = await nftMarketplaceContract.methods.isApprovedForAll(_owner, _operator).call();
+            const isApproved = await collectorContract.methods.isApprovedForAll(_owner, _operator).call();
             return isApproved;
         } catch (error) { console.log(error); }
     },
 
     getNFTBalance: async function (_owner) {
         try {
-            const balance = await nftMarketplaceContract.methods.balanceOf(_owner).call();
+            const balance = await collectorContract.methods.balanceOf(_owner).call();
             return balance;
         } catch (error) { console.log(error); }
     },
@@ -43,9 +45,9 @@ module.exports = {
     getTokenIdsforOwner: async function (_owner) {
         var tokens = [];
         try {
-            const balanceOf = await nftMarketplaceContract.methods.balanceOf(_owner).call();
+            const balanceOf = await collectorContract.methods.balanceOf(_owner).call();
             for(var i = 0; i < balanceOf ; i++) {
-                const ownerTokensId = await nftMarketplaceContract.methods.tokenOfOwnerByIndex(_owner, i).call();
+                const ownerTokensId = await collectorContract.methods.tokenOfOwnerByIndex(_owner, i).call();
                 tokens.push(ownerTokensId);
             }
             return tokens;
@@ -57,7 +59,7 @@ module.exports = {
         try {
             const tokenIds = await this.getTokenIdsforOwner(_owner);
             for(var i = 0; i < tokenIds.length; i++) {
-                const hash = await nftMarketplaceContract.methods.getTokenhash(tokenIds[i]).call();
+                const hash = await collectorContract.methods.getTokenhash(tokenIds[i]).call();
                 hashes.push(hash);
             }
             return hashes;
@@ -66,7 +68,7 @@ module.exports = {
 
     transferNFT: async function(_from, _to, _tokenId, _sendSettings) {
         try {
-            const transfer = await nftMarketplaceContract.methods.safeTransferFrom(_from, _to, _tokenId).send(_sendSettings);
+            const transfer = await collectorContract.methods.safeTransferFrom(_from, _to, _tokenId).send(_sendSettings);
             return transfer;
         } catch (error) { console.log(error); }
     },
@@ -114,31 +116,24 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
-    getTokenList: async function() {
-        try {
-            const tokenList = await nftMarketplaceContract.methods.getTokenList().call();
-            return tokenList;
-        } catch (error) { console.log(error); }
-    },
-
-    getTokenAmount: async function(_tokenId) {
-        try {
-            const tokenAmount = await nftMarketplaceContract.methods.getTokenAmount(_tokenId).call();
-            return tokenAmount;
-        } catch (error) { console.log(error); }
-    },
-
     getOwnerAddress: async function(_tokenId) {
         try {
-            const creator = await nftMarketplaceContract.methods.ownerOf(_tokenId).call();
+            const creator = await collectorContract.methods.ownerOf(_tokenId).call();
             return creator;
         } catch (error) { console.log(error); }
     },
 
-    getHighestBid: async function(_tokenId) {
+    getAllActiveAuctions: async function() {
         try {
-            const highestBid = await nftMarketplaceContract.methods.getHighestBid(_tokenId).call();
-            return highestBid;
+            const auctions = await nftMarketplaceContract.methods.getAllActiveAuctions().call();
+            return auctions;
+        } catch (error) { console.log(error); }
+    },
+
+    getAuctionData: async function(_tokenId) {
+        try {
+            const auction = await nftMarketplaceContract.methods.getAuctionData(_tokenId).call();
+            return auction;
         } catch (error) { console.log(error); }
     },
 

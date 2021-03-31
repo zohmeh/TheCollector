@@ -4,22 +4,26 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./TheCollector.sol";
 
-contract Marketplace is TheCollector {
+contract Marketplace {
 
     struct Auction {
+        uint256 tokenId;
         bool hasStarted;
         uint256 ending;
         uint256 highestBid;
         address highestBidder;
     }
     
-    mapping(uint256 => Auction) auctionList;
-    uint256[] tokenList;
+    //tokenId => Auctiondata
+    mapping(uint256 => Auction) auctionMap;
+    Auction[] auctionList;
     address public owner;
-    
-    constructor() public {
+    TheCollector collector;
+
+    constructor(address _collector) public {
         require(address(this) != address(0));
         owner = msg.sender;
+        collector = TheCollector(_collector);
     }
 
     function onERC721Received(address _operator, address _from, uint256 _tokenId, bytes calldata _data) external returns(bytes4) {
@@ -31,48 +35,60 @@ contract Marketplace is TheCollector {
   }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
-        require(ownerOf(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
-        require(auctionList[_tokenId].hasStarted == false, "Auction already started");
-        
-        auctionList[_tokenId].hasStarted = true;
-        auctionList[_tokenId].ending = now + _duration * 1 minutes; 
+        require(collector.ownerOf(_tokenId) == msg.sender, "Only owner of NFT can start Auction");
+        require(auctionMap[_tokenId].hasStarted == false, "Auction already started");
+        require(collector.isApprovedForAll(msg.sender, address(this)), "The Marketplace is not approved as operator for your token");
+
+        Auction memory _auction = Auction({
+            tokenId: _tokenId,
+            hasStarted: true,
+            ending: now + _duration * 1 minutes,
+            highestBid: 0,
+            highestBidder: address(0)
+        });
+
+        auctionList.push(_auction);
+        auctionMap[_tokenId] = _auction;
+ 
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
-        require(auctionList[_tokenId].hasStarted == true, "Auction has not started yet");
-        require(_bid >= auctionList[_tokenId].highestBid, "You need to make an higher offer");
-        require(now < auctionList[_tokenId].ending, "Auction already finished");
+        require(auctionMap[_tokenId].hasStarted == true, "Auction has not started yet");
+        require(_bid >= auctionMap[_tokenId].highestBid, "You need to make an higher offer");
+        require(now < auctionMap[_tokenId].ending, "Auction already finished");
      
-        auctionList[_tokenId].highestBid = _bid;
-        auctionList[_tokenId].highestBidder = msg.sender;
+        auctionMap[_tokenId].highestBid = _bid;
+        auctionMap[_tokenId].highestBidder = msg.sender;
     }
     
     function sellItem(uint256 _tokenId) public payable {
-        require(msg.sender == auctionList[_tokenId].highestBidder, "You did not won the auction");
-        require(msg.value == auctionList[_tokenId].highestBid, "Please send the correct bidding amount");
-        require(now > auctionList[_tokenId].ending, "Auction not finished yet");
+        require(msg.sender == auctionMap[_tokenId].highestBidder, "You did not won the auction");
+        require(msg.value == auctionMap[_tokenId].highestBid, "Please send the correct bidding amount");
+        require(now > auctionMap[_tokenId].ending, "Auction not finished yet");
         
-        auctionList[_tokenId].hasStarted = false;
-        auctionList[_tokenId].highestBid = 0;
-        auctionList[_tokenId].highestBidder = address(0);
+        delete auctionMap[_tokenId];
         
-        approve(msg.sender, _tokenId);
-        address payable originalOwner = payable(ownerOf(_tokenId));
-        safeTransferFrom(originalOwner, msg.sender, _tokenId); 
+        collector.approve(msg.sender, _tokenId);
+        address payable originalOwner = payable(collector.ownerOf(_tokenId));
+        collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
     }
 
 //--------------------Some Getter Functions----------------------------------------------------------------
 
-    function getHighestBidder(uint256 _tokenId) public returns(address) {
-        return auctionList[_tokenId].highestBidder;
+    function getAuctionData(uint256 _tokenId) public view returns(bool, uint256, uint256, address) {
+        return (auctionMap[_tokenId].hasStarted, auctionMap[_tokenId].ending, auctionMap[_tokenId].highestBid, auctionMap[_tokenId].highestBidder);
     }
 
-    function getHighestBid(uint256 _tokenId) public returns(uint256) {
-        return auctionList[_tokenId].highestBid;
-    }
-
-    function getAuctionData(uint256 _tokenId) public view returns(uint256, uint256, address) {
-        return (auctionList[_tokenId].ending, auctionList[_tokenId].highestBid, auctionList[_tokenId].highestBidder);
+    function getAllActiveAuctions() public returns(uint256[] memory) {
+        uint256[] memory _result = new uint256[](auctionList.length);
+        uint256 _auctionId;
+        for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++)
+        {
+            if(auctionMap[auctionList[_auctionId].tokenId].hasStarted == true){
+                _result[_auctionId] = auctionList[_auctionId].tokenId;
+            }
+        }
+        return _result;
     }
 }
