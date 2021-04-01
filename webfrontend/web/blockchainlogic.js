@@ -1,5 +1,5 @@
-Moralis.initialize("Rto66TIYvagAkT1yS4Y7IrrDNGTCyZWJNILTqIUZ")
-Moralis.serverURL = "https://uxgdnb04vrar.moralis.io:2053/server";
+Moralis.initialize("GTdkvs8iE0T2SPLZt55dXDl4DTYu5LaNzIC9IK23")
+Moralis.serverURL = "https://geuznmdttxzt.moralis.io:2053/server";
 
 async function bidForNFT(_tokenId, _bid) {
     sendsettings = {
@@ -37,6 +37,7 @@ async function createNewNFT(_file, _name, _description) {
         const file = new Moralis.File("upload.json", { base64: btoa(JSON.stringify(object)) });
         await file.saveIPFS();
         let hash = file.ipfs();
+        console.log(hash);
         //Mint NFT and store Hash on blockchain in NFTToken.sol Contract
         window.web3 = await Moralis.Web3.enable();
         let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);

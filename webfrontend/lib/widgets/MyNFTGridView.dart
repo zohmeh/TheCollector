@@ -124,8 +124,8 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                     widget.buttonStartAuction,
                     widget.functionStartAuction,
                     [widget.id, "3"]),
-                button(Theme.of(context).buttonColor,
-                    Theme.of(context).backgroundColor, widget.button3),
+                //button(Theme.of(context).buttonColor,
+                //    Theme.of(context).backgroundColor, widget.button3),
               ],
             )
           ],

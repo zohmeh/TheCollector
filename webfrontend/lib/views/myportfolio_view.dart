@@ -26,6 +26,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     var myTokens = await _getMyNFTs();
     var myTokensdecoded = json.decode(myTokens);
     var nftHashes = myTokensdecoded["tokenHash"];
+    print(nftHashes);
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
 
