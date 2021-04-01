@@ -1,7 +1,7 @@
 addresses = {
-    "thecollector": "0xF7e19428371dFa58e2274C94d107458cea7e16f1",
-    "marketplace": "0xd29fb824b84050c817165Fd93B366B26F3e854F2",
-    "account": ["0x621fFd421a301087048CA79621f335B271700FB8", "0xF4925e1240A0da1d11AE9789dd82044df66Df05D"],
+    "thecollector": "0x614ed5Ecdc19171E3Ed8c11Dc293fE46C6baC91D",
+    "marketplace": "0xdF60E475A169e85ceB87c33534bD5B437CCCcE64",
+    "account": ["0xA307de08799d6582FE4A16342850fFcE13d32f89", "0xD525789F0E7a434A436e349C26099026EA9D7Eb5"],
     "key": "0x1eb8c810ad16b73f69b0bd9a169f938d4c3f88d039d3b1ad3d8c0ebe5245be57",
     "https": "https://kovan.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3"
 }

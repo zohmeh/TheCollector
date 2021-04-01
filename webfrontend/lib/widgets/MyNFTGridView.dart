@@ -9,9 +9,11 @@ class MyNFTGridView extends StatefulWidget {
   final bool isAuction;
   final List<dynamic> image;
   final String button1;
-  final String button2;
+  final String buttonStartAuction;
   final String button3;
-  final Function function2;
+  final Function functionStartAuction;
+  final String buttonRemoveAuction;
+  final Function functionRemoveAuction;
 
   MyNFTGridView(
       {this.id,
@@ -20,9 +22,11 @@ class MyNFTGridView extends StatefulWidget {
       this.isAuction,
       this.image,
       this.button1,
-      this.button2,
+      this.buttonStartAuction,
       this.button3,
-      this.function2});
+      this.functionStartAuction,
+      this.buttonRemoveAuction,
+      this.functionRemoveAuction});
 
   @override
   _MyNFTGridViewState createState() => _MyNFTGridViewState();
@@ -100,6 +104,13 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                       ),
                       SizedBox(width: 2),
                       Container(child: Flexible(child: Text("Yes"))),
+                      SizedBox(width: 10),
+                      button(
+                          Theme.of(context).buttonColor,
+                          Theme.of(context).backgroundColor,
+                          widget.buttonRemoveAuction,
+                          widget.functionRemoveAuction,
+                          [widget.id]),
                     ],
                   )
                 : SizedBox(height: 25),
@@ -110,9 +121,9 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                 button(
                     Theme.of(context).buttonColor,
                     Theme.of(context).backgroundColor,
-                    widget.button2,
-                    widget.function2,
-                    [widget.id, "60"]),
+                    widget.buttonStartAuction,
+                    widget.functionStartAuction,
+                    [widget.id, "3"]),
                 button(Theme.of(context).buttonColor,
                     Theme.of(context).backgroundColor, widget.button3),
               ],

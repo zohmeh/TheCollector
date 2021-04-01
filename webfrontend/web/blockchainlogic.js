@@ -98,7 +98,6 @@ async function getAuctionData(_tokenId) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let data = await NFTAuctioncontractInstance.methods.getAuctionData(_tokenId).call();
-        console.log(data);
         return [data[0], data[1], data[2], data[3]];
     } catch (error) { console.log(error); }
 }
@@ -134,6 +133,22 @@ async function login() {
 async function logout() {
     try {
         user = await Moralis.User.logOut();
+    } catch (error) { console.log(error); }
+}
+
+async function removeAuction(_tokenId) {
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+    };
+
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send(sendsettings);
+        return remove;
     } catch (error) { console.log(error); }
 }
 

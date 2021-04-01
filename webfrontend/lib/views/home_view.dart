@@ -15,6 +15,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   ScrollController _scrollController = ScrollController();
+  String addresse;
+
+  _checkforloggedIn() async {
+    var promise = loggedIn();
+    var loggedin = await promiseToFuture(promise);
+    setState(() {
+      addresse = loggedin;
+    });
+  }
 
   _changeSide(List _arguments) {
     locator<NavigationService>().navigateTo(_arguments[0],
@@ -29,11 +38,18 @@ class _HomeViewState extends State<HomeView> {
 
   Future<Map<String, dynamic>> _getNFTData() async {
     var allAuctions = await _getAuctionNFTs();
+    List activeAuctions = [];
     List tokenHashes = [];
     List<dynamic> nftData = [];
 
     for (var i = 0; i < allAuctions.length; i++) {
-      var promise = getTokenHash(allAuctions[i]);
+      if (allAuctions[i] != "0") {
+        activeAuctions.add(allAuctions[i]);
+      }
+    }
+
+    for (var i = 0; i < activeAuctions.length; i++) {
+      var promise = getTokenHash(activeAuctions[i]);
       var auctionTokenHashes = await promiseToFuture(promise);
       tokenHashes.add(auctionTokenHashes);
     }
@@ -47,8 +63,9 @@ class _HomeViewState extends State<HomeView> {
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
     }
+
     Map<String, dynamic> nftvalues = {
-      "tokenId": allAuctions,
+      "tokenId": activeAuctions,
       "tokenData": nftData
     };
     return (nftvalues);
@@ -56,55 +73,64 @@ class _HomeViewState extends State<HomeView> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _checkforloggedIn();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width - 150,
-      child: VsScrollbar(
-        controller: _scrollController,
-        showTrackOnHover: true,
-        isAlwaysShown: false,
-        scrollbarFadeDuration: Duration(milliseconds: 500),
-        scrollbarTimeToFade: Duration(milliseconds: 800),
-        style: VsScrollbarStyle(
-          hoverThickness: 10.0,
-          radius: Radius.circular(10),
-          thickness: 10.0,
-          color: Theme.of(context).highlightColor,
-        ),
-        child: FutureBuilder(
-            future: _getNFTData(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                if (snapshot.data["tokenData"].length == 0 ||
-                    snapshot.data == null) {
-                  return Center(
-                    child: Text("No active Auctions"),
-                  );
-                } else {
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        crossAxisSpacing: 50,
-                        mainAxisSpacing: 200,
-                        mainAxisExtent: 400,
-                        maxCrossAxisExtent: 400),
-                    itemCount: snapshot.data["tokenData"].length,
-                    itemBuilder: (ctx, idx) {
-                      return AuctionNFTGridView(
-                          id: snapshot.data["tokenId"][idx],
-                          image: snapshot.data["tokenData"][idx]["file"],
-                          button1: "Detail View",
-                          function1: _changeSide);
-                    },
-                  );
-                }
-              }
-            }),
-      ),
+      child: addresse != null
+          ? VsScrollbar(
+              controller: _scrollController,
+              showTrackOnHover: true,
+              isAlwaysShown: false,
+              scrollbarFadeDuration: Duration(milliseconds: 500),
+              scrollbarTimeToFade: Duration(milliseconds: 800),
+              style: VsScrollbarStyle(
+                hoverThickness: 10.0,
+                radius: Radius.circular(10),
+                thickness: 10.0,
+                color: Theme.of(context).highlightColor,
+              ),
+              child: FutureBuilder(
+                  future: _getNFTData(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      if (snapshot.data["tokenData"].length == 0 ||
+                          snapshot.data == null) {
+                        return Center(
+                          child: Text("No active Auctions"),
+                        );
+                      } else {
+                        return GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  crossAxisSpacing: 50,
+                                  mainAxisSpacing: 200,
+                                  mainAxisExtent: 400,
+                                  maxCrossAxisExtent: 400),
+                          itemCount: snapshot.data["tokenData"].length,
+                          itemBuilder: (ctx, idx) {
+                            return AuctionNFTGridView(
+                                id: snapshot.data["tokenId"][idx],
+                                image: snapshot.data["tokenData"][idx]["file"],
+                                button1: "Detail View",
+                                function1: _changeSide);
+                          },
+                        );
+                      }
+                    }
+                  }),
+            )
+          : Center(child: Text("Please log in with Metamask")),
     );
   }
 }

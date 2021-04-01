@@ -48,7 +48,6 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
       "isAuction": isAuction,
       "tokenData": nftData
     };
-    print(nftvalues);
     return (nftvalues);
     //return (nftData);
   }
@@ -57,6 +56,13 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     String _tokenId = _arguments[0];
     String _duration = _arguments[1];
     var promise = startNewAuction(_tokenId, _duration);
+    await promiseToFuture(promise);
+    setState(() {});
+  }
+
+  Future _removeAuction(List _arguments) async {
+    String _tokenId = _arguments[0];
+    var promise = removeAuction(_tokenId);
     await promiseToFuture(promise);
     setState(() {});
   }
@@ -106,9 +112,11 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                         isAuction: snapshot.data["isAuction"][idx],
                         image: snapshot.data["tokenData"][idx]["file"],
                         button1: "Sell NFT",
-                        button2: "Start Auction",
+                        buttonStartAuction: "Start Auction",
                         button3: "Swap NFT",
-                        function2: _startAuction);
+                        functionStartAuction: _startAuction,
+                        buttonRemoveAuction: "Delete Auction",
+                        functionRemoveAuction: _removeAuction);
                   },
                 );
               }
