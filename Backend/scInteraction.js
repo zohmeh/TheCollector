@@ -95,6 +95,13 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
+    removeAuction: async function(_tokenId, sendSettings) {
+        try {
+            const remove = await nftMarketplaceContract.methods.deleteAuction(_tokenId).send(sendSettings);
+            return remove;
+        } catch (error) { console.log(error); }
+    },
+
     sellNFT: async function(_tokenId, sendSettings) {
         try {
             const sell = await nftMarketplaceContract.methods.sellItem(_tokenId).send(sendSettings);

@@ -104,26 +104,27 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                       ),
                       SizedBox(width: 2),
                       Container(child: Flexible(child: Text("Yes"))),
-                      SizedBox(width: 10),
-                      button(
-                          Theme.of(context).buttonColor,
-                          Theme.of(context).backgroundColor,
-                          widget.buttonRemoveAuction,
-                          widget.functionRemoveAuction,
-                          [widget.id]),
                     ],
                   )
                 : SizedBox(height: 25),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 button(Theme.of(context).buttonColor,
                     Theme.of(context).backgroundColor, widget.button1),
-                button(
-                    Theme.of(context).buttonColor,
-                    Theme.of(context).backgroundColor,
-                    widget.buttonStartAuction,
-                    widget.functionStartAuction,
-                    [widget.id, "3"]),
+                widget.isAuction
+                    ? button(
+                        Theme.of(context).buttonColor,
+                        Theme.of(context).backgroundColor,
+                        widget.buttonRemoveAuction,
+                        widget.functionRemoveAuction,
+                        [widget.id])
+                    : button(
+                        Theme.of(context).buttonColor,
+                        Theme.of(context).backgroundColor,
+                        widget.buttonStartAuction,
+                        widget.functionStartAuction,
+                        [widget.id, "3"]),
                 //button(Theme.of(context).buttonColor,
                 //    Theme.of(context).backgroundColor, widget.button3),
               ],

@@ -44,8 +44,8 @@ class _SidebarState extends State<Sidebar> {
       ),
       child: Column(
         children: [
-          button(buttoncolors[0], Theme.of(context).highlightColor, "NFT List",
-              _changeSide, [HomeRoute, 0]),
+          button(buttoncolors[0], Theme.of(context).highlightColor,
+              "All Auctions", _changeSide, [HomeRoute, 0]),
           SizedBox(height: 20),
           button(buttoncolors[1], Theme.of(context).highlightColor,
               "My Portfolio", _changeSide, [MyPortfolioRoute, 1]),

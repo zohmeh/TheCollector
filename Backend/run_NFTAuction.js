@@ -56,8 +56,10 @@ async function main() {
     //console.log("Token Id: " , id);
     //logBalances("After Token Creating");
 
-    //let approve = await SCInteraction.setApproval(address.marketplace, "1", bidder);
-    //let auction = await SCInteraction.startNewAuction("1", "1", bidder);
+    //let approve = await SCInteraction.setApproval(address.marketplace, "1", auctionator);
+    //let auction = await SCInteraction.startNewAuction("1", "1", auctionator);
+
+    let remove = await SCInteraction.removeAuction("1", auctionator);
 
     //let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
 

@@ -33,6 +33,7 @@ class _HomeViewState extends State<HomeView> {
   Future _getAuctionNFTs() async {
     var promise = getAllActiveAuctions();
     var result = await promiseToFuture(promise);
+    print(result);
     return (result);
   }
 
@@ -114,9 +115,9 @@ class _HomeViewState extends State<HomeView> {
                           gridDelegate:
                               SliverGridDelegateWithMaxCrossAxisExtent(
                                   crossAxisSpacing: 50,
-                                  mainAxisSpacing: 200,
-                                  mainAxisExtent: 400,
-                                  maxCrossAxisExtent: 400),
+                                  mainAxisSpacing: 50,
+                                  mainAxisExtent: 375,
+                                  maxCrossAxisExtent: 405),
                           itemCount: snapshot.data["tokenData"].length,
                           itemBuilder: (ctx, idx) {
                             return AuctionNFTGridView(

@@ -74,8 +74,14 @@ contract Marketplace {
         //delete auctionMap[_tokenId];
 
         delete auctionMap[_tokenId];
-        auctionList[auctionMap[_tokenId].index].hasStarted = false;
-        
+        //auctionList[auctionMap[_tokenId].index].hasStarted = false;
+        uint256 _auctionId;
+        for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++){
+            if(auctionList[_auctionId].tokenId == _tokenId) {
+                auctionList[_auctionId].hasStarted = false;
+            }
+        }
+
         collector.approve(msg.sender, _tokenId);
         address payable originalOwner = payable(collector.ownerOf(_tokenId));
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
@@ -89,7 +95,13 @@ contract Marketplace {
 
         //auctionMap[_tokenId].hasStarted = false;
         delete auctionMap[_tokenId];
-        auctionList[auctionMap[_tokenId].index].hasStarted = false;
+        uint256 _auctionId;
+        for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++){
+            if(auctionList[_auctionId].tokenId == _tokenId) {
+                auctionList[_auctionId].hasStarted = false;
+            }
+        }
+        //auctionList[auctionMap[_tokenId].index].hasStarted = false;
     }
 
 //--------------------Some Getter Functions----------------------------------------------------------------
@@ -101,8 +113,7 @@ contract Marketplace {
     function getAllActiveAuctions() public returns(uint256[] memory) {
         uint256[] memory _result = new uint256[](auctionList.length);
         uint256 _auctionId;
-        for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++)
-        {
+        for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++){
             if(auctionList[_auctionId].hasStarted == true) {
             _result[_auctionId] = auctionList[_auctionId].tokenId; }
 

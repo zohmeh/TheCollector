@@ -91,7 +91,7 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
               );
             } else {
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Center(
                     child: Text(
@@ -99,136 +99,127 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
+                  SizedBox(height: 15),
                   Image.memory(
                       Uint8List.fromList(snapshot.data["file"].cast<int>())),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    width: 500,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                  SizedBox(height: 15),
+                  Center(
+                    child: Container(
+                      width: 600,
+                      child: Table(
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: IntrinsicColumnWidth()
+                        },
+                        //defaultVerticalAlignment:
+                        //    TableCellVerticalAlignment.middle,
+                        children: [
+                          TableRow(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text("Name: ",
-                                  style: TextStyle(fontSize: 20)),
-                            ),
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Text("Name: ",
+                                    style: TextStyle(fontSize: 20))),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text(snapshot.data["name"],
                                   style: TextStyle(fontSize: 20)),
                             )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          ]),
+                          TableRow(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text("Description: ",
-                                  style: TextStyle(fontSize: 20)),
-                            ),
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Text("Description: ",
+                                    style: TextStyle(fontSize: 20))),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text(snapshot.data["description"],
                                   style: TextStyle(fontSize: 20)),
                             )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          ]),
+                          TableRow(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text("Highest Bid in Eth: ",
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Text("Highest bid in Eth: ",
                                   style: TextStyle(fontSize: 20)),
                             ),
+                            double.parse(highestBid) != 0
+                                ? Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    child: Text(
+                                        ((double.parse(highestBid) /
+                                                1000000000000000000))
+                                            .toString(),
+                                        style: TextStyle(fontSize: 20)),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    child: Text((highestBid),
+                                        style: TextStyle(fontSize: 20)),
+                                  ),
+                          ]),
+                          TableRow(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: double.parse(highestBid) != 0
-                                  ? Text(
-                                      ((double.parse(highestBid) /
-                                              1000000000000000000))
-                                          .toString(),
-                                      style: TextStyle(fontSize: 20))
-                                  : Text((highestBid),
-                                      style: TextStyle(fontSize: 20)),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text("Address highest Bidder: ",
                                   style: TextStyle(fontSize: 20)),
                             ),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: Text((highestBidder),
-                                  style: TextStyle(fontSize: 20)),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: Text((highestBidder),
+                                    style: TextStyle(fontSize: 20)))
+                          ]),
+                          TableRow(children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text("Auction Ending: ",
                                   style: TextStyle(fontSize: 20)),
                             ),
                             Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                              padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text(auctionEndingFormated,
                                   style: TextStyle(fontSize: 20)),
                             )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                              child: button(
-                                  Theme.of(context).buttonColor,
-                                  Theme.of(context).backgroundColor,
-                                  "Place your bid",
-                                  _bidForNFT),
-                            ),
-                            Container(
-                                height: 75,
-                                width: 150,
-                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                child: inputField(
-                                    ctx: context,
-                                    controller: widget.bidamountController,
-                                    labelText: "e.g. 1ETH",
-                                    leftMargin: 0,
-                                    topMargin: 0,
-                                    rightMargin: 0,
-                                    bottomMargin: 0,
-                                    onSubmitted: (_) {}))
-                          ],
-                        ),
-                      ],
+                          ]),
+                        ],
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        button(
+                  SizedBox(height: 15),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).backgroundColor,
-                            "Buy this NFT after Auction ending",
-                            _sellNFT),
-                      ],
-                    ),
-                  )
+                            "Place your bid",
+                            _bidForNFT),
+                      ),
+                      Container(
+                          height: 75,
+                          width: 150,
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: inputField(
+                              ctx: context,
+                              controller: widget.bidamountController,
+                              labelText: "e.g. 1ETH",
+                              leftMargin: 0,
+                              topMargin: 0,
+                              rightMargin: 0,
+                              bottomMargin: 0,
+                              onSubmitted: (_) {}))
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      button(
+                          Theme.of(context).buttonColor,
+                          Theme.of(context).backgroundColor,
+                          "Buy this NFT after Auction ending",
+                          _sellNFT),
+                    ],
+                  ),
                 ],
               );
             }

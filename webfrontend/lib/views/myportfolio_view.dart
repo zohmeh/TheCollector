@@ -100,9 +100,9 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       crossAxisSpacing: 50,
-                      mainAxisSpacing: 200,
+                      mainAxisSpacing: 50,
                       mainAxisExtent: 450,
-                      maxCrossAxisExtent: 400),
+                      maxCrossAxisExtent: 405),
                   itemCount: snapshot.data["tokenData"].length,
                   itemBuilder: (ctx, idx) {
                     return MyNFTGridView(
