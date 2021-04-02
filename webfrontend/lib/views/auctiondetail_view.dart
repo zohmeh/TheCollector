@@ -23,7 +23,6 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
   var auctionEndingFormated;
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    print(widget.id);
     var promise = getTokenHash(widget.id);
     var tokenHash = await promiseToFuture(promise);
     var data = await http.get(
@@ -110,8 +109,6 @@ class _AuctionDetailViewState extends State<AuctionDetailView> {
                         columnWidths: const <int, TableColumnWidth>{
                           0: IntrinsicColumnWidth()
                         },
-                        //defaultVerticalAlignment:
-                        //    TableCellVerticalAlignment.middle,
                         children: [
                           TableRow(children: [
                             Container(

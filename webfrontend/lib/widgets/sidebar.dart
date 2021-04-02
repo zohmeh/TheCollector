@@ -14,6 +14,7 @@ class _SidebarState extends State<Sidebar> {
     0: Colors.purpleAccent,
     1: Colors.blueAccent,
     2: Colors.blueAccent,
+    3: Colors.blueAccent,
   };
 
   _changeSide(List _arguments) {
@@ -48,10 +49,13 @@ class _SidebarState extends State<Sidebar> {
               "All Auctions", _changeSide, [HomeRoute, 0]),
           SizedBox(height: 20),
           button(buttoncolors[1], Theme.of(context).highlightColor,
-              "My Portfolio", _changeSide, [MyPortfolioRoute, 1]),
+              "All Sellings", _changeSide, [AllOffersRoute, 1]),
           SizedBox(height: 20),
           button(buttoncolors[2], Theme.of(context).highlightColor,
-              "Create New NFT", _changeSide, [CreateNewNFTRoute, 2]),
+              "My Portfolio", _changeSide, [MyPortfolioRoute, 2]),
+          SizedBox(height: 20),
+          button(buttoncolors[3], Theme.of(context).highlightColor,
+              "Create New NFT", _changeSide, [CreateNewNFTRoute, 3]),
         ],
       ),
     );

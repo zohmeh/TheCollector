@@ -23,7 +23,8 @@ inputField(
       maxLines: null,
       controller: controller,
       focusNode: node2,
-      decoration: InputDecoration(labelText: labelText),
+      decoration: InputDecoration(
+          labelText: labelText, labelStyle: TextStyle(fontSize: 12)),
       onFieldSubmitted: (value) {
         onSubmitted(value);
         //FocusScope.of(_ctx).requestFocus(_node1);

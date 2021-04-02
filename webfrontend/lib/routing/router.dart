@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../views/auctiondetail_view.dart';
 import '../routing/route_names.dart';
-import '../views/button3_view.dart';
+import '../views/alloffers_view.dart';
 import '../views/myportfolio_view.dart';
 import '../views/createnft_view.dart';
 import '../views/home_view.dart';
@@ -13,8 +13,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (routingData.route) {
     case HomeRoute:
       return _getPageRoute(HomeView(), settings.name);
-    case Button3Route:
-      return _getPageRoute(Button3View(), settings.name);
+    case AllOffersRoute:
+      return _getPageRoute(AllOffersView(), settings.name);
     case MyPortfolioRoute:
       return _getPageRoute(MyPortfolioView(), settings.name);
     case CreateNewNFTRoute:

@@ -17,3 +17,8 @@ external dynamic getTokenHash(String _tokenId);
 external dynamic bidForNFT(String _tokenId, String _bid);
 external dynamic sellNFT(String _tokenId, String _price);
 external dynamic removeAuction(String _tokenId);
+external dynamic startNewOffer(String _tokenId, String _price);
+external dynamic removeOffer(String _tokenId);
+external dynamic buy(String _tokenId, String _price);
+external dynamic getAllActiveOffers();
+external dynamic getOfferData(String _tokenId);

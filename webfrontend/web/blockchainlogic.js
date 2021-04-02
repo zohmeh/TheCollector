@@ -189,3 +189,77 @@ async function startNewAuction(_tokenId, _duration) {
         return auction;
     } catch (error) { console.log(error); }
 }
+
+async function startNewOffer(_tokenId, _price) {
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+    };
+
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        //Approve NFT Auction Contract to use my NFT
+        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send(sendsettings);
+        //Start Offer
+        let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send(sendsettings);
+        return offer;
+    } catch (error) { console.log(error); }
+}
+
+async function removeOffer(_tokenId) {
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+    };
+
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send(sendsettings);
+        return remove;
+    } catch (error) { console.log(error); }
+}
+
+async function buy(_tokenId, _price) {
+    console.log(_price);
+    sendsettings = {
+        from: ethereum.selectedAddress,
+        gasLimit: 6721975,
+        gasPrice: '20000000000',
+        value: _price,
+    };
+
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send(sendsettings);
+        return buy;
+    } catch (error) { console.log(error); }
+}
+
+async function getAllActiveOffers() {
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        let offers = await NFTAuctioncontractInstance.methods.getAllActiveOffers().call();
+        return offers;
+    } catch (error) { console.log(error); }
+}
+
+async function getOfferData(_tokenId) {
+    try {
+        window.web3 = await Moralis.Web3.enable();
+        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+
+        let data = await NFTAuctioncontractInstance.methods.getOfferData(_tokenId).call();
+        return [data[0], data[1]];
+    } catch (error) { console.log(error); }
+}

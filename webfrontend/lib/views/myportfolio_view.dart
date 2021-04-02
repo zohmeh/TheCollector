@@ -26,14 +26,18 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     var myTokens = await _getMyNFTs();
     var myTokensdecoded = json.decode(myTokens);
     var nftHashes = myTokensdecoded["tokenHash"];
-    print(nftHashes);
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
+    List<dynamic> isOffer = [];
 
     for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
-      var promise = getAuctionData(myTokensdecoded["tokenId"][j]);
-      var auction = await promiseToFuture(promise);
+      var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
+      var auction = await promiseToFuture(promise1);
       isAuction.add(auction[0]);
+
+      var promise2 = getOfferData(myTokensdecoded["tokenId"][j]);
+      var offer = await promiseToFuture(promise2);
+      isOffer.add(offer[0]);
     }
     for (var i = 0; i < nftHashes.length; i++) {
       var data = await http.get(
@@ -47,10 +51,10 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     Map<String, dynamic> nftvalues = {
       "tokenId": myTokensdecoded["tokenId"],
       "isAuction": isAuction,
+      "isOffer": isOffer,
       "tokenData": nftData
     };
     return (nftvalues);
-    //return (nftData);
   }
 
   Future _startAuction(List _arguments) async {
@@ -64,6 +68,13 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
   Future _removeAuction(List _arguments) async {
     String _tokenId = _arguments[0];
     var promise = removeAuction(_tokenId);
+    await promiseToFuture(promise);
+    setState(() {});
+  }
+
+  Future _removeOffer(List _arguments) async {
+    String _tokenId = _arguments[0];
+    var promise = removeOffer(_tokenId);
     await promiseToFuture(promise);
     setState(() {});
   }
@@ -101,7 +112,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       crossAxisSpacing: 50,
                       mainAxisSpacing: 50,
-                      mainAxisExtent: 450,
+                      mainAxisExtent: 455,
                       maxCrossAxisExtent: 405),
                   itemCount: snapshot.data["tokenData"].length,
                   itemBuilder: (ctx, idx) {
@@ -111,13 +122,15 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                         description: snapshot.data["tokenData"][idx]
                             ["description"],
                         isAuction: snapshot.data["isAuction"][idx],
+                        isOffer: snapshot.data["isOffer"][idx],
                         image: snapshot.data["tokenData"][idx]["file"],
-                        button1: "Sell NFT",
                         buttonStartAuction: "Start Auction",
-                        button3: "Swap NFT",
                         functionStartAuction: _startAuction,
                         buttonRemoveAuction: "Delete Auction",
-                        functionRemoveAuction: _removeAuction);
+                        functionRemoveAuction: _removeAuction,
+                        buttonStartOffer: "Sell NFT",
+                        buttonRemoveOffer: "Remove Offer",
+                        functionRemoveOffer: _removeOffer);
                   },
                 );
               }
