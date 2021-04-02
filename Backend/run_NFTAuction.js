@@ -2,7 +2,7 @@ const address = require("../addresses.json");
 const SCInteraction = require("./scInteraction.js");
 const web3 = require('web3');
 
-const bid = web3.utils.toWei('10', 'ether');
+const bid = web3.utils.toWei('1', 'ether');
 // Sending Settings
 auctionator = {
     from: address.account[0],
@@ -59,9 +59,14 @@ async function main() {
     //let approve = await SCInteraction.setApproval(address.marketplace, "1", auctionator);
     //let auction = await SCInteraction.startNewAuction("1", "1", auctionator);
 
-    let remove = await SCInteraction.removeAuction("1", auctionator);
+    //let offer = await SCInteraction.startNewOffer("1", "1", auctionator);
+    //let remove = await SCInteraction.removeOffer("1", auctionator);
+
+    //let remove = await SCInteraction.removeAuction("1", auctionator);
 
     //let bidding = await SCInteraction.bidForNFT("1", bid, bidder);
+
+    //let buy = await SCInteraction.buyNFT("1", bidderPay)
 
     //let sell = await SCInteraction.sellNFT("1", bidderPay);
     //logBalances("After Selling Token");
@@ -69,11 +74,17 @@ async function main() {
     //let creator = await SCInteraction.getOwnerAddress("1");
     //console.log(creator);
 
-    let auctionList = await SCInteraction.getAllActiveAuctions();
-    console.log(auctionList); 
+    //let auctionList = await SCInteraction.getAllActiveAuctions();
+    //console.log(auctionList); 
+    
+    //let offerList = await SCInteraction.getAllActiveOffers();
+    //console.log(offerList); 
     
     //let auction = await SCInteraction.getAuctionData("1");
     //console.log(auction); 
+
+    //let offerData = await SCInteraction.getOfferData("1");
+    //console.log(offerData); 
 
 }
 

@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'web_app_template',
+      title: 'TheCollector',
       theme: ThemeData(
           errorColor: Colors.red,
           buttonColor: Colors.blueAccent,

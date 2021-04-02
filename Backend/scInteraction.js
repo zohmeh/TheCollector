@@ -88,6 +88,27 @@ module.exports = {
         } catch (error) { console.log(error); }
     },
 
+    startNewOffer: async function(_tokenId, _price, sendSettings) {
+        try {
+            const offer = await nftMarketplaceContract.methods.setOffer(_tokenId, web3.utils.toWei(_price, "ether")).send(sendSettings);
+            return offer;
+        } catch (error) { console.log(error); }
+    },
+
+    removeOffer: async function(_tokenId, sendSettings) {
+        try {
+            const remove = await nftMarketplaceContract.methods.removeOffer(_tokenId).send(sendSettings);
+            return remove;
+        } catch (error) { console.log(error); }
+    },
+
+    buyNFT: async function(_tokenId, sendSettings) {
+        try {
+            const buy = await nftMarketplaceContract.methods.buyNFT(_tokenId).send(sendSettings);
+            return buy;
+        } catch (error) { console.log(error); }
+    },
+
     bidForNFT: async function(_tokenId, _bid, sendSettings) {
         try {
             const bid = await nftMarketplaceContract.methods.bid(_tokenId, _bid).send(sendSettings);
@@ -141,6 +162,20 @@ module.exports = {
         try {
             const auction = await nftMarketplaceContract.methods.getAuctionData(_tokenId).call();
             return auction;
+        } catch (error) { console.log(error); }
+    },
+
+    getAllActiveOffers: async function() {
+        try {
+            const offers = await nftMarketplaceContract.methods.getAllActiveOffers().call();
+            return offers;
+        } catch (error) { console.log(error); }
+    },
+    
+    getOfferData: async function(_tokenId) {
+        try {
+            const offer = await nftMarketplaceContract.methods.getOfferData(_tokenId).call();
+            return offer;
         } catch (error) { console.log(error); }
     },
 
