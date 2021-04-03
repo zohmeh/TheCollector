@@ -83,7 +83,7 @@ class _AllOffersViewState extends State<AllOffersView> {
               if (snapshot.data["tokenData"].length == 0 ||
                   snapshot.data == null) {
                 return Center(
-                  child: Text("No active Auctions"),
+                  child: Text("No active SellingsAuctions"),
                 );
               } else {
                 return GridView.builder(

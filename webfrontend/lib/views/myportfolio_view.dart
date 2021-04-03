@@ -114,7 +114,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                       mainAxisSpacing: 50,
                       mainAxisExtent: 455,
                       maxCrossAxisExtent: 405),
-                  itemCount: snapshot.data["tokenData"].length,
+                  itemCount: snapshot.data["tokenId"].length,
                   itemBuilder: (ctx, idx) {
                     return MyNFTGridView(
                         id: snapshot.data["tokenId"][idx],

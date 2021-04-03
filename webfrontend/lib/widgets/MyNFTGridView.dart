@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:js_util';
 import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:web_app_template/widgets/button.dart';
-import 'package:web_app_template/widgets/inputField.dart';
-import 'package:web_app_template/widgets/javascript_controller.dart';
+import 'package:web_app_template/views/myportfolio_view.dart';
+import '../widgets/button.dart';
+import '../widgets/inputField.dart';
+import '../widgets/javascript_controller.dart';
 
 class MyNFTGridView extends StatefulWidget {
   final TextEditingController sellpriceamountController =
@@ -44,6 +47,8 @@ class MyNFTGridView extends StatefulWidget {
 }
 
 class _MyNFTGridViewState extends State<MyNFTGridView> {
+  bool isOffer = false;
+
   Future _startOffer(List _arguments) async {
     String _tokenId = _arguments[0];
     String _priceBN = BigInt.from(
@@ -52,7 +57,9 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
         .toString();
     var promise = startNewOffer(_tokenId, _priceBN);
     await promiseToFuture(promise);
-    setState(() {});
+    setState(() {
+      isOffer = true;
+    });
   }
 
   @override
@@ -132,7 +139,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widget.isOffer
+                widget.isOffer || isOffer
                     ? button(
                         Theme.of(context).buttonColor,
                         Theme.of(context).backgroundColor,
@@ -155,7 +162,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                         button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).backgroundColor,
-                            widget.buttonStartOffer,
+                            "Start Offer",
                             _startOffer,
                             [widget.id])
                       ]),
