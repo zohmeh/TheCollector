@@ -50,3 +50,23 @@ addresses.json
 /Backend/node_modules
 /Backend/build
 /webfrontend/web/addresses.js
+
+
+# Flutter/Dart/Pub related
+**/mobilefrontend/doc/api/
+**/mobilefrontend/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/mobilefrontend/build/
+
+# Web related
+/mobilefrontend/lib/generated_plugin_registrant.dart
+
+# Android Studio will place build artifacts here
+/mobilefrontend/android/app/debug
+/mobilefrontend/android/app/profile
+/mobilefrontend/android/app/release
