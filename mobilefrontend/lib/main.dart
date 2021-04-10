@@ -1,4 +1,8 @@
 //import './providers/markets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../screens/wallet_import_screen.dart';
+
 import '../screens/nav_screen.dart';
 import './screens/screen1_screen.dart';
 import './screens/screen3_screen.dart';
@@ -8,10 +12,16 @@ import './screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  //final test = await BlockchainInteraction().getMyOwnAddress();
+  final prefs = await SharedPreferences.getInstance();
+  final privateKey = prefs.getString("privateKey") ?? 0;
+  runApp(MyApp(privateKey));
 }
 
 class MyApp extends StatelessWidget {
+  MyApp(this.privateKey);
+  final privateKey;
   @override
   Widget build(BuildContext context) {
     return //MultiProvider(
@@ -22,12 +32,14 @@ class MyApp extends StatelessWidget {
         //],
         //child:
         MaterialApp(
-      title: 'moile_app_template',
+      title: 'TheCollector',
       theme: ThemeData(
           errorColor: Colors.red,
-          primaryColor: Colors.black,
-          backgroundColor: Colors.grey,
-          accentColor: Colors.orange,
+          buttonColor: Colors.blueAccent,
+          highlightColor: Colors.white,
+          primaryColor: Colors.grey[850],
+          backgroundColor: Colors.white,
+          accentColor: Colors.purpleAccent,
           textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
               headline5: TextStyle(
@@ -39,7 +51,7 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.bold))),
       routes: {
-        "/": (ctx) => TabsScreen(0),
+        "/": (ctx) => privateKey == 0 ? WalletImportScreen() : TabsScreen(0),
         Screen1.routeName: (ctx) => Screen1(),
         Screen2.routeName: (ctx) => Screen2(),
         Screen3.routeName: (ctx) => Screen3(),

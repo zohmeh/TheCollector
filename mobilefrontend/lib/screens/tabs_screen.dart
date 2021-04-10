@@ -39,8 +39,8 @@ class _TabsScreenState extends State<TabsScreen> {
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(
-          "MobileApp-Template",
-          style: TextStyle(color: Theme.of(context).accentColor),
+          "TheCollector",
+          style: TextStyle(color: Theme.of(context).highlightColor),
         ),
       ),
       drawer: AppDrawer(),

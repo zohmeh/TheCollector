@@ -12,7 +12,7 @@ class NavScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "NavScreen",
-          style: TextStyle(color: Theme.of(context).accentColor),
+          style: TextStyle(color: Theme.of(context).highlightColor),
         ),
       ),
       body: Center(
