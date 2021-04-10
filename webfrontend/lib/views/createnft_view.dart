@@ -147,7 +147,7 @@ class _CreateNFTViewState extends State<CreateNFTView> {
           button(
             Theme.of(context).buttonColor,
             Theme.of(context).highlightColor,
-            "Add to IPFS",
+            "Mint your NFT",
             _createNewNFT,
             [data],
           ),

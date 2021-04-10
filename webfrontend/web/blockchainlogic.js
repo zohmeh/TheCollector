@@ -1,5 +1,5 @@
-Moralis.initialize("GTdkvs8iE0T2SPLZt55dXDl4DTYu5LaNzIC9IK23")
-Moralis.serverURL = "https://geuznmdttxzt.moralis.io:2053/server";
+Moralis.initialize("uqTPi7iOOgUFDyIGKbKs4EObxUAlJg72ldj3Cs56")
+Moralis.serverURL = "https://3rspi8p5c3cn.moralis.io:2053/server";
 
 async function bidForNFT(_tokenId, _bid) {
     sendsettings = {

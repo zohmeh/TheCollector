@@ -2,7 +2,7 @@ import '../widgets/appdrawer.dart';
 import 'package:flutter/material.dart';
 import 'screen1_screen.dart';
 import 'screen3_screen.dart';
-import 'screen2_screen.dart';
+import '../screens/myportfolio_screen.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/tabs-screen';
@@ -20,7 +20,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {"page": Screen1(), "title": "Screen 1"},
-      {"page": Screen2(), "title": "Screen 2"},
+      {"page": MyPortfolioScreen(), "title": "My Portfolio"},
       {"page": Screen3(), "title": "Screen 3"}
     ];
 
@@ -59,7 +59,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),
-            label: "Screen 2",
+            label: "My Portfolio",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle),
