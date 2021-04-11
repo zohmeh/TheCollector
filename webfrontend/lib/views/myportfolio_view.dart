@@ -112,7 +112,7 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                   gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       crossAxisSpacing: 50,
                       mainAxisSpacing: 50,
-                      mainAxisExtent: 455,
+                      mainAxisExtent: 500,
                       maxCrossAxisExtent: 405),
                   itemCount: snapshot.data["tokenId"].length,
                   itemBuilder: (ctx, idx) {

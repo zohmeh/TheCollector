@@ -92,7 +92,9 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )),
                 SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.id))),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Flexible(child: Text(widget.id))),
               ],
             ),
             Row(
@@ -105,10 +107,13 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                   ),
                 ),
                 SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.name))),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Flexible(child: Text(widget.name))),
               ],
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
@@ -118,7 +123,12 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                   ),
                 ),
                 SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.description))),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    width: 275,
+                    height: 64,
+                    child:
+                        SingleChildScrollView(child: Text(widget.description))),
               ],
             ),
             widget.isAuction

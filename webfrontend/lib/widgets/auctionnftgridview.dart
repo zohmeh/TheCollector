@@ -64,18 +64,24 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )),
                 SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.id))),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Flexible(
+                    child: Text(widget.id),
+                  ),
+                ),
               ],
             ),
             Row(
               children: [
                 Container(
-                    child: Flexible(
-                  child: Text(
-                    "Highest Bid in Eth: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  child: Flexible(
+                    child: Text(
+                      "Highest Bid in Eth: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                )),
+                ),
                 SizedBox(width: 2),
                 Container(
                     child: Flexible(

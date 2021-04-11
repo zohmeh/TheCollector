@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import '../widgets/button.dart';
 //import 'package:web_app_template/views/myportfolio_view.dart';
 //import '../widgets/button.dart';
 import '../widgets/inputField.dart';
@@ -13,31 +14,31 @@ class MyNFTGridView extends StatefulWidget {
   final String id;
   final String name;
   final String description;
-  //final bool isAuction;
-  //final bool isOffer;
+  final bool isAuction;
+  final bool isOffer;
   final List<dynamic> image;
-  //final String buttonStartOffer;
-  //final String buttonRemoveOffer;
-  //final String buttonStartAuction;
-  //final Function functionStartAuction;
-  //final String buttonRemoveAuction;
-  //final Function functionRemoveAuction;
-  //final Function functionRemoveOffer;
+  final String buttonStartOffer;
+  final String buttonRemoveOffer;
+  final String buttonStartAuction;
+  final Function functionStartAuction;
+  final String buttonRemoveAuction;
+  final Function functionRemoveAuction;
+  final Function functionRemoveOffer;
 
   MyNFTGridView({
     this.id,
     this.name,
     this.description,
-    //this.isAuction,
-    //this.isOffer,
+    this.isAuction,
+    this.isOffer,
     this.image,
-    //this.buttonStartAuction,
-    //this.functionStartAuction,
-    //this.buttonRemoveAuction,
-    //this.functionRemoveAuction,
-    //this.buttonStartOffer,
-    //this.buttonRemoveOffer,
-    //this.functionRemoveOffer,
+    this.buttonStartAuction,
+    this.functionStartAuction,
+    this.buttonRemoveAuction,
+    this.functionRemoveAuction,
+    this.buttonStartOffer,
+    this.buttonRemoveOffer,
+    this.functionRemoveOffer,
   });
 
   @override
@@ -62,124 +63,138 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor: Colors.grey,
-      elevation: 10,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 100,
-              width: double.infinity,
-              child: Image.memory(
-                Uint8List.fromList(
-                  widget.image.cast<int>(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Card(
+        shadowColor: Colors.grey,
+        elevation: 10,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 100,
+                width: double.infinity,
+                child: Image.memory(
+                  Uint8List.fromList(
+                    widget.image.cast<int>(),
+                  ),
+                  fit: BoxFit.fill,
                 ),
-                fit: BoxFit.fill,
               ),
-            ),
-            Row(
-              children: [
-                Container(
+              Row(
+                children: [
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Token Id: ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                  SizedBox(width: 2),
+                  Container(child: Flexible(child: Text(widget.id))),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Token Id: ",
+                      "Name: ",
                       style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.id))),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    "Name: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.name))),
-              ],
-            ),
-            Row(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    "Description: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  SizedBox(width: 2),
+                  Container(child: Flexible(child: Text(widget.name))),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Description: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                SizedBox(width: 2),
-                Container(child: Flexible(child: Text(widget.description))),
-              ],
-            ),
-            /*  widget.isAuction
-                ? Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          "NFT is in an Auction: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(width: 2),
-                      Container(child: Flexible(child: Text("Yes"))),
-                    ],
-                  )
-                : SizedBox(height: 25),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.isOffer || isOffer
-                    ? button(
-                        Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
-                        widget.buttonRemoveOffer,
-                        widget.functionRemoveOffer,
-                        [widget.id])
-                    : Row(children: [
+                  SizedBox(width: 2),
+                  Container(
+                      width: 234,
+                      height: 50,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: SingleChildScrollView(
+                          child: Text(widget.description))),
+                ],
+              ),
+              widget.isAuction
+                  ? Row(
+                      children: [
                         Container(
-                            height: 75,
-                            width: 150,
-                            child: inputField(
-                                ctx: context,
-                                controller: widget.sellpriceamountController,
-                                labelText: "Selling Price e.g. 1ETH",
-                                leftMargin: 0,
-                                topMargin: 0,
-                                rightMargin: 0,
-                                bottomMargin: 0,
-                                onSubmitted: (_) {})),
-                        button(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "NFT is in an Auction: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Container(child: Flexible(child: Text("Yes"))),
+                      ],
+                    )
+                  : SizedBox(height: 25),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  widget.isOffer || isOffer
+                      ? button(
+                          Theme.of(context).buttonColor,
+                          Theme.of(context).backgroundColor,
+                          widget.buttonRemoveOffer,
+                          widget.functionRemoveOffer,
+                          [widget.id])
+                      : Row(children: [
+                          Container(
+                              height: 71,
+                              width: 150,
+                              child: inputField(
+                                  ctx: context,
+                                  controller: widget.sellpriceamountController,
+                                  labelText: "Selling Price e.g. 1ETH",
+                                  leftMargin: 0,
+                                  topMargin: 0,
+                                  rightMargin: 0,
+                                  bottomMargin: 0,
+                                  onSubmitted: (_) {})),
+                          button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).backgroundColor,
                             "Start Offer",
-                            _startOffer,
-                            [widget.id])
-                      ]),
-                widget.isAuction
-                    ? button(
-                        Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
-                        widget.buttonRemoveAuction,
-                        widget.functionRemoveAuction,
-                        [widget.id])
-                    : button(
-                        Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
-                        widget.buttonStartAuction,
-                        widget.functionStartAuction,
-                        [widget.id, "3"]),
-              ],
-            )*/
-          ],
+                            //_startOffer,
+                          ) //[widget.id])
+                        ]),
+                  Row(
+                    children: [
+                      Container(width: 150),
+                      widget.isAuction
+                          ? button(
+                              Theme.of(context).buttonColor,
+                              Theme.of(context).backgroundColor,
+                              widget.buttonRemoveAuction,
+                              widget.functionRemoveAuction,
+                              [widget.id])
+                          : button(
+                              Theme.of(context).buttonColor,
+                              Theme.of(context).backgroundColor,
+                              widget.buttonStartAuction,
+                              widget.functionStartAuction,
+                              [widget.id, "3"]),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

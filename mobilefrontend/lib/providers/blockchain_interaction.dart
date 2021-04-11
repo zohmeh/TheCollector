@@ -18,8 +18,8 @@ class BlockchainInteraction with ChangeNotifier {
   String abiCode;
   EthereumAddress nfttokencontractaddress;
   DeployedContract nfttokencontract;
-  DeployedContract contractCT;
-  DeployedContract erc20Contract;
+  EthereumAddress marketplacecontractaddress;
+  DeployedContract marketplacecontract;
   Credentials credentials;
   EthereumAddress ownAddress;
 
@@ -46,6 +46,15 @@ class BlockchainInteraction with ChangeNotifier {
         nfttokencontractaddress);
   }
 
+  Future<void> loadContractMarketplaceContract() async {
+    abiCode = await rootBundle.loadString("assets/abi/MarketplaceABI.json");
+    marketplacecontractaddress =
+        EthereumAddress.fromHex(Addresses().marketplace);
+    marketplacecontract = DeployedContract(
+        ContractAbi.fromJson(abiCode, "MarketplaceABI"),
+        marketplacecontractaddress);
+  }
+
   //Creating Credentials for signing transactions
   Future<void> creatingCredentials() async {
     final prefs = await SharedPreferences.getInstance();
@@ -64,8 +73,6 @@ class BlockchainInteraction with ChangeNotifier {
     List tokenIds = [];
     List tokenHashes = [];
     Map<dynamic, dynamic> returnValues;
-
-    print("Hallo von getMyTokens");
 
     //Lists all Balances
     List balance = await ethClient.call(
@@ -93,5 +100,27 @@ class BlockchainInteraction with ChangeNotifier {
     }
     returnValues = {1: tokenIds, 2: tokenHashes};
     return returnValues;
+  }
+
+  Future getAuctionData(String _tokenId) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var auctionData = await ethClient.call(
+        sender: ownAddress,
+        contract: marketplacecontract,
+        function: marketplacecontract.function("getAuctionData"),
+        params: [BigInt.from(int.parse(_tokenId))]);
+    return auctionData;
+  }
+
+  Future getOfferData(String _tokenId) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var offerData = await ethClient.call(
+        sender: ownAddress,
+        contract: marketplacecontract,
+        function: marketplacecontract.function("getOfferData"),
+        params: [BigInt.from(int.parse(_tokenId))]);
+    return offerData;
   }
 }

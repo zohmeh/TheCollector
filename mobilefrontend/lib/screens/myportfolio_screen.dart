@@ -23,6 +23,9 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
 
   Future _getMyNFTs() async {
     List<dynamic> nftData = [];
+    List<dynamic> isAuction = [];
+    List<dynamic> isOffer = [];
+
     Map myNFTData =
         await Provider.of<BlockchainInteraction>(context, listen: false)
             .getMyTokens();
@@ -30,11 +33,25 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
       var data = await http.get(Uri.parse(myNFTData[2][i]));
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
+
+      var auctiondata =
+          await Provider.of<BlockchainInteraction>(context, listen: false)
+              .getAuctionData(myNFTData[1][i].toString());
+      isAuction.add(auctiondata[0]);
+
+      var offerdata =
+          await Provider.of<BlockchainInteraction>(context, listen: false)
+              .getOfferData(myNFTData[1][i].toString());
+      isOffer.add(offerdata[0]);
     }
+
     Map<String, dynamic> nftvalues = {
       "tokenId": myNFTData[1],
-      "tokenData": nftData
+      "isAuction": isAuction,
+      "isOffer": isOffer,
+      "tokenData": nftData,
     };
+    print(nftvalues);
     return nftvalues;
   }
 
@@ -133,8 +150,8 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                             crossAxisSpacing: 5,
                             mainAxisSpacing: 5,
-                            mainAxisExtent: 300,
-                            maxCrossAxisExtent: 250),
+                            mainAxisExtent: 400,
+                            maxCrossAxisExtent: double.maxFinite),
                         itemCount: snapshot.data["tokenId"].length,
                         itemBuilder: (ctx, idx) {
                           return MyNFTGridView(
@@ -142,15 +159,15 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                             name: snapshot.data["tokenData"][idx]["name"],
                             description: snapshot.data["tokenData"][idx]
                                 ["description"],
-                            //isAuction: snapshot.data["isAuction"][idx],
-                            //isOffer: snapshot.data["isOffer"][idx],
+                            isAuction: snapshot.data["isAuction"][idx],
+                            isOffer: snapshot.data["isOffer"][idx],
                             image: snapshot.data["tokenData"][idx]["file"],
-                            //buttonStartAuction: "Start Auction",
+                            buttonStartAuction: "Start Auction",
                             //functionStartAuction: _startAuction,
-                            //buttonRemoveAuction: "Delete Auction",
+                            buttonRemoveAuction: "Delete Auction",
                             //functionRemoveAuction: _removeAuction,
-                            //buttonStartOffer: "Sell NFT",
-                            //buttonRemoveOffer: "Remove Offer",
+                            buttonStartOffer: "Sell NFT",
+                            buttonRemoveOffer: "Remove Offer",
                             //functionRemoveOffer: _removeOffer);
                           );
                         },
