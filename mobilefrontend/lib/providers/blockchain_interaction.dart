@@ -187,4 +187,45 @@ class BlockchainInteraction with ChangeNotifier {
         chainId: 3);
     return removeauction;
   }
+
+  Future startOffer(String _tokenId, String _price) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    //Approve Marketplace to use my NFT
+    var approve = await _approveNFT();
+    var offer = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("setOffer"),
+          parameters: [
+            BigInt.from(int.parse(_tokenId)),
+            BigInt.from(int.parse(_price))
+          ],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return offer;
+  }
+
+  Future removeOffer(String _tokenId) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var removeauction = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("removeOffer"),
+          parameters: [BigInt.from(int.parse(_tokenId))],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return removeauction;
+  }
 }

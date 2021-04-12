@@ -69,6 +69,13 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
     setState(() {});
   }
 
+  Future _removeOffer(List _arguments) async {
+    String _tokenId = _arguments[0];
+    await Provider.of<BlockchainInteraction>(context, listen: false)
+        .removeOffer(_tokenId);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,21 +176,20 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                         itemCount: snapshot.data["tokenId"].length,
                         itemBuilder: (ctx, idx) {
                           return MyNFTGridView(
-                            id: snapshot.data["tokenId"][idx].toString(),
-                            name: snapshot.data["tokenData"][idx]["name"],
-                            description: snapshot.data["tokenData"][idx]
-                                ["description"],
-                            isAuction: snapshot.data["isAuction"][idx],
-                            isOffer: snapshot.data["isOffer"][idx],
-                            image: snapshot.data["tokenData"][idx]["file"],
-                            buttonStartAuction: "Start Auction",
-                            functionStartAuction: _startAuction,
-                            buttonRemoveAuction: "Delete Auction",
-                            functionRemoveAuction: _removeAuction,
-                            buttonStartOffer: "Sell NFT",
-                            buttonRemoveOffer: "Remove Offer",
-                            //functionRemoveOffer: _removeOffer);
-                          );
+                              id: snapshot.data["tokenId"][idx].toString(),
+                              name: snapshot.data["tokenData"][idx]["name"],
+                              description: snapshot.data["tokenData"][idx]
+                                  ["description"],
+                              isAuction: snapshot.data["isAuction"][idx],
+                              isOffer: snapshot.data["isOffer"][idx],
+                              image: snapshot.data["tokenData"][idx]["file"],
+                              buttonStartAuction: "Start Auction",
+                              functionStartAuction: _startAuction,
+                              buttonRemoveAuction: "Delete Auction",
+                              functionRemoveAuction: _removeAuction,
+                              buttonStartOffer: "Sell NFT",
+                              buttonRemoveOffer: "Remove Offer",
+                              functionRemoveOffer: _removeOffer);
                         },
                       );
                     }

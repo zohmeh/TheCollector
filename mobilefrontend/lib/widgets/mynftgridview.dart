@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:mobile_app_template/providers/blockchain_interaction.dart';
+import 'package:provider/provider.dart';
 import '../widgets/button.dart';
-//import 'package:web_app_template/views/myportfolio_view.dart';
-//import '../widgets/button.dart';
 import '../widgets/inputField.dart';
 
 class MyNFTGridView extends StatefulWidget {
@@ -48,18 +46,18 @@ class MyNFTGridView extends StatefulWidget {
 class _MyNFTGridViewState extends State<MyNFTGridView> {
   bool isOffer = false;
 
-/*  Future _startOffer(List _arguments) async {
+  Future _startOffer(List _arguments) async {
     String _tokenId = _arguments[0];
     String _priceBN = BigInt.from(
             double.parse(widget.sellpriceamountController.text) *
                 1000000000000000000)
         .toString();
-    var promise = startNewOffer(_tokenId, _priceBN);
-    await promiseToFuture(promise);
+    var offer = await Provider.of<BlockchainInteraction>(context, listen: false)
+        .startOffer(_tokenId, _priceBN);
     setState(() {
       isOffer = true;
     });
-  } */
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,17 +142,37 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                         Container(child: Flexible(child: Text("Yes"))),
                       ],
                     )
-                  : SizedBox(height: 2),
+                  : //SizedBox(height: 2),
+                  widget.isOffer
+                      ? Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                "Direct offer for NTF: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            SizedBox(width: 2),
+                            Container(child: Flexible(child: Text("Yes"))),
+                          ],
+                        )
+                      : SizedBox(height: 2),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.isOffer || isOffer
-                      ? button(
-                          Theme.of(context).buttonColor,
-                          Theme.of(context).backgroundColor,
-                          widget.buttonRemoveOffer,
-                          widget.functionRemoveOffer,
-                          [widget.id])
+                      ? Row(
+                          children: [
+                            Container(height: 50, width: 150),
+                            button(
+                                Theme.of(context).buttonColor,
+                                Theme.of(context).backgroundColor,
+                                widget.buttonRemoveOffer,
+                                widget.functionRemoveOffer,
+                                [widget.id.toString()])
+                          ],
+                        )
                       : Row(children: [
                           Container(
                               height: 50,
@@ -169,11 +187,11 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                                   bottomMargin: 0,
                                   onSubmitted: (_) {})),
                           button(
-                            Theme.of(context).buttonColor,
-                            Theme.of(context).backgroundColor,
-                            "Start Offer",
-                            //_startOffer,
-                          ) //[widget.id])
+                              Theme.of(context).buttonColor,
+                              Theme.of(context).backgroundColor,
+                              "Start Offer",
+                              _startOffer,
+                              [widget.id.toString()])
                         ]),
                   Row(
                     children: [
