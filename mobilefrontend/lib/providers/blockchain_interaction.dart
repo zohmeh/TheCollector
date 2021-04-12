@@ -113,6 +113,28 @@ class BlockchainInteraction with ChangeNotifier {
     return auctionData;
   }
 
+  Future getTokenHash(String _tokenId) async {
+    await loadContractNFTTokenContract();
+    await creatingCredentials();
+    var tokenhash = await ethClient.call(
+        sender: ownAddress,
+        contract: nfttokencontract,
+        function: nfttokencontract.function("getTokenhash"),
+        params: [BigInt.from(int.parse(_tokenId))]);
+    return tokenhash[0];
+  }
+
+  Future getallAuctions() async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var allauctions = await ethClient.call(
+        sender: ownAddress,
+        contract: marketplacecontract,
+        function: marketplacecontract.function("getAllActiveAuctions"),
+        params: []);
+    return allauctions[0];
+  }
+
   Future getOfferData(String _tokenId) async {
     await loadContractMarketplaceContract();
     await creatingCredentials();
@@ -227,5 +249,48 @@ class BlockchainInteraction with ChangeNotifier {
         ),
         chainId: 3);
     return removeauction;
+  }
+
+  Future bidForNFT(String _tokenId, String _bid) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var bid = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("bid"),
+          parameters: [
+            BigInt.from(int.parse(_tokenId)),
+            BigInt.from(int.parse(_bid))
+          ],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return bid;
+  }
+
+  Future sellNFT(String _tokenId, String _bid) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var bid = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("bid"),
+          parameters: [
+            BigInt.from(int.parse(_tokenId)),
+          ],
+          from: ownAddress,
+          value: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, BigInt.from(int.parse(_bid))),
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return bid;
   }
 }

@@ -3,12 +3,9 @@ import '../providers/blockchain_interaction.dart';
 import '../providers/blockchain_wallet_interaction.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../screens/wallet_import_screen.dart';
-
-import '../screens/nav_screen.dart';
-import './screens/screen1_screen.dart';
-import './screens/screen3_screen.dart';
+import 'screens/auctiondetail_screen.dart';
+import 'screens/marketplaces_screen.dart';
 import 'screens/myportfolio_screen.dart';
 import './screens/tabs_screen.dart';
 //import 'package:provider/provider.dart';
@@ -57,10 +54,9 @@ class MyApp extends StatelessWidget {
                     fontWeight: FontWeight.bold))),
         routes: {
           "/": (ctx) => privateKey == 0 ? WalletImportScreen() : TabsScreen(1),
-          Screen1.routeName: (ctx) => Screen1(),
+          Marketplaces.routeName: (ctx) => Marketplaces(),
           MyPortfolioScreen.routeName: (ctx) => MyPortfolioScreen(),
-          Screen3.routeName: (ctx) => Screen3(),
-          NavScreen.routeName: (ctx) => NavScreen()
+          Auctiondetail.routeName: (ctx) => Auctiondetail()
         },
       ),
     );

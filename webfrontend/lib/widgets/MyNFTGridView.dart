@@ -145,7 +145,22 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                       Container(child: Flexible(child: Text("Yes"))),
                     ],
                   )
-                : SizedBox(height: 25),
+                : //SizedBox(height: 25),
+                widget.isOffer
+                    ? Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Direct offer for NTF: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          Container(child: Flexible(child: Text("Yes"))),
+                        ],
+                      )
+                    : SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

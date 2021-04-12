@@ -1,7 +1,6 @@
 import '../widgets/appdrawer.dart';
 import 'package:flutter/material.dart';
-import 'screen1_screen.dart';
-import 'screen3_screen.dart';
+import './marketplaces_screen.dart';
 import '../screens/myportfolio_screen.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -19,9 +18,9 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     _pages = [
-      {"page": Screen1(), "title": "Screen 1"},
+      {"page": Marketplaces(), "title": "Marketplaces"},
       {"page": MyPortfolioScreen(), "title": "My Portfolio"},
-      {"page": Screen3(), "title": "Screen 3"}
+      //{"page": Screen3(), "title": "Screen 3"}
     ];
 
     super.initState();
@@ -54,16 +53,12 @@ class _TabsScreenState extends State<TabsScreen> {
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: "Screen 1",
+            icon: Icon(Icons.shopping_cart_rounded),
+            label: "Marketplaces",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
+            icon: Icon(Icons.shopping_basket_rounded),
             label: "My Portfolio",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: "Screen 3",
           ),
         ],
       ),
