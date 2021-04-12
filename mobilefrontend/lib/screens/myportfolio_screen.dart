@@ -51,8 +51,22 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
       "isOffer": isOffer,
       "tokenData": nftData,
     };
-    print(nftvalues);
     return nftvalues;
+  }
+
+  Future _startAuction(List _arguments) async {
+    String _tokenId = _arguments[0];
+    String _duration = _arguments[1];
+    await Provider.of<BlockchainInteraction>(context, listen: false)
+        .startAuction(_tokenId, _duration);
+    setState(() {});
+  }
+
+  Future _removeAuction(List _arguments) async {
+    String _tokenId = _arguments[0];
+    await Provider.of<BlockchainInteraction>(context, listen: false)
+        .removeAuction(_tokenId);
+    setState(() {});
   }
 
   @override
@@ -138,7 +152,7 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
               ),
             ),
             Container(
-              height: 300,
+              height: MediaQuery.of(context).size.height - 262,
               child: FutureBuilder(
                 future: _getMyNFTs(),
                 builder: (ctx, snapshot) {
@@ -163,9 +177,9 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
                             isOffer: snapshot.data["isOffer"][idx],
                             image: snapshot.data["tokenData"][idx]["file"],
                             buttonStartAuction: "Start Auction",
-                            //functionStartAuction: _startAuction,
+                            functionStartAuction: _startAuction,
                             buttonRemoveAuction: "Delete Auction",
-                            //functionRemoveAuction: _removeAuction,
+                            functionRemoveAuction: _removeAuction,
                             buttonStartOffer: "Sell NFT",
                             buttonRemoveOffer: "Remove Offer",
                             //functionRemoveOffer: _removeOffer);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 button(Color _buttoncolor, Color _textcolor, String _text,
     [Function _toDo, List _arguments]) {
   return Container(
-    margin: EdgeInsets.all(10),
+    margin: EdgeInsets.all(3),
     child: MaterialButton(
       color: _buttoncolor,
       shape: RoundedRectangleBorder(

@@ -74,14 +74,16 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 100,
-                width: double.infinity,
-                child: Image.memory(
-                  Uint8List.fromList(
-                    widget.image.cast<int>(),
+              Center(
+                child: Container(
+                  height: 125,
+                  width: 200,
+                  child: Image.memory(
+                    Uint8List.fromList(
+                      widget.image.cast<int>(),
+                    ),
+                    fit: BoxFit.fill,
                   ),
-                  fit: BoxFit.fill,
                 ),
               ),
               Row(
@@ -142,7 +144,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                         Container(child: Flexible(child: Text("Yes"))),
                       ],
                     )
-                  : SizedBox(height: 25),
+                  : SizedBox(height: 2),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -155,7 +157,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                           [widget.id])
                       : Row(children: [
                           Container(
-                              height: 71,
+                              height: 50,
                               width: 150,
                               child: inputField(
                                   ctx: context,
@@ -182,13 +184,13 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                               Theme.of(context).backgroundColor,
                               widget.buttonRemoveAuction,
                               widget.functionRemoveAuction,
-                              [widget.id])
+                              [widget.id.toString()])
                           : button(
                               Theme.of(context).buttonColor,
                               Theme.of(context).backgroundColor,
                               widget.buttonStartAuction,
                               widget.functionStartAuction,
-                              [widget.id, "3"]),
+                              [widget.id.toString(), "3"]),
                     ],
                   )
                 ],

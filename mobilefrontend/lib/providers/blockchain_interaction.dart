@@ -123,4 +123,68 @@ class BlockchainInteraction with ChangeNotifier {
         params: [BigInt.from(int.parse(_tokenId))]);
     return offerData;
   }
+
+  Future<String> _approveNFT() async {
+    await loadContractNFTTokenContract();
+    await creatingCredentials();
+    var approve = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: nfttokencontract,
+          function: nfttokencontract.function("setApprovalForAll"),
+          parameters: [EthereumAddress.fromHex(Addresses().marketplace), true],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(approve))
+        .where((receipt) => receipt != null)
+        .first;
+    return approve;
+  }
+
+  Future startAuction(String _tokenId, String _duration) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    //Approve Marketplace to use my NFT
+    var approve = await _approveNFT();
+    var auction = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("startAuction"),
+          parameters: [
+            BigInt.from(int.parse(_tokenId)),
+            BigInt.from(int.parse(_duration))
+          ],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return auction;
+  }
+
+  Future removeAuction(String _tokenId) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var removeauction = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("deleteAuction"),
+          parameters: [BigInt.from(int.parse(_tokenId))],
+          from: ownAddress,
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    return removeauction;
+  }
 }
