@@ -146,6 +146,17 @@ class BlockchainInteraction with ChangeNotifier {
     return offerData;
   }
 
+  Future getAllOffers() async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var alloffers = await ethClient.call(
+        sender: ownAddress,
+        contract: marketplacecontract,
+        function: marketplacecontract.function("getAllActiveOffers"),
+        params: []);
+    return alloffers[0];
+  }
+
   Future<String> _approveNFT() async {
     await loadContractNFTTokenContract();
     await creatingCredentials();
@@ -236,7 +247,7 @@ class BlockchainInteraction with ChangeNotifier {
   Future removeOffer(String _tokenId) async {
     await loadContractMarketplaceContract();
     await creatingCredentials();
-    var removeauction = await ethClient.sendTransaction(
+    var removeoffer = await ethClient.sendTransaction(
         credentials,
         Transaction.callContract(
           contract: marketplacecontract,
@@ -248,7 +259,7 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
-    return removeauction;
+    return removeoffer;
   }
 
   Future bidForNFT(String _tokenId, String _bid) async {
@@ -291,6 +302,35 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    return bid;
+  }
+
+  Future buyNFT(String _tokenId, String _price) async {
+    await loadContractMarketplaceContract();
+    await creatingCredentials();
+    var bid = await ethClient.sendTransaction(
+        credentials,
+        Transaction.callContract(
+          contract: marketplacecontract,
+          function: marketplacecontract.function("buyNFT"),
+          parameters: [
+            BigInt.from(int.parse(_tokenId)),
+          ],
+          from: ownAddress,
+          value: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, BigInt.from(int.parse(_price))),
+          maxGas: TransactionSettings().gasLimit,
+          gasPrice: EtherAmount.fromUnitAndValue(
+              EtherUnit.wei, TransactionSettings().gasPrice),
+        ),
+        chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(bid))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return bid;
   }
 }

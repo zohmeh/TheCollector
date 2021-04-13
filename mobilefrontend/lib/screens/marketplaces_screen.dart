@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tabscreen2.dart';
+import './offers_screen.dart';
 import './auctions_screen.dart';
 
 class Marketplaces extends StatefulWidget {
@@ -26,7 +26,7 @@ class _MarketplacesState extends State<Marketplaces> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: TabBarView(
-          children: [Auctions(), TabScreen2()],
+          children: [Auctions(), OffersScreen()],
         ),
       ),
     );
