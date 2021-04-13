@@ -177,6 +177,7 @@ class BlockchainInteraction with ChangeNotifier {
         .asyncMap((_) => ethClient.getTransactionReceipt(approve))
         .where((receipt) => receipt != null)
         .first;
+    print(txReceipt);
     return approve;
   }
 
@@ -200,6 +201,13 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(auction))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return auction;
   }
 
@@ -218,6 +226,13 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(removeauction))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return removeauction;
   }
 
@@ -241,6 +256,13 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(offer))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return offer;
   }
 
@@ -259,6 +281,13 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(removeoffer))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return removeoffer;
   }
 
@@ -280,13 +309,20 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(bid))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
     return bid;
   }
 
   Future sellNFT(String _tokenId, String _bid) async {
     await loadContractMarketplaceContract();
     await creatingCredentials();
-    var bid = await ethClient.sendTransaction(
+    var sell = await ethClient.sendTransaction(
         credentials,
         Transaction.callContract(
           contract: marketplacecontract,
@@ -302,13 +338,20 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
-    return bid;
+    TransactionReceipt txReceipt = await ethClient
+        .addedBlocks()
+        .asyncMap((_) => ethClient.getTransactionReceipt(sell))
+        .where((receipt) => receipt != null)
+        .first;
+    print(txReceipt);
+    //return txReceipt.status;
+    return sell;
   }
 
   Future buyNFT(String _tokenId, String _price) async {
     await loadContractMarketplaceContract();
     await creatingCredentials();
-    var bid = await ethClient.sendTransaction(
+    var buy = await ethClient.sendTransaction(
         credentials,
         Transaction.callContract(
           contract: marketplacecontract,
@@ -326,11 +369,11 @@ class BlockchainInteraction with ChangeNotifier {
         chainId: 3);
     TransactionReceipt txReceipt = await ethClient
         .addedBlocks()
-        .asyncMap((_) => ethClient.getTransactionReceipt(bid))
+        .asyncMap((_) => ethClient.getTransactionReceipt(buy))
         .where((receipt) => receipt != null)
         .first;
     print(txReceipt);
     //return txReceipt.status;
-    return bid;
+    return buy;
   }
 }
