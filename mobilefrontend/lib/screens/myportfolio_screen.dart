@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app_template/providers/blockchain_interaction.dart';
 import 'package:mobile_app_template/widgets/errorwindow.dart';
 import 'package:mobile_app_template/widgets/mynftgridview.dart';
+import 'package:mobile_app_template/widgets/showupwindow.dart';
 import 'package:provider/provider.dart';
 import '../providers/blockchain_wallet_interaction.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,8 @@ class MyPortfolioScreen extends StatefulWidget {
 }
 
 class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
+  String status = "";
+
   Future<void> refreshWallet() async {
     setState(() {});
     await Provider.of<BlockchainWalletInteraction>(context, listen: false)
@@ -55,24 +58,47 @@ class _MyPortfolioScreenState extends State<MyPortfolioScreen> {
   }
 
   Future _startAuction(List _arguments) async {
+    //setState(() {
+    //  status = "pending";
+    //  print(status);
+    //});
     String _tokenId = _arguments[0];
     String _duration = _arguments[1];
-    await Provider.of<BlockchainInteraction>(context, listen: false)
-        .startAuction(_tokenId, _duration);
-    setState(() {});
+    //await Provider.of<BlockchainInteraction>(context, listen: false)
+    //    .startAuction(_tokenId, _duration);
+    await showUpWindow(
+        context,
+        BlockchainInteraction().startAuction(_tokenId, _duration),
+        "Starting NFT Auction",
+        "Your transaction is pending. You can look at it on Etherscan");
+    setState(() {
+      //status = "";
+      //print(status);
+    });
   }
 
   Future _removeAuction(List _arguments) async {
     String _tokenId = _arguments[0];
-    await Provider.of<BlockchainInteraction>(context, listen: false)
-        .removeAuction(_tokenId);
+    //await Provider.of<BlockchainInteraction>(context, listen: false)
+    //    .removeAuction(_tokenId);
+    await showUpWindow(
+        context,
+        BlockchainInteraction().removeAuction(_tokenId),
+        "Removeing NFT from Auction",
+        "Your transaction is pending. You can look at it on Etherscan");
     setState(() {});
   }
 
   Future _removeOffer(List _arguments) async {
     String _tokenId = _arguments[0];
-    await Provider.of<BlockchainInteraction>(context, listen: false)
-        .removeOffer(_tokenId);
+    //await Provider.of<BlockchainInteraction>(context, listen: false)
+    //    .removeOffer(_tokenId);
+    //setState(() {});
+    await showUpWindow(
+        context,
+        BlockchainInteraction().removeOffer(_tokenId),
+        "Removeing Offer for NFT",
+        "Your transaction is pending. You can look at it on Etherscan");
     setState(() {});
   }
 

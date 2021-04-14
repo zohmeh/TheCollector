@@ -1,13 +1,7 @@
-//import 'dart:convert';
-//import 'dart:typed_data';
+import 'package:web_socket_channel/io.dart';
 import '../helpers/addresses.dart';
-import '../helpers/amount_converter.dart';
 import 'package:flutter/cupertino.dart';
-//import 'package:hex/hex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:uuid/uuid.dart';
-//import 'package:better_uuid/uuid.dart';
-//import 'package:web_socket_channel/io.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:web3dart/web3dart.dart';
@@ -27,14 +21,14 @@ class BlockchainInteraction with ChangeNotifier {
   static String rpcUrl =
       "https://ropsten.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3";
   //static String wsUrl =
-  //    "wss://kovan.infura.io/ws/v3/134eb24f9b9d410baa2acac76d2a7be3";
+  //    "wss://ropsten.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3";
   //static String rpcUrl = "HTTP://192.168.178.20:7545";
   //static String rpcUrl = "HTTP://127.0.0.1:7545";
 
   //Generating web3 Client
   Web3Client ethClient =
       Web3Client(rpcUrl, http.Client()); //, socketConnector: () {
-  //return IOWebSocketChannel.connect(wsUrl).cast<String>();
+  //  return IOWebSocketChannel.connect(wsUrl).cast<String>();
   //});
 
   //Loading deployed Contract
@@ -177,7 +171,6 @@ class BlockchainInteraction with ChangeNotifier {
         .asyncMap((_) => ethClient.getTransactionReceipt(approve))
         .where((receipt) => receipt != null)
         .first;
-    print(txReceipt);
     return approve;
   }
 
@@ -201,12 +194,12 @@ class BlockchainInteraction with ChangeNotifier {
               EtherUnit.wei, TransactionSettings().gasPrice),
         ),
         chainId: 3);
-    TransactionReceipt txReceipt = await ethClient
-        .addedBlocks()
-        .asyncMap((_) => ethClient.getTransactionReceipt(auction))
-        .where((receipt) => receipt != null)
-        .first;
-    print(txReceipt);
+    //TransactionReceipt txReceipt = await ethClient
+    //    .addedBlocks()
+    //    .asyncMap((_) => ethClient.getTransactionReceipt(auction))
+    //    .where((receipt) => receipt != null)
+    //    .first;
+    //print(txReceipt);
     //return txReceipt.status;
     return auction;
   }

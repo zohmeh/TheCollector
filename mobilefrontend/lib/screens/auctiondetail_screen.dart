@@ -3,9 +3,10 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mobile_app_template/providers/blockchain_interaction.dart';
-import 'package:mobile_app_template/widgets/button.dart';
-import 'package:mobile_app_template/widgets/inputField.dart';
+import '../providers/blockchain_interaction.dart';
+import '../widgets/button.dart';
+import '../widgets/inputField.dart';
+import '../widgets/showupwindow.dart';
 
 class Auctiondetail extends StatefulWidget {
   static const routeName = '/auctiondetail';
@@ -41,13 +42,24 @@ class _AuctiondetailState extends State<Auctiondetail> {
     }
 
     Future _bidForNFT() async {
-      var bid = await BlockchainInteraction()
-          .bidForNFT(_tokenId, widget.bidamountController.text);
+      //var bid = await BlockchainInteraction()
+      //    .bidForNFT(_tokenId, widget.bidamountController.text);
+      await showUpWindow(
+          context,
+          BlockchainInteraction()
+              .bidForNFT(_tokenId, widget.bidamountController.text),
+          "Buying NFT after winning the auction",
+          "Your transaction is pending. You can look at it on Etherscan");
       setState(() {});
     }
 
     Future _sellNFT(List _arguments) async {
-      var sell = await BlockchainInteraction().sellNFT(_tokenId, _arguments[0]);
+      //var sell = await BlockchainInteraction().sellNFT(_tokenId, _arguments[0]);
+      await showUpWindow(
+          context,
+          BlockchainInteraction().sellNFT(_tokenId, _arguments[0]),
+          "Buying NFT after winning the auction",
+          "Your transaction is pending. You can look at it on Etherscan");
     }
 
     return Scaffold(

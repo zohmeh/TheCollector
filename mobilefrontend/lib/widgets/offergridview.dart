@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import '../widgets/showupwindow.dart';
 import '../providers/blockchain_interaction.dart';
 import '../widgets/button.dart';
 
@@ -21,7 +22,12 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
   }
 
   Future _buy(List _arguments) async {
-    var buy = await BlockchainInteraction().buyNFT(widget.id, _arguments[0]);
+    //var buy = await BlockchainInteraction().buyNFT(widget.id, _arguments[0]);
+    await showUpWindow(
+        context,
+        BlockchainInteraction().buyNFT(widget.id, _arguments[0]),
+        "Buying NFT",
+        "Your transaction is pending. You can look at it on Etherscan");
   }
 
   @override

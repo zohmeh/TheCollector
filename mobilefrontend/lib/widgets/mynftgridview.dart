@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:mobile_app_template/providers/blockchain_interaction.dart';
+import '../providers/blockchain_interaction.dart';
+import '../widgets/showupwindow.dart';
 import 'package:provider/provider.dart';
 import '../widgets/button.dart';
 import '../widgets/inputField.dart';
@@ -52,8 +53,16 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
             double.parse(widget.sellpriceamountController.text) *
                 1000000000000000000)
         .toString();
-    var offer = await Provider.of<BlockchainInteraction>(context, listen: false)
-        .startOffer(_tokenId, _priceBN);
+    //var offer = await Provider.of<BlockchainInteraction>(context, listen: false)
+    //    .startOffer(_tokenId, _priceBN);
+    //setState(() {
+    //  isOffer = true;
+    //});
+    await showUpWindow(
+        context,
+        BlockchainInteraction().startOffer(_tokenId, _priceBN),
+        "Starting new Offer for NFT",
+        "Your transaction is pending. You can look at it on Etherscan");
     setState(() {
       isOffer = true;
     });

@@ -1,11 +1,8 @@
-import '../helpers/addresses.dart';
-import '../providers/blockchain_interaction.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:web_socket_channel/io.dart';
 import '../helpers/configuration_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import '../helpers/hd_key.dart';
@@ -86,15 +83,15 @@ class BlockchainWalletInteraction with ChangeNotifier {
   //Network for the Blockchain
   static String rpcUrl =
       "https://ropsten.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3";
-  //static String wsUrl =
-  //    "wss://kovan.infura.io/ws/v3/134eb24f9b9d410baa2acac76d2a7be3";
+  static String wsUrl =
+      "wss://ropsten.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3";
   //static String rpcUrl = "HTTP://192.168.178.20:7545";
-  Web3Client ethClient = Web3Client(rpcUrl, http.Client());
+  //Web3Client ethClient = Web3Client(wsUrl, http.Client());
 
   //Generating web3 Client
-  //Web3Client ethClient = Web3Client(rpcUrl, http.Client(), socketConnector: () {
-  //  return IOWebSocketChannel.connect(wsUrl).cast<String>();
-  //});
+  Web3Client ethClient = Web3Client(rpcUrl, http.Client(), socketConnector: () {
+    return IOWebSocketChannel.connect(wsUrl).cast<String>();
+  });
 
   //Creating Credentials for signing transactions
   Future<void> creatingCredentials() async {
