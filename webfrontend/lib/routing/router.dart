@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:web_app_template/widgets/sidebar.dart';
 import '../views/auctiondetail_view.dart';
 import '../routing/route_names.dart';
 import '../views/alloffers_view.dart';
@@ -32,13 +33,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 }
 
 PageRoute _getPageRoute(Widget child, String routeName) {
-  return _FadeRoute(child: child, routeName: routeName);
+  return FadeRoute(child: child, routeName: routeName);
 }
 
-class _FadeRoute extends PageRouteBuilder {
+class FadeRoute extends PageRouteBuilder {
   final Widget child;
   final String routeName;
-  _FadeRoute({this.child, this.routeName})
+  FadeRoute({this.child, this.routeName})
       : super(
             pageBuilder: (
               BuildContext context,

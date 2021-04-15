@@ -15,7 +15,7 @@ inputField(
   return Container(
     margin:
         EdgeInsets.fromLTRB(leftMargin, topMargin, rightMargin, bottomMargin),
-    padding: EdgeInsets.all(3),
+    padding: EdgeInsets.all(0),
     decoration: BoxDecoration(
         color: Colors.white, borderRadius: BorderRadius.circular(10)),
     child: TextFormField(
@@ -23,9 +23,10 @@ inputField(
       maxLines: null,
       controller: controller,
       focusNode: node2,
-      decoration: InputDecoration(labelText: labelText),
-      onFieldSubmitted: (value) {
-        onSubmitted(arguments, value);
+      decoration: InputDecoration(
+          labelText: labelText, labelStyle: TextStyle(fontSize: 10)),
+      onFieldSubmitted: (_) {
+        onSubmitted(arguments);
       },
     ),
   );

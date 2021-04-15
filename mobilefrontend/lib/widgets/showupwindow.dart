@@ -47,7 +47,7 @@ Future<Widget> showUpWindow(
                   FlatButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      toDo();
+                      //toDo();
                     },
                     child: Text("OK"),
                   ),

@@ -319,7 +319,7 @@ class BlockchainInteraction with ChangeNotifier {
         credentials,
         Transaction.callContract(
           contract: marketplacecontract,
-          function: marketplacecontract.function("bid"),
+          function: marketplacecontract.function("sellItem"),
           parameters: [
             BigInt.from(int.parse(_tokenId)),
           ],

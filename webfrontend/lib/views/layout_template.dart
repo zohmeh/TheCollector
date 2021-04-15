@@ -18,7 +18,7 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
           Navbar(),
           Expanded(
             child: Row(
-              children: [Sidebar(), Expanded(child: widget.child)],
+              children: [Expanded(child: widget.child)],
             ),
           )
         ],

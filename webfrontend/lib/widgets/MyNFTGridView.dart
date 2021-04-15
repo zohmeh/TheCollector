@@ -94,7 +94,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                 SizedBox(width: 2),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Flexible(child: Text(widget.id))),
+                    child: Text(widget.id)),
               ],
             ),
             Row(
@@ -109,7 +109,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                 SizedBox(width: 2),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Flexible(child: Text(widget.name))),
+                    child: Text(widget.name)),
               ],
             ),
             Row(
@@ -142,7 +142,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                         ),
                       ),
                       SizedBox(width: 2),
-                      Container(child: Flexible(child: Text("Yes"))),
+                      Container(child: Text("Yes")),
                     ],
                   )
                 : //SizedBox(height: 25),
@@ -157,7 +157,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                             ),
                           ),
                           SizedBox(width: 2),
-                          Container(child: Flexible(child: Text("Yes"))),
+                          Container(child: Text("Yes")),
                         ],
                       )
                     : SizedBox(height: 25),

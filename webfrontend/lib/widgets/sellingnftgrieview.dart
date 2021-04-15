@@ -71,17 +71,15 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                 SizedBox(width: 2),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    child: Flexible(child: Text(widget.id))),
+                    child: Text(widget.id)),
               ],
             ),
             Row(
               children: [
                 Container(
-                  child: Flexible(
-                    child: Text(
-                      "Price in Eth: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                  child: Text(
+                    "Price in Eth: ",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 SizedBox(width: 2),

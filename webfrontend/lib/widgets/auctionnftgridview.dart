@@ -66,9 +66,7 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                 SizedBox(width: 2),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Flexible(
-                    child: Text(widget.id),
-                  ),
+                  child: Text(widget.id),
                 ),
               ],
             ),
@@ -84,7 +82,6 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                 ),
                 SizedBox(width: 2),
                 Container(
-                    child: Flexible(
                   child: highestBid != null
                       ? Text(
                           (highestBid / 1000000000000000000).toString(),
@@ -92,7 +89,7 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
                       : Text(
                           ("0"),
                         ),
-                )),
+                )
               ],
             ),
             Center(

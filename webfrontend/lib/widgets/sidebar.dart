@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../routing/route_names.dart';
 import '../services/navigation_service.dart';
 import '../locator.dart';
-import 'button.dart';
+import './button.dart';
+
+String globalPage;
 
 class Sidebar extends StatefulWidget {
   @override
@@ -25,6 +27,13 @@ class _SidebarState extends State<Sidebar> {
       }
       buttoncolors[_arguments[1]] = Theme.of(context).accentColor;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("Get globalPage from Sidebar");
+    print(globalPage);
   }
 
   @override

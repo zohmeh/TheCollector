@@ -81,6 +81,7 @@ class _AuctiondetailState extends State<Auctiondetail> {
                   child: CircularProgressIndicator(),
                 );
               } else {
+                print(snapshot.data["auctiondata"][2]);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -219,7 +220,7 @@ class _AuctiondetailState extends State<Auctiondetail> {
                                 topMargin: 0,
                                 rightMargin: 0,
                                 bottomMargin: 0,
-                                onSubmitted: null))
+                                onSubmitted: (_) {}))
                       ],
                     ),
                     Row(
