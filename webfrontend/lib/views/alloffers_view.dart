@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:js_util';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
+import 'package:web_app_template/provider/loginprovider.dart';
 import 'package:web_app_template/routing/route_names.dart';
 import 'package:web_app_template/services/navigation_service.dart';
 import 'package:web_app_template/widgets/button.dart';
@@ -65,6 +67,8 @@ class _AllOffersViewState extends State<AllOffersView> {
 
   @override
   Widget build(BuildContext context) {
+    final test = Provider.of<LoginModel>(context);
+    final user = test.user;
     return Row(
       children: [
         Container(
@@ -100,50 +104,54 @@ class _AllOffersViewState extends State<AllOffersView> {
         Container(
           padding: EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width - 150,
-          child: VsScrollbar(
-            controller: _scrollController,
-            showTrackOnHover: true,
-            isAlwaysShown: false,
-            scrollbarFadeDuration: Duration(milliseconds: 500),
-            scrollbarTimeToFade: Duration(milliseconds: 800),
-            style: VsScrollbarStyle(
-              hoverThickness: 10.0,
-              radius: Radius.circular(10),
-              thickness: 10.0,
-              color: Theme.of(context).highlightColor,
-            ),
-            child: FutureBuilder(
-              future: _getNFTData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  if (snapshot.data["tokenData"].length == 0 ||
-                      snapshot.data == null) {
-                    return Center(
-                      child: Text("No active SellingsAuctions"),
-                    );
-                  } else {
-                    return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          crossAxisSpacing: 50,
-                          mainAxisSpacing: 50,
-                          mainAxisExtent: 375,
-                          maxCrossAxisExtent: 405),
-                      itemCount: snapshot.data["tokenData"].length,
-                      itemBuilder: (ctx, idx) {
-                        return SellingNFTGridView(
-                            id: snapshot.data["tokenId"][idx],
-                            image: snapshot.data["tokenData"][idx]["file"]);
-                      },
-                    );
-                  }
-                }
-              },
-            ),
-          ),
+          child: user != null
+              ? VsScrollbar(
+                  controller: _scrollController,
+                  showTrackOnHover: true,
+                  isAlwaysShown: false,
+                  scrollbarFadeDuration: Duration(milliseconds: 500),
+                  scrollbarTimeToFade: Duration(milliseconds: 800),
+                  style: VsScrollbarStyle(
+                    hoverThickness: 10.0,
+                    radius: Radius.circular(10),
+                    thickness: 10.0,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                  child: FutureBuilder(
+                    future: _getNFTData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        if (snapshot.data["tokenData"].length == 0 ||
+                            snapshot.data == null) {
+                          return Center(
+                            child: Text("No active Sellings"),
+                          );
+                        } else {
+                          return GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 50,
+                                    mainAxisSpacing: 50,
+                                    mainAxisExtent: 375,
+                                    maxCrossAxisExtent: 405),
+                            itemCount: snapshot.data["tokenData"].length,
+                            itemBuilder: (ctx, idx) {
+                              return SellingNFTGridView(
+                                  id: snapshot.data["tokenId"][idx],
+                                  image: snapshot.data["tokenData"][idx]
+                                      ["file"]);
+                            },
+                          );
+                        }
+                      }
+                    },
+                  ),
+                )
+              : Center(child: Text("Please log in with Metamask")),
         ),
       ],
     );

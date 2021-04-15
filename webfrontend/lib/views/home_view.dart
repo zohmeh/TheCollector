@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:js_util';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_app_template/provider/loginprovider.dart';
 import 'package:web_app_template/routing/route_names.dart';
 import 'package:web_app_template/widgets/button.dart';
 import 'package:web_app_template/widgets/sidebar.dart';
@@ -79,14 +81,17 @@ class _HomeViewState extends State<HomeView> {
     locator<NavigationService>().navigateTo(_arguments[0]);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _checkforloggedIn();
-  }
+  //@override
+  //void initState() {
+  //  super.initState();
+  //  _checkforloggedIn();
+  //}
 
   @override
   Widget build(BuildContext context) {
+    final test = Provider.of<LoginModel>(context);
+    final user = test.user;
+    print(user);
     return Row(
       children: [
         Container(
@@ -122,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
         Container(
           padding: EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width - 150,
-          child: addresse != null
+          child: user != null
               ? VsScrollbar(
                   controller: _scrollController,
                   showTrackOnHover: true,
@@ -136,43 +141,43 @@ class _HomeViewState extends State<HomeView> {
                     color: Theme.of(context).highlightColor,
                   ),
                   child: FutureBuilder(
-                      future: _getNFTData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                    future: _getNFTData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        if (snapshot.data["tokenData"].length == 0 ||
+                            snapshot.data == null) {
                           return Center(
-                            child: CircularProgressIndicator(),
+                            child: Text("No active Auctions"),
                           );
                         } else {
-                          if (snapshot.data["tokenData"].length == 0 ||
-                              snapshot.data == null) {
-                            return Center(
-                              child: Text("No active Auctions"),
-                            );
-                          } else {
-                            return GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithMaxCrossAxisExtent(
-                                      crossAxisSpacing: 50,
-                                      mainAxisSpacing: 50,
-                                      mainAxisExtent: 375,
-                                      maxCrossAxisExtent: 405),
-                              itemCount: snapshot.data["tokenData"].length,
-                              itemBuilder: (ctx, idx) {
-                                return AuctionNFTGridView(
-                                    id: snapshot.data["tokenId"][idx],
-                                    image: snapshot.data["tokenData"][idx]
-                                        ["file"],
-                                    button1: "Detail View",
-                                    function1: _changeSide);
-                              },
-                            );
-                          }
+                          return GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 50,
+                                    mainAxisSpacing: 50,
+                                    mainAxisExtent: 375,
+                                    maxCrossAxisExtent: 405),
+                            itemCount: snapshot.data["tokenData"].length,
+                            itemBuilder: (ctx, idx) {
+                              return AuctionNFTGridView(
+                                  id: snapshot.data["tokenId"][idx],
+                                  image: snapshot.data["tokenData"][idx]
+                                      ["file"],
+                                  button1: "Detail View",
+                                  function1: _changeSide);
+                            },
+                          );
                         }
-                      }),
+                      }
+                    },
+                  ),
                 )
               : Center(child: Text("Please log in with Metamask")),
-        ),
+        )
       ],
     );
   }

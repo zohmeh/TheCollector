@@ -30,6 +30,7 @@ dependencies:
   get_it:
   responsive_builder: ^0.1.2
   vs_scrollbar: ^0.2.0
+  provider: ^5.0.0
   flutter:
     sdk: flutter
 

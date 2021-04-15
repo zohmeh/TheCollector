@@ -117,8 +117,8 @@ async function getTokenHash(_tokenId) {
 async function loggedIn() {
     try {
         user = await Moralis.User.current();
+        return user.id
     } catch (error) { console.log(error); }
-    return ethereum.selectedAddress
 }
 
 async function login() {
@@ -127,13 +127,14 @@ async function login() {
         if (!user) {
             var user = await Moralis.Web3.authenticate();
         }
+        return user.id
     } catch (error) { console.log(error); }
-    return ethereum.selectedAddress
 }
 
 async function logout() {
     try {
         user = await Moralis.User.logOut();
+        return (Moralis.User.current());
     } catch (error) { console.log(error); }
 }
 

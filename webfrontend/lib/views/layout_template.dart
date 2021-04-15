@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/sidebar.dart';
 import '../widgets/navbar.dart';
 
 class LayoutTemplate extends StatefulWidget {

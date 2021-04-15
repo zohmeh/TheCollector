@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/loginprovider.dart';
 import '../widgets/javascript_controller.dart';
 import './button.dart';
 
@@ -24,10 +26,11 @@ class _NavbarState extends State<Navbar> {
 
   _logOut() async {
     var promise = logout();
-    await promiseToFuture(promise);
+    var loggedOut = await promiseToFuture(promise);
     setState(
       () {
         addresse = null;
+        print(loggedOut);
       },
     );
   }
@@ -37,21 +40,21 @@ class _NavbarState extends State<Navbar> {
     var loggedin = await promiseToFuture(promise);
     setState(() {
       addresse = loggedin;
+      print("addresse von navbar");
+      print(addresse);
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _checkforloggedIn();
-  }
+  //@override
+  //void initState() {
+  //  super.initState();
+  //  _checkforloggedIn();
+  //}
 
   @override
   Widget build(BuildContext context) {
-    final buttoncolors = {
-      0: Theme.of(context).buttonColor,
-      1: Theme.of(context).buttonColor,
-    };
+    final test = Provider.of<LoginModel>(context);
+    final user = test.user;
     return Container(
       height: 75,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -74,24 +77,29 @@ class _NavbarState extends State<Navbar> {
             style: TextStyle(
                 color: Theme.of(context).highlightColor, fontSize: 30),
           ),
-          Row(
-            children: [
-              addresse != null
-                  ? Container(
+          user != null
+              ? Row(
+                  children: [
+                    Container(
                       child: Text(
-                        addresse,
+                        user.toString(),
                         style: TextStyle(
                             color: Theme.of(context).highlightColor,
                             fontSize: 15),
                       ),
-                    )
-                  : button(buttoncolors[0], Theme.of(context).highlightColor,
-                      "LogIn", _logIn),
-              SizedBox(width: 20),
-              button(buttoncolors[1], Theme.of(context).highlightColor,
-                  "LogOut", _logOut)
-            ],
-          )
+                    ),
+                    button(
+                        Theme.of(context).buttonColor,
+                        Theme.of(context).highlightColor,
+                        "LogOut",
+                        Provider.of<LoginModel>(context).logOut)
+                  ],
+                )
+              : button(
+                  Theme.of(context).buttonColor,
+                  Theme.of(context).highlightColor,
+                  "LogIn",
+                  Provider.of<LoginModel>(context).logIn),
         ],
       ),
     );
