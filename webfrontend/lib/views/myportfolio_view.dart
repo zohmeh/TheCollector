@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import 'package:web_app_template/provider/loginprovider.dart';
 import 'package:web_app_template/routing/route_names.dart';
 import 'package:web_app_template/services/navigation_service.dart';
@@ -22,6 +23,7 @@ class MyPortfolioView extends StatefulWidget {
 class _MyPortfolioViewState extends State<MyPortfolioView> {
   ScrollController _scrollController = ScrollController();
   String addresse;
+  var user;
 
   Future _getMyNFTs() async {
     var promise = getMyTokens();
@@ -99,15 +101,9 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _checkforloggedIn();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final test = Provider.of<LoginModel>(context);
-    final user = test.user;
+    user = test.user;
     return Row(
       children: [
         Container(
@@ -174,8 +170,8 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
-                                    mainAxisExtent: 501,
-                                    maxCrossAxisExtent: 405),
+                                    mainAxisExtent: 505,
+                                    maxCrossAxisExtent: 410),
                             itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {
                               return MyNFTGridView(
@@ -188,9 +184,13 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
                                   image: snapshot.data["tokenData"][idx]
                                       ["file"],
                                   buttonStartAuction: "Start Auction",
-                                  functionStartAuction: _startAuction,
+                                  functionStartAuction:
+                                      Provider.of<Contractinteraction>(context)
+                                          .startAuction,
                                   buttonRemoveAuction: "Delete Auction",
-                                  functionRemoveAuction: _removeAuction,
+                                  functionRemoveAuction:
+                                      Provider.of<Contractinteraction>(context)
+                                          .removeAuction1,
                                   buttonStartOffer: "Sell NFT",
                                   buttonRemoveOffer: "Remove Offer",
                                   functionRemoveOffer: _removeOffer);

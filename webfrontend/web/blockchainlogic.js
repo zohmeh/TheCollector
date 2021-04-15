@@ -150,7 +150,7 @@ async function removeAuction(_tokenId) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send(sendsettings);
-        return remove;
+        return remove.transactionHash;
     } catch (error) { console.log(error); }
 }
 
@@ -187,7 +187,7 @@ async function startNewAuction(_tokenId, _duration) {
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send(sendsettings);
         //Start Auction
         let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send(sendsettings);
-        return auction;
+        return auction.transactionHash;
     } catch (error) { console.log(error); }
 }
 
@@ -223,6 +223,7 @@ async function removeOffer(_tokenId) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send(sendsettings);
+        console.log(remove.transactionHash)
         return remove;
     } catch (error) { console.log(error); }
 }

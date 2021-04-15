@@ -116,6 +116,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
+                  color: Colors.red,
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "Description: ",
@@ -124,6 +125,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                 ),
                 SizedBox(width: 2),
                 Container(
+                    color: Colors.red,
                     margin: EdgeInsets.symmetric(vertical: 5),
                     width: 275,
                     height: 64,
@@ -160,7 +162,7 @@ class _MyNFTGridViewState extends State<MyNFTGridView> {
                           Container(child: Text("Yes")),
                         ],
                       )
-                    : SizedBox(height: 25),
+                    : SizedBox(height: 0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

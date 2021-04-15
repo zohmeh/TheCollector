@@ -97,124 +97,135 @@ class _CreateNFTViewState extends State<CreateNFTView> {
           width: MediaQuery.of(context).size.width - 150,
           height: MediaQuery.of(context).size.height,
           child: user != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        button(
+              ? Center(
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      height: 500,
+                      width: 500,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              button(
+                                  Theme.of(context).buttonColor,
+                                  Theme.of(context).highlightColor,
+                                  "Load Picture",
+                                  _loadPicture),
+                              Container(
+                                padding: EdgeInsets.all(2),
+                                height: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                    bottom: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                    left: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                    right: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                        style: BorderStyle.solid),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: _loadedFile != null
+                                      ? _image
+                                      : Text("No Picture"),
+                                ),
+                              )
+                            ],
+                          ),
+                          Container(
+                              //height: 250,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  left: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  right: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                ),
+                              ),
+                              child: Center(
+                                child: inputField(
+                                    ctx: context,
+                                    controller: widget.nftNameController,
+                                    labelText: "Give your NFT a Name",
+                                    leftMargin: 0,
+                                    topMargin: 0,
+                                    rightMargin: 0,
+                                    bottomMargin: 0,
+                                    onSubmitted: (_) {}),
+                              )),
+                          Container(
+                              //height: 250,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  left: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                  right: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                      style: BorderStyle.solid),
+                                ),
+                              ),
+                              child: Center(
+                                child: inputField(
+                                    ctx: context,
+                                    controller: widget.nftDescriptionController,
+                                    labelText: "Give your NFT a Description",
+                                    leftMargin: 0,
+                                    topMargin: 0,
+                                    rightMargin: 0,
+                                    bottomMargin: 0,
+                                    onSubmitted: () {}),
+                              )),
+                          button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).highlightColor,
-                            "Load Picture",
-                            _loadPicture),
-                        Container(
-                          //height: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                  style: BorderStyle.solid),
-                              bottom: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                  style: BorderStyle.solid),
-                              left: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                  style: BorderStyle.solid),
-                              right: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                  style: BorderStyle.solid),
-                            ),
+                            "Mint your NFT",
+                            _createNewNFT,
+                            [data],
                           ),
-                          child: Center(
-                            child: _loadedFile != null
-                                ? _image
-                                : Text("No Picture"),
-                          ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                    Container(
-                        //height: 250,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            bottom: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            left: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            right: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                          ),
-                        ),
-                        child: Center(
-                          child: inputField(
-                              ctx: context,
-                              controller: widget.nftNameController,
-                              labelText: "Give your NFT a Name",
-                              leftMargin: 0,
-                              topMargin: 0,
-                              rightMargin: 0,
-                              bottomMargin: 0,
-                              onSubmitted: (_) {}),
-                        )),
-                    Container(
-                        //height: 250,
-                        width: 250,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            bottom: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            left: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                            right: BorderSide(
-                                color: Colors.black,
-                                width: 1,
-                                style: BorderStyle.solid),
-                          ),
-                        ),
-                        child: Center(
-                          child: inputField(
-                              ctx: context,
-                              controller: widget.nftDescriptionController,
-                              labelText: "Give your NFT a Description",
-                              leftMargin: 0,
-                              topMargin: 0,
-                              rightMargin: 0,
-                              bottomMargin: 0,
-                              onSubmitted: () {}),
-                        )),
-                    button(
-                      Theme.of(context).buttonColor,
-                      Theme.of(context).highlightColor,
-                      "Mint your NFT",
-                      _createNewNFT,
-                      [data],
-                    ),
-                  ],
+                  ),
                 )
               : Center(child: Text("Please log in with Metamask")),
         ),

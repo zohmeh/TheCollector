@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import '../provider/loginprovider.dart';
 import 'package:provider/provider.dart';
 import '../routing/router.dart';
@@ -15,8 +16,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => LoginModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: LoginModel(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Contractinteraction(),
+        ),
+      ],
       child: MaterialApp(
         title: 'The Collector',
         theme: ThemeData(

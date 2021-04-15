@@ -80,6 +80,20 @@ class _NavbarState extends State<Navbar> {
           user != null
               ? Row(
                   children: [
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text("Your current Transaction: "),
+                        ),
+                        //tx != null
+                        //    ? Container(
+                        //        margin: EdgeInsets.symmetric(horizontal: 20),
+                        //        child: Text(tx),
+                        //      )
+                        //    : Container(),
+                      ],
+                    ),
                     Container(
                       child: Text(
                         user.toString(),
