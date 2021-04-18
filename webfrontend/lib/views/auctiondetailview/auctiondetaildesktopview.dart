@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/widgets/button.dart';
 import '/widgets/inputField.dart';
@@ -37,28 +38,6 @@ class _AuctionDetailDesktopViewState extends State<AuctionDetailDesktopView> {
     return (tokenData);
   }
 
-  Future _bidForNFT() async {
-    String _bidBN = BigInt.from(
-            double.parse(widget.bidamountController.text) * 1000000000000000000)
-        .toString();
-    var promise = bidForNFT(widget.id, _bidBN);
-    var bid = await promiseToFuture(promise);
-
-    var promise2 = getAuctionData(widget.id);
-    var _auctionData = await promiseToFuture(promise2);
-    var _highestbid = _auctionData[1];
-
-    setState(() {
-      highestBid = _highestbid;
-    });
-  }
-
-  Future _sellNFT() async {
-    var promise = sellNFT(widget.id, highestBid);
-    var sell = await promiseToFuture(promise);
-    setState(() {});
-  }
-
   Future _getAuctionData() async {
     var promise = getAuctionData(widget.id);
     var result = await promiseToFuture(promise);
@@ -81,6 +60,7 @@ class _AuctionDetailDesktopViewState extends State<AuctionDetailDesktopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    final tx = Provider.of<Contractinteraction>(context).tx;
     return user != null
         ? SingleChildScrollView(
             child: Container(
@@ -200,7 +180,9 @@ class _AuctionDetailDesktopViewState extends State<AuctionDetailDesktopView> {
                                   Theme.of(context).buttonColor,
                                   Theme.of(context).backgroundColor,
                                   "Place your bid",
-                                  _bidForNFT),
+                                  Provider.of<Contractinteraction>(context)
+                                      .bidForNFT1,
+                                  [widget.id, widget.bidamountController.text]),
                             ),
                             Container(
                                 height: 75,
@@ -214,7 +196,9 @@ class _AuctionDetailDesktopViewState extends State<AuctionDetailDesktopView> {
                                     topMargin: 0,
                                     rightMargin: 0,
                                     bottomMargin: 0,
-                                    onSubmitted: (_) {}))
+                                    onSubmitted: (_) {
+                                      setState(() {});
+                                    }))
                           ],
                         ),
                         Row(
@@ -224,7 +208,9 @@ class _AuctionDetailDesktopViewState extends State<AuctionDetailDesktopView> {
                                 Theme.of(context).buttonColor,
                                 Theme.of(context).backgroundColor,
                                 "Buy this NFT after Auction ending",
-                                _sellNFT),
+                                Provider.of<Contractinteraction>(context)
+                                    .sellNFT1,
+                                [widget.id, highestBid]),
                           ],
                         ),
                       ],

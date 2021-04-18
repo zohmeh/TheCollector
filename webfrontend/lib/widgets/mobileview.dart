@@ -73,11 +73,17 @@ class _Mobileview extends State<Mobileview> {
                                                   color: Theme.of(context)
                                                       .highlightColor,
                                                   fontSize: 10))
-                                          : Text("error",
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .highlightColor,
-                                                  fontSize: 10))),
+                                          : tx == "pending"
+                                              ? Text("pending",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .highlightColor,
+                                                      fontSize: 10))
+                                              : Text("error",
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .highlightColor,
+                                                      fontSize: 10))),
                                 )
                               : Container(
                                   margin: EdgeInsets.symmetric(horizontal: 20),

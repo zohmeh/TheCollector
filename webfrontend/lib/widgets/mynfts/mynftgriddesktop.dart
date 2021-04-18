@@ -1,9 +1,9 @@
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/provider/contractinteraction.dart';
 import '../button.dart';
 import '../inputField.dart';
-import '../javascript_controller.dart';
 
 class MyNFTGridDesktopView extends StatefulWidget {
   final TextEditingController sellpriceamountController =
@@ -45,19 +45,6 @@ class MyNFTGridDesktopView extends StatefulWidget {
 
 class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
-
-  Future _startOffer(List _arguments) async {
-    String _tokenId = _arguments[0];
-    String _priceBN = BigInt.from(
-            double.parse(widget.sellpriceamountController.text) *
-                1000000000000000000)
-        .toString();
-    var promise = startNewOffer(_tokenId, _priceBN);
-    await promiseToFuture(promise);
-    setState(() {
-      isOffer = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +100,6 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  color: Colors.red,
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "Description: ",
@@ -122,7 +108,6 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                 ),
                 SizedBox(width: 2),
                 Container(
-                    color: Colors.red,
                     margin: EdgeInsets.symmetric(vertical: 5),
                     width: 275,
                     height: 64,
@@ -182,13 +167,16 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                 topMargin: 0,
                                 rightMargin: 0,
                                 bottomMargin: 0,
-                                onSubmitted: (_) {})),
+                                onSubmitted: (_) {
+                                  setState(() {});
+                                })),
                         button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).backgroundColor,
                             "Start Offer",
-                            _startOffer,
-                            [widget.id])
+                            Provider.of<Contractinteraction>(context)
+                                .startOffer,
+                            [widget.id, widget.sellpriceamountController.text])
                       ]),
                 widget.isAuction
                     ? button(

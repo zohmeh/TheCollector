@@ -66,23 +66,8 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
     return (nftvalues);
   }
 
-  Future _removeOffer(List _arguments) async {
-    String _tokenId = _arguments[0];
-    var promise = removeOffer(_tokenId);
-    await promiseToFuture(promise);
-    setState(() {});
-  }
-
   _changeGlobalSide(List _arguments) {
     locator<NavigationService>().navigateTo(_arguments[0]);
-  }
-
-  _checkforloggedIn() async {
-    var promise = loggedIn();
-    var loggedin = await promiseToFuture(promise);
-    setState(() {
-      addresse = loggedin;
-    });
   }
 
   @override
@@ -156,32 +141,31 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
                                     mainAxisExtent: 505,
-                                    maxCrossAxisExtent:
-                                        MediaQuery.of(context).size.width > 1500
-                                            ? 410
-                                            : 200),
+                                    maxCrossAxisExtent: 550),
                             itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {
                               return MyNFTGridDesktopView(
-                                  id: snapshot.data["tokenId"][idx],
-                                  name: snapshot.data["tokenData"][idx]["name"],
-                                  description: snapshot.data["tokenData"][idx]
-                                      ["description"],
-                                  isAuction: snapshot.data["isAuction"][idx],
-                                  isOffer: snapshot.data["isOffer"][idx],
-                                  image: snapshot.data["tokenData"][idx]
-                                      ["file"],
-                                  buttonStartAuction: "Start Auction",
-                                  functionStartAuction:
-                                      Provider.of<Contractinteraction>(context)
-                                          .startAuction,
-                                  buttonRemoveAuction: "Delete Auction",
-                                  functionRemoveAuction:
-                                      Provider.of<Contractinteraction>(context)
-                                          .removeAuction1,
-                                  buttonStartOffer: "Sell NFT",
-                                  buttonRemoveOffer: "Remove Offer",
-                                  functionRemoveOffer: _removeOffer);
+                                id: snapshot.data["tokenId"][idx],
+                                name: snapshot.data["tokenData"][idx]["name"],
+                                description: snapshot.data["tokenData"][idx]
+                                    ["description"],
+                                isAuction: snapshot.data["isAuction"][idx],
+                                isOffer: snapshot.data["isOffer"][idx],
+                                image: snapshot.data["tokenData"][idx]["file"],
+                                buttonStartAuction: "Start Auction",
+                                functionStartAuction:
+                                    Provider.of<Contractinteraction>(context)
+                                        .startAuction,
+                                buttonRemoveAuction: "Delete Auction",
+                                functionRemoveAuction:
+                                    Provider.of<Contractinteraction>(context)
+                                        .removeAuction1,
+                                buttonStartOffer: "Sell NFT",
+                                buttonRemoveOffer: "Remove Offer",
+                                functionRemoveOffer:
+                                    Provider.of<Contractinteraction>(context)
+                                        .removeOffer1,
+                              );
                             },
                           );
                         }

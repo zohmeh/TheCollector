@@ -1,6 +1,8 @@
 import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import '../../routing/route_names.dart';
 import '../button.dart';
 import '../javascript_controller.dart';
@@ -25,12 +27,6 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
     setState(() {
       price = _price;
     });
-  }
-
-  Future _buy() async {
-    var promise = buy(widget.id, price);
-    await promiseToFuture(promise);
-    setState(() {});
   }
 
   @override
@@ -91,12 +87,13 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               ],
             ),
             Center(
-                child: button(
-              Theme.of(context).buttonColor,
-              Theme.of(context).backgroundColor,
-              "Buy NFT",
-              _buy,
-            ))
+              child: button(
+                  Theme.of(context).buttonColor,
+                  Theme.of(context).backgroundColor,
+                  "Buy NFT",
+                  Provider.of<Contractinteraction>(context).buyNFT,
+                  [widget.id, price]),
+            )
           ],
         ),
       ),

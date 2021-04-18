@@ -1,9 +1,9 @@
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import '../button.dart';
 import '../inputField.dart';
-import '../javascript_controller.dart';
 
 class MyNFTGridMobileView extends StatefulWidget {
   final TextEditingController sellpriceamountController =
@@ -45,19 +45,6 @@ class MyNFTGridMobileView extends StatefulWidget {
 
 class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
   bool isOffer = false;
-
-  Future _startOffer(List _arguments) async {
-    String _tokenId = _arguments[0];
-    String _priceBN = BigInt.from(
-            double.parse(widget.sellpriceamountController.text) *
-                1000000000000000000)
-        .toString();
-    var promise = startNewOffer(_tokenId, _priceBN);
-    await promiseToFuture(promise);
-    setState(() {
-      isOffer = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +97,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                     ),
                   ),
                   SizedBox(width: 2),
-                  Container(child: Flexible(child: Text(widget.name))),
+                  Container(child: Text(widget.name)),
                 ],
               ),
               Row(
@@ -146,7 +133,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                           ),
                         ),
                         SizedBox(width: 2),
-                        Container(child: Flexible(child: Text("Yes"))),
+                        Container(child: Text("Yes")),
                       ],
                     )
                   : //SizedBox(height: 2),
@@ -163,7 +150,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                               ),
                             ),
                             SizedBox(width: 2),
-                            Container(child: Flexible(child: Text("Yes"))),
+                            Container(child: Text("Yes")),
                           ],
                         )
                       : SizedBox(height: 2),
@@ -200,13 +187,19 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                       topMargin: 0,
                                       rightMargin: 0,
                                       bottomMargin: 0,
-                                      onSubmitted: (_) {})),
+                                      onSubmitted: (_) {
+                                        setState(() {});
+                                      })),
                               button(
                                   Theme.of(context).buttonColor,
                                   Theme.of(context).backgroundColor,
                                   "Start Offer",
-                                  _startOffer,
-                                  [widget.id.toString()])
+                                  Provider.of<Contractinteraction>(context)
+                                      .startOffer,
+                                  [
+                                    widget.id.toString(),
+                                    widget.sellpriceamountController.text
+                                  ])
                             ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

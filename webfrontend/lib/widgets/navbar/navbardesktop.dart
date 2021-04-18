@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/contractinteraction.dart';
-import '../provider/loginprovider.dart';
-import 'button.dart';
+import '../../provider/contractinteraction.dart';
+import '../../provider/loginprovider.dart';
+import '../button.dart';
 
 class Navbardesktop extends StatefulWidget {
   @override
@@ -65,11 +65,17 @@ class _NavbardesktopState extends State<Navbardesktop> {
                                                 color: Theme.of(context)
                                                     .highlightColor,
                                                 fontSize: 10))
-                                        : Text("error",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .highlightColor,
-                                                fontSize: 10))),
+                                        : tx == "pending"
+                                            ? Text("pending",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .highlightColor,
+                                                    fontSize: 10))
+                                            : Text("error",
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .highlightColor,
+                                                    fontSize: 10))),
                               )
                             : Container(
                                 width: 200,
