@@ -5,11 +5,7 @@ import 'package:provider/provider.dart';
 import '../provider/contractinteraction.dart';
 import '../provider/loginprovider.dart';
 import 'package:web_app_template/responsive.dart';
-import '../services/navigation_service.dart';
 import '../views/myportfolioview/myportfoliomobileview.dart';
-import '../locator.dart';
-import '../widgets/javascript_controller.dart';
-import 'package:http/http.dart' as http;
 import './myportfolioview/myportfoliodesktopview.dart';
 
 class MyPortfolioView extends StatefulWidget {
