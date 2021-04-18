@@ -1,14 +1,11 @@
-import 'dart:convert';
 import 'dart:js_util';
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:web_app_template/views/myportfolio_view.dart';
-import '../widgets/button.dart';
-import '../widgets/inputField.dart';
-import '../widgets/javascript_controller.dart';
+import '../button.dart';
+import '../inputField.dart';
+import '../javascript_controller.dart';
 
-class MyNFTGridView extends StatefulWidget {
+class MyNFTGridDesktopView extends StatefulWidget {
   final TextEditingController sellpriceamountController =
       TextEditingController();
 
@@ -26,7 +23,7 @@ class MyNFTGridView extends StatefulWidget {
   final Function functionRemoveAuction;
   final Function functionRemoveOffer;
 
-  MyNFTGridView({
+  MyNFTGridDesktopView({
     this.id,
     this.name,
     this.description,
@@ -43,10 +40,10 @@ class MyNFTGridView extends StatefulWidget {
   });
 
   @override
-  _MyNFTGridViewState createState() => _MyNFTGridViewState();
+  _MyNFTGridDesktopViewState createState() => _MyNFTGridDesktopViewState();
 }
 
-class _MyNFTGridViewState extends State<MyNFTGridView> {
+class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
 
   Future _startOffer(List _arguments) async {

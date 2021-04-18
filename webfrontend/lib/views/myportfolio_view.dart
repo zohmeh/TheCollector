@@ -2,16 +2,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
-import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:web_app_template/provider/contractinteraction.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/routing/route_names.dart';
-import 'package:web_app_template/services/navigation_service.dart';
-import 'package:web_app_template/widgets/button.dart';
-import 'package:web_app_template/widgets/mynftgridview.dart';
+import '../provider/contractinteraction.dart';
+import '../provider/loginprovider.dart';
+import 'package:web_app_template/responsive.dart';
+import '../services/navigation_service.dart';
+import '../views/myportfolioview/myportfoliomobileview.dart';
 import '../locator.dart';
 import '../widgets/javascript_controller.dart';
 import 'package:http/http.dart' as http;
+import './myportfolioview/myportfoliodesktopview.dart';
 
 class MyPortfolioView extends StatefulWidget {
   const MyPortfolioView({Key key}) : super(key: key);
@@ -66,21 +65,6 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
     return (nftvalues);
   }
 
-  Future _startAuction(List _arguments) async {
-    String _tokenId = _arguments[0];
-    String _duration = _arguments[1];
-    var promise = startNewAuction(_tokenId, _duration);
-    await promiseToFuture(promise);
-    setState(() {});
-  }
-
-  Future _removeAuction(List _arguments) async {
-    String _tokenId = _arguments[0];
-    var promise = removeAuction(_tokenId);
-    await promiseToFuture(promise);
-    setState(() {});
-  }
-
   Future _removeOffer(List _arguments) async {
     String _tokenId = _arguments[0];
     var promise = removeOffer(_tokenId);
@@ -102,108 +86,12 @@ class _MyPortfolioViewState extends State<MyPortfolioView> {
 
   @override
   Widget build(BuildContext context) {
-    final test = Provider.of<LoginModel>(context);
-    user = test.user;
-    return Row(
-      children: [
-        Container(
-          width: 150,
-          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "All Auctions", _changeGlobalSide, [HomeRoute, 0]),
-              SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "All Sellings", _changeGlobalSide, [AllOffersRoute, 1]),
-              SizedBox(height: 20),
-              button(Colors.purpleAccent, Theme.of(context).highlightColor,
-                  "My Portfolio", _changeGlobalSide, [MyPortfolioRoute, 2]),
-              SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "Create New NFT", _changeGlobalSide, [CreateNewNFTRoute, 3]),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width - 150,
-          child: user != null
-              ? VsScrollbar(
-                  controller: _scrollController,
-                  showTrackOnHover: true,
-                  isAlwaysShown: false,
-                  scrollbarFadeDuration: Duration(milliseconds: 500),
-                  scrollbarTimeToFade: Duration(milliseconds: 800),
-                  style: VsScrollbarStyle(
-                    hoverThickness: 10.0,
-                    radius: Radius.circular(10),
-                    thickness: 10.0,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  child: FutureBuilder(
-                    future: _getNFTData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        if (snapshot.data["tokenId"].length == 0 ||
-                            snapshot.data == null) {
-                          return Center(
-                              child: Text("No NFTs in your Portfolio"));
-                        } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 50,
-                                    mainAxisSpacing: 50,
-                                    mainAxisExtent: 505,
-                                    maxCrossAxisExtent: 410),
-                            itemCount: snapshot.data["tokenId"].length,
-                            itemBuilder: (ctx, idx) {
-                              return MyNFTGridView(
-                                  id: snapshot.data["tokenId"][idx],
-                                  name: snapshot.data["tokenData"][idx]["name"],
-                                  description: snapshot.data["tokenData"][idx]
-                                      ["description"],
-                                  isAuction: snapshot.data["isAuction"][idx],
-                                  isOffer: snapshot.data["isOffer"][idx],
-                                  image: snapshot.data["tokenData"][idx]
-                                      ["file"],
-                                  buttonStartAuction: "Start Auction",
-                                  functionStartAuction:
-                                      Provider.of<Contractinteraction>(context)
-                                          .startAuction,
-                                  buttonRemoveAuction: "Delete Auction",
-                                  functionRemoveAuction:
-                                      Provider.of<Contractinteraction>(context)
-                                          .removeAuction1,
-                                  buttonStartOffer: "Sell NFT",
-                                  buttonRemoveOffer: "Remove Offer",
-                                  functionRemoveOffer: _removeOffer);
-                            },
-                          );
-                        }
-                      }
-                    },
-                  ),
-                )
-              : Center(child: Text("Please log in with Metamask")),
-        ),
-      ],
+    final user = Provider.of<LoginModel>(context).user;
+    Provider.of<Contractinteraction>(context);
+    return Responsive(
+      mobile: MyPortfolioMobileView(),
+      tablet: MyPortfolioMobileView(),
+      desktop: MyPortfolioDesktopView(),
     );
   }
 }

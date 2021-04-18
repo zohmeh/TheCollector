@@ -1,26 +1,81 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'package:flutter/material.dart';
+import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
+import '/provider/contractinteraction.dart';
+import '/provider/loginprovider.dart';
+import '/routing/route_names.dart';
+import '/services/navigation_service.dart';
+import '/widgets/button.dart';
+import '../../widgets/mynfts/mynftgriddesktop.dart';
+import '../../locator.dart';
+import '../../widgets/javascript_controller.dart';
 import 'package:http/http.dart' as http;
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/routing/route_names.dart';
-import 'package:web_app_template/widgets/button.dart';
-import 'package:web_app_template/widgets/sidebar.dart';
-import '../widgets/auctionnftgridview.dart';
-import '../widgets/javascript_controller.dart';
-import '../services/navigation_service.dart';
-import '../locator.dart';
 
-class HomeView extends StatefulWidget {
+class MyPortfolioDesktopView extends StatefulWidget {
+  const MyPortfolioDesktopView({Key key}) : super(key: key);
+
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _MyPortfolioDesktopViewState createState() => _MyPortfolioDesktopViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   ScrollController _scrollController = ScrollController();
   String addresse;
+  var user;
+
+  Future _getMyNFTs() async {
+    var promise = getMyTokens();
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
+
+  Future<Map<String, dynamic>> _getNFTData() async {
+    var myTokens = await _getMyNFTs();
+    var myTokensdecoded = json.decode(myTokens);
+    var nftHashes = myTokensdecoded["tokenHash"];
+    List<dynamic> nftData = [];
+    List<dynamic> isAuction = [];
+    List<dynamic> isOffer = [];
+
+    for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
+      var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
+      var auction = await promiseToFuture(promise1);
+      isAuction.add(auction[0]);
+
+      var promise2 = getOfferData(myTokensdecoded["tokenId"][j]);
+      var offer = await promiseToFuture(promise2);
+      isOffer.add(offer[0]);
+    }
+    for (var i = 0; i < nftHashes.length; i++) {
+      var data = await http.get(
+        Uri.parse(
+          nftHashes[i].toString(),
+        ),
+      );
+      var jsonData = json.decode(data.body);
+      nftData.add(jsonData);
+    }
+    Map<String, dynamic> nftvalues = {
+      "tokenId": myTokensdecoded["tokenId"],
+      "isAuction": isAuction,
+      "isOffer": isOffer,
+      "tokenData": nftData
+    };
+    return (nftvalues);
+  }
+
+  Future _removeOffer(List _arguments) async {
+    String _tokenId = _arguments[0];
+    var promise = removeOffer(_tokenId);
+    await promiseToFuture(promise);
+    setState(() {});
+  }
+
+  _changeGlobalSide(List _arguments) {
+    locator<NavigationService>().navigateTo(_arguments[0]);
+  }
 
   _checkforloggedIn() async {
     var promise = loggedIn();
@@ -30,67 +85,10 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  _changeSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0],
-        queryParams: {"id": _arguments[1].toString()});
-  }
-
-  Future _getAuctionNFTs() async {
-    var promise = getAllActiveAuctions();
-    var result = await promiseToFuture(promise);
-    print(result);
-    return (result);
-  }
-
-  Future<Map<String, dynamic>> _getNFTData() async {
-    var allAuctions = await _getAuctionNFTs();
-    List activeAuctions = [];
-    List tokenHashes = [];
-    List<dynamic> nftData = [];
-
-    for (var i = 0; i < allAuctions.length; i++) {
-      if (allAuctions[i] != "0") {
-        activeAuctions.add(allAuctions[i]);
-      }
-    }
-
-    for (var i = 0; i < activeAuctions.length; i++) {
-      var promise = getTokenHash(activeAuctions[i]);
-      var auctionTokenHashes = await promiseToFuture(promise);
-      tokenHashes.add(auctionTokenHashes);
-    }
-
-    for (var i = 0; i < tokenHashes.length; i++) {
-      var data = await http.get(
-        Uri.parse(
-          tokenHashes[i].toString(),
-        ),
-      );
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    }
-
-    Map<String, dynamic> nftvalues = {
-      "tokenId": activeAuctions,
-      "tokenData": nftData
-    };
-    return (nftvalues);
-  }
-
-  _changeGlobalSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0]);
-  }
-
-  //@override
-  //void initState() {
-  //  super.initState();
-  //  _checkforloggedIn();
-  //}
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    print(user);
+    Provider.of<Contractinteraction>(context);
     return Row(
       children: [
         Container(
@@ -109,13 +107,13 @@ class _HomeViewState extends State<HomeView> {
           ),
           child: Column(
             children: [
-              button(Colors.purpleAccent, Theme.of(context).highlightColor,
+              button(Colors.blueAccent, Theme.of(context).highlightColor,
                   "All Auctions", _changeGlobalSide, [HomeRoute, 0]),
               SizedBox(height: 20),
               button(Colors.blueAccent, Theme.of(context).highlightColor,
                   "All Sellings", _changeGlobalSide, [AllOffersRoute, 1]),
               SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
+              button(Colors.purpleAccent, Theme.of(context).highlightColor,
                   "My Portfolio", _changeGlobalSide, [MyPortfolioRoute, 2]),
               SizedBox(height: 20),
               button(Colors.blueAccent, Theme.of(context).highlightColor,
@@ -147,27 +145,43 @@ class _HomeViewState extends State<HomeView> {
                           child: CircularProgressIndicator(),
                         );
                       } else {
-                        if (snapshot.data["tokenData"].length == 0 ||
+                        if (snapshot.data["tokenId"].length == 0 ||
                             snapshot.data == null) {
                           return Center(
-                            child: Text("No active Auctions"),
-                          );
+                              child: Text("No NFTs in your Portfolio"));
                         } else {
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
-                                    mainAxisExtent: 375,
-                                    maxCrossAxisExtent: 405),
-                            itemCount: snapshot.data["tokenData"].length,
+                                    mainAxisExtent: 505,
+                                    maxCrossAxisExtent:
+                                        MediaQuery.of(context).size.width > 1500
+                                            ? 410
+                                            : 200),
+                            itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {
-                              return AuctionNFTGridView(
+                              return MyNFTGridDesktopView(
                                   id: snapshot.data["tokenId"][idx],
+                                  name: snapshot.data["tokenData"][idx]["name"],
+                                  description: snapshot.data["tokenData"][idx]
+                                      ["description"],
+                                  isAuction: snapshot.data["isAuction"][idx],
+                                  isOffer: snapshot.data["isOffer"][idx],
                                   image: snapshot.data["tokenData"][idx]
                                       ["file"],
-                                  button1: "Detail View",
-                                  function1: _changeSide);
+                                  buttonStartAuction: "Start Auction",
+                                  functionStartAuction:
+                                      Provider.of<Contractinteraction>(context)
+                                          .startAuction,
+                                  buttonRemoveAuction: "Delete Auction",
+                                  functionRemoveAuction:
+                                      Provider.of<Contractinteraction>(context)
+                                          .removeAuction1,
+                                  buttonStartOffer: "Sell NFT",
+                                  buttonRemoveOffer: "Remove Offer",
+                                  functionRemoveOffer: _removeOffer);
                             },
                           );
                         }
@@ -176,7 +190,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 )
               : Center(child: Text("Please log in with Metamask")),
-        )
+        ),
       ],
     );
   }

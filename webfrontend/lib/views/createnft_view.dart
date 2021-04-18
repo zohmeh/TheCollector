@@ -58,8 +58,7 @@ class _CreateNFTViewState extends State<CreateNFTView> {
 
   @override
   Widget build(BuildContext context) {
-    final test = Provider.of<LoginModel>(context);
-    final user = test.user;
+    final user = Provider.of<LoginModel>(context).user;
     return Row(
       children: [
         Container(

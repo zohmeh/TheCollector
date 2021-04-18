@@ -12,7 +12,7 @@ async function bidForNFT(_tokenId, _bid) {
         window.web3 = await Moralis.Web3.enable();
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
         const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send(sendsettings);
-        return bid;
+        return bid["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -42,7 +42,7 @@ async function createNewNFT(_file, _name, _description) {
         window.web3 = await Moralis.Web3.enable();
         let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
         let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send(sendsettings);
-        return mint;
+        return mint["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -150,7 +150,7 @@ async function removeAuction(_tokenId) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send(sendsettings);
-        return remove.transactionHash;
+        return remove["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -167,7 +167,7 @@ async function sellNFT(_tokenId, _price) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send(sendsettings);
-        return sellNFT;
+        return sellNFT["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -187,7 +187,7 @@ async function startNewAuction(_tokenId, _duration) {
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send(sendsettings);
         //Start Auction
         let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send(sendsettings);
-        return auction.transactionHash;
+        return auction["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -207,7 +207,7 @@ async function startNewOffer(_tokenId, _price) {
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send(sendsettings);
         //Start Offer
         let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send(sendsettings);
-        return offer;
+        return offer["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -223,8 +223,7 @@ async function removeOffer(_tokenId) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send(sendsettings);
-        console.log(remove.transactionHash)
-        return remove;
+        return remove["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -242,7 +241,7 @@ async function buy(_tokenId, _price) {
         let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
 
         let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send(sendsettings);
-        return buy;
+        return buy["status"];
     } catch (error) { console.log(error); }
 }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/loginprovider.dart';
 import '../routing/route_names.dart';
 import '../services/navigation_service.dart';
 import '../locator.dart';
@@ -12,28 +14,8 @@ class Sidebar extends StatefulWidget {
 }
 
 class _SidebarState extends State<Sidebar> {
-  var buttoncolors = {
-    0: Colors.purpleAccent,
-    1: Colors.blueAccent,
-    2: Colors.blueAccent,
-    3: Colors.blueAccent,
-  };
-
   _changeSide(List _arguments) {
     locator<NavigationService>().navigateTo(_arguments[0]);
-    setState(() {
-      for (var i = 0; i < buttoncolors.length; i++) {
-        buttoncolors[i] = Theme.of(context).buttonColor;
-      }
-      buttoncolors[_arguments[1]] = Theme.of(context).accentColor;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    print("Get globalPage from Sidebar");
-    print(globalPage);
   }
 
   @override
@@ -54,17 +36,43 @@ class _SidebarState extends State<Sidebar> {
       ),
       child: Column(
         children: [
-          button(buttoncolors[0], Theme.of(context).highlightColor,
-              "All Auctions", _changeSide, [HomeRoute, 0]),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "LogIn",
+              Provider.of<LoginModel>(context).logIn),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "LogOut",
+              Provider.of<LoginModel>(context).logOut),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "All Auctions",
+              _changeSide,
+              [HomeRoute, 0]),
           SizedBox(height: 20),
-          button(buttoncolors[1], Theme.of(context).highlightColor,
-              "All Sellings", _changeSide, [AllOffersRoute, 1]),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "All Sellings",
+              _changeSide,
+              [AllOffersRoute, 1]),
           SizedBox(height: 20),
-          button(buttoncolors[2], Theme.of(context).highlightColor,
-              "My Portfolio", _changeSide, [MyPortfolioRoute, 2]),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "My Portfolio",
+              _changeSide,
+              [MyPortfolioRoute, 2]),
           SizedBox(height: 20),
-          button(buttoncolors[3], Theme.of(context).highlightColor,
-              "Create New NFT", _changeSide, [CreateNewNFTRoute, 3]),
+          button(
+              Theme.of(context).buttonColor,
+              Theme.of(context).highlightColor,
+              "Create New NFT",
+              _changeSide,
+              [CreateNewNFTRoute, 3]),
         ],
       ),
     );
