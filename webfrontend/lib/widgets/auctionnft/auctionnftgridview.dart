@@ -1,9 +1,9 @@
 import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import '../routing/route_names.dart';
-import '../widgets/button.dart';
-import '../widgets/javascript_controller.dart';
+import '../../routing/route_names.dart';
+import '../button.dart';
+import '../javascript_controller.dart';
 
 class AuctionNFTGridView extends StatefulWidget {
   final String id;
@@ -46,7 +46,7 @@ class _AuctionNFTGridViewState extends State<AuctionNFTGridView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 250,
+              height: 245,
               width: double.infinity,
               child: Image.memory(
                 Uint8List.fromList(

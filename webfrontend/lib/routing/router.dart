@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:web_app_template/widgets/sidebar.dart';
 import '../views/auctiondetail_view.dart';
 import '../routing/route_names.dart';
 import '../views/alloffers_view.dart';
