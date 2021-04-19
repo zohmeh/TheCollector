@@ -14,6 +14,7 @@ class _LayoutTemplateState extends State<LayoutTemplate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Responsive(
         mobile: Mobileview(child: widget.child),
         tablet: Mobileview(child: widget.child),

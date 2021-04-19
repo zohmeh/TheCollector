@@ -31,8 +31,8 @@ class MyApp extends StatelessWidget {
             errorColor: Colors.red,
             buttonColor: Colors.blueAccent,
             highlightColor: Colors.white,
-            primaryColor: Colors.grey[850],
-            backgroundColor: Colors.white,
+            primaryColor: Colors.blueGrey[900], //Colors.grey[850],
+            backgroundColor: Colors.blueGrey[600], //Colors.white,
             accentColor: Colors.purpleAccent,
             textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),

@@ -15,9 +15,9 @@ contract TheCollector is ERC721 {
     CollectorToken[] collectorTokens;   
     
     //tokenId => hash
-    mapping(uint256 => CollectorToken) tokenMap;
+    mapping(uint256 => CollectorToken) public tokenMap;
 
-    function mintNewCollectorNFT(string memory _hash) public {
+    function mintNewCollectorNFT(string memory _hash) public returns(uint256) {
         CollectorToken memory _newToken;
         _newToken.tokenHash = _hash;
         
@@ -26,14 +26,23 @@ contract TheCollector is ERC721 {
 
         tokenMap[_tokenId].tokenHash = _hash;
 
-        _mint(msg.sender, _tokenId);
+        //_mint(msg.sender, _tokenId);
+        _safeMint(msg.sender, _tokenId);
 
         emit NewCollectorToken("New CollectorToken created", _tokenId, _hash);
+
+        return _tokenId;
     }
 
 
 //---------Some Getterfunctions----------
 
+    function tokenURI(uint256 tokenId) public view  override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        return tokenMap[tokenId].tokenHash;        
+    }    
+    
     function getTokenhash(uint256 _tokenId) public view returns(string memory) {
         return tokenMap[_tokenId].tokenHash;
     }

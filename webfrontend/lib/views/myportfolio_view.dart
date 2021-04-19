@@ -1,9 +1,4 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:js/js_util.dart';
-import 'package:provider/provider.dart';
-import '../provider/contractinteraction.dart';
-import '../provider/loginprovider.dart';
 import 'package:web_app_template/responsive.dart';
 import '../views/myportfolioview/myportfoliomobileview.dart';
 import './myportfolioview/myportfoliodesktopview.dart';

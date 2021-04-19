@@ -1,9 +1,11 @@
+import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
 import '../button.dart';
 import '../inputField.dart';
+import '../javascript_controller.dart';
 
 class MyNFTGridMobileView extends StatefulWidget {
   final TextEditingController sellpriceamountController =
@@ -45,6 +47,17 @@ class MyNFTGridMobileView extends StatefulWidget {
 
 class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
   bool isOffer = false;
+
+  Future loadMyItems() async {
+    var promise = getUserItems();
+    var get = await promiseToFuture(promise);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadMyItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +115,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 5),

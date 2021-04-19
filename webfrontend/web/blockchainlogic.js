@@ -1,5 +1,5 @@
-Moralis.initialize("uqTPi7iOOgUFDyIGKbKs4EObxUAlJg72ldj3Cs56")
-Moralis.serverURL = "https://3rspi8p5c3cn.moralis.io:2053/server";
+Moralis.initialize("latDkuLtDWKsjXvhGe568XOjkkSIE9R3wqbVaRSJ")
+Moralis.serverURL = "https://qqsv7adkxsrr.moralis.io:2053/server";
 
 async function bidForNFT(_tokenId, _bid) {
     sendsettings = {
@@ -37,11 +37,24 @@ async function createNewNFT(_file, _name, _description) {
         const file = new Moralis.File("upload.json", { base64: btoa(JSON.stringify(object)) });
         await file.saveIPFS();
         let hash = file.ipfs();
-        console.log(hash);
+        
         //Mint NFT and store Hash on blockchain in NFTToken.sol Contract
         window.web3 = await Moralis.Web3.enable();
         let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
         let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send(sendsettings);
+        let nftId = mint.events.Transfer.returnValues.tokenId;   
+        
+        // Create a new item on Moralis
+        const Item = Moralis.Object.extend("Item");
+        const item = new Item();
+        item.set('name', _name);
+        item.set('description', _description);
+        item.set('file', file);
+        item.set('hash', hash);
+        item.set('nftId', nftId);
+        item.set('ntfContractAddress', addresses["thecollector"]);
+        await item.save();
+           
         return mint["status"];
     } catch (error) { console.log(error); }
 }
@@ -60,6 +73,13 @@ async function getAllActiveAuctions() {
         //returns list with Id's of all active auctions
         let allAuctions = await NFTAuctioncontractInstance.methods.getAllActiveAuctions().call();
         return allAuctions;
+    } catch (error) { console.log(error); }
+}
+
+async function getUserItems() {
+    try {
+        const ownedItems = await Moralis.Cloud.run("getUserItems");
+        console.log(ownedItems);
     } catch (error) { console.log(error); }
 }
 

@@ -19,6 +19,7 @@ class _Mobileview extends State<Mobileview> {
     final user = Provider.of<LoginModel>(context).user;
     final tx = Provider.of<Contractinteraction>(context).tx;
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       key: _scaffoldKey,
       drawer: Sidebar(),
       body: Column(

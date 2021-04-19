@@ -1,6 +1,8 @@
+import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/widgets/javascript_controller.dart';
 import '/provider/contractinteraction.dart';
 import '../button.dart';
 import '../inputField.dart';
@@ -45,6 +47,17 @@ class MyNFTGridDesktopView extends StatefulWidget {
 
 class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
+
+  Future loadMyItems() async {
+    var promise = getUserItems();
+    var get = await promiseToFuture(promise);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadMyItems();
+  }
 
   @override
   Widget build(BuildContext context) {

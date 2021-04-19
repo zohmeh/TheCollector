@@ -361,6 +361,26 @@ window.abi = [
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "tokenMap",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "tokenHash",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -377,26 +397,6 @@ window.abi = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenURI",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -449,7 +449,13 @@ window.abi = [
       }
     ],
     "name": "mintNewCollectorNFT",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -457,11 +463,11 @@ window.abi = [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "tokenId",
         "type": "uint256"
       }
     ],
-    "name": "getTokenhash",
+    "name": "tokenURI",
     "outputs": [
       {
         "internalType": "string",
@@ -481,12 +487,12 @@ window.abi = [
         "type": "uint256"
       }
     ],
-    "name": "getTokenCreator",
+    "name": "getTokenhash",
     "outputs": [
       {
-        "internalType": "address payable",
+        "internalType": "string",
         "name": "",
-        "type": "address"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
