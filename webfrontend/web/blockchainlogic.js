@@ -88,6 +88,18 @@ async function getUserItems() {
     } catch (error) { console.log(error); }
 }
 
+async function getItemsForSale() {
+    try {
+        let ItemsForSale = [];
+        const forSaleItems = await Moralis.Cloud.run("getItems");
+        for(var i = 0; i < forSaleItems.length; i++) {
+            item = JSON.stringify(forSaleItems[i]);
+            ItemsForSale.push(item); 
+        }
+        return ItemsForSale;
+    } catch (error) { console.log(error); }
+}
+
 async function getMyTokens() {
     try {
         var tokenIds = [];

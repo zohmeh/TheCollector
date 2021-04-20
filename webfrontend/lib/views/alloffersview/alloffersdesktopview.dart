@@ -4,11 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/routing/route_names.dart';
-import 'package:web_app_template/services/navigation_service.dart';
-import 'package:web_app_template/widgets/button.dart';
-import 'package:web_app_template/widgets/ibutton.dart';
+import '/provider/loginprovider.dart';
+import '/routing/route_names.dart';
+import '/services/navigation_service.dart';
+import '/widgets/ibutton.dart';
 import '/locator.dart';
 import '/widgets/javascript_controller.dart';
 import '../../widgets/sellingnft/sellingnftgrieview.dart';
@@ -21,19 +20,39 @@ class AllOffersDesktopView extends StatefulWidget {
 class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
   ScrollController _scrollController = ScrollController();
 
-  Future _getOfferNFTs() async {
-    var promise = getAllActiveOffers();
+  //Future _getOfferNFTs() async {
+  //  var promise = getAllActiveOffers();
+  //  var result = await promiseToFuture(promise);
+  //  return (result);
+  //}
+
+  Future _getItemsForSale() async {
+    var promise = getItemsForSale();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var allOffers = await _getOfferNFTs();
-    List activeOffers = [];
-    List tokenHashes = [];
-    List<dynamic> nftData = [];
+    var items = await _getItemsForSale();
+    //print(items);
 
-    for (var i = 0; i < allOffers.length; i++) {
+    //var allOffers = await _getOfferNFTs();
+    //List activeOffers = [];
+    //List tokenHashes = [];
+    List<dynamic> nftData = [];
+    List tokenIds = [];
+    List prices = [];
+
+    for (var i = 0; i < items.length; i++) {
+      var forSaleItemsdecoded = json.decode(items[i]);
+      tokenIds.add(forSaleItemsdecoded["tokenId"]);
+      var data = await http.get(Uri.parse(forSaleItemsdecoded["tokenuri"]));
+      var jsonData = json.decode(data.body);
+      nftData.add(jsonData);
+      prices.add(forSaleItemsdecoded["price"]);
+    }
+
+    /*  for (var i = 0; i < allOffers.length; i++) {
       if (allOffers[i] != "0") {
         activeOffers.add(allOffers[i]);
       }
@@ -53,11 +72,12 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
       );
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
-    }
+    } */
 
     Map<String, dynamic> nftvalues = {
-      "tokenId": activeOffers,
-      "tokenData": nftData
+      "tokenId": tokenIds,
+      "tokenData": nftData,
+      "price": prices
     };
     return (nftvalues);
   }
@@ -161,9 +181,10 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
                             itemCount: snapshot.data["tokenData"].length,
                             itemBuilder: (ctx, idx) {
                               return SellingNFTGridView(
-                                  id: snapshot.data["tokenId"][idx],
-                                  image: snapshot.data["tokenData"][idx]
-                                      ["file"]);
+                                id: snapshot.data["tokenId"][idx],
+                                image: snapshot.data["tokenData"][idx]["file"],
+                                price: snapshot.data["price"][idx],
+                              );
                             },
                           );
                         }

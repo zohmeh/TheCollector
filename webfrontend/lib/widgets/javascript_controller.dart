@@ -23,3 +23,4 @@ external dynamic buy(String _tokenId, String _price);
 external dynamic getAllActiveOffers();
 external dynamic getOfferData(String _tokenId);
 external dynamic getUserItems();
+external dynamic getItemsForSale();

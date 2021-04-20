@@ -18,19 +18,39 @@ class AllOffersMobileView extends StatefulWidget {
 class _AllOffersMobileViewState extends State<AllOffersMobileView> {
   ScrollController _scrollController = ScrollController();
 
-  Future _getOfferNFTs() async {
-    var promise = getAllActiveOffers();
+  //Future _getOfferNFTs() async {
+  //  var promise = getAllActiveOffers();
+  //  var result = await promiseToFuture(promise);
+  //  return (result);
+  //}
+
+  Future _getItemsForSale() async {
+    var promise = getItemsForSale();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var allOffers = await _getOfferNFTs();
-    List activeOffers = [];
-    List tokenHashes = [];
-    List<dynamic> nftData = [];
+    var items = await _getItemsForSale();
+    //print(items);
 
-    for (var i = 0; i < allOffers.length; i++) {
+    //var allOffers = await _getOfferNFTs();
+    //List activeOffers = [];
+    //List tokenHashes = [];
+    List<dynamic> nftData = [];
+    List tokenIds = [];
+    List prices = [];
+
+    for (var i = 0; i < items.length; i++) {
+      var forSaleItemsdecoded = json.decode(items[i]);
+      tokenIds.add(forSaleItemsdecoded["tokenId"]);
+      var data = await http.get(Uri.parse(forSaleItemsdecoded["tokenuri"]));
+      var jsonData = json.decode(data.body);
+      nftData.add(jsonData);
+      prices.add(forSaleItemsdecoded["price"]);
+    }
+
+    /*  for (var i = 0; i < allOffers.length; i++) {
       if (allOffers[i] != "0") {
         activeOffers.add(allOffers[i]);
       }
@@ -50,11 +70,12 @@ class _AllOffersMobileViewState extends State<AllOffersMobileView> {
       );
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
-    }
+    } */
 
     Map<String, dynamic> nftvalues = {
-      "tokenId": activeOffers,
-      "tokenData": nftData
+      "tokenId": tokenIds,
+      "tokenData": nftData,
+      "price": prices
     };
     return (nftvalues);
   }
@@ -62,53 +83,52 @@ class _AllOffersMobileViewState extends State<AllOffersMobileView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    return Expanded(
-      child: user != null
-          ? VsScrollbar(
-              controller: _scrollController,
-              showTrackOnHover: true,
-              isAlwaysShown: false,
-              scrollbarFadeDuration: Duration(milliseconds: 500),
-              scrollbarTimeToFade: Duration(milliseconds: 800),
-              style: VsScrollbarStyle(
-                hoverThickness: 10.0,
-                radius: Radius.circular(10),
-                thickness: 10.0,
-                color: Theme.of(context).highlightColor,
-              ),
-              child: FutureBuilder(
-                future: _getNFTData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+    return user != null
+        ? VsScrollbar(
+            controller: _scrollController,
+            showTrackOnHover: true,
+            isAlwaysShown: false,
+            scrollbarFadeDuration: Duration(milliseconds: 500),
+            scrollbarTimeToFade: Duration(milliseconds: 800),
+            style: VsScrollbarStyle(
+              hoverThickness: 10.0,
+              radius: Radius.circular(10),
+              thickness: 10.0,
+              color: Theme.of(context).highlightColor,
+            ),
+            child: FutureBuilder(
+              future: _getNFTData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  if (snapshot.data["tokenData"].length == 0 ||
+                      snapshot.data == null) {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Text("No active Sellings"),
                     );
                   } else {
-                    if (snapshot.data["tokenData"].length == 0 ||
-                        snapshot.data == null) {
-                      return Center(
-                        child: Text("No active Sellings"),
-                      );
-                    } else {
-                      return GridView.builder(
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: 50,
-                            mainAxisSpacing: 50,
-                            mainAxisExtent: 375,
-                            maxCrossAxisExtent: 405),
-                        itemCount: snapshot.data["tokenData"].length,
-                        itemBuilder: (ctx, idx) {
-                          return SellingNFTGridView(
-                              id: snapshot.data["tokenId"][idx],
-                              image: snapshot.data["tokenData"][idx]["file"]);
-                        },
-                      );
-                    }
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          crossAxisSpacing: 50,
+                          mainAxisSpacing: 50,
+                          mainAxisExtent: 375,
+                          maxCrossAxisExtent: 405),
+                      itemCount: snapshot.data["tokenData"].length,
+                      itemBuilder: (ctx, idx) {
+                        return SellingNFTGridView(
+                            id: snapshot.data["tokenId"][idx],
+                            image: snapshot.data["tokenData"][idx]["file"],
+                            price: snapshot.data["price"][idx]);
+                      },
+                    );
                   }
-                },
-              ),
-            )
-          : Center(child: Text("Please log in with Metamask")),
-    );
+                }
+              },
+            ),
+          )
+        : Center(child: Text("Please log in with Metamask"));
   }
 }

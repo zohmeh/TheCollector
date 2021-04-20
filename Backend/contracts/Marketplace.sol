@@ -34,8 +34,8 @@ contract Marketplace {
     TheCollector collector;
 
     event newAuction(uint256 tokenId);
-    event newOffer(uint256 tokenId, uint256 price);
-    event tokenSold(uint256 tokenId, uint256 price, address buyer);
+    event newOffer(uint256 id, uint256 tokenId, uint256 price);
+    event tokenSold(uint256 id, uint256 tokenId, uint256 price, address buyer);
 
     constructor(address _collector) public {
         require(address(this) != address(0));
@@ -59,7 +59,7 @@ contract Marketplace {
         offerList.push(_offer);
         offerMap[_tokenId] = _offer;
 
-        emit newOffer(_tokenId, _price);
+        emit newOffer(offerList.length, _tokenId, _price);
     }
 
     function removeOffer(uint256 _tokenId) public {
@@ -92,7 +92,7 @@ contract Marketplace {
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
 
-        emit tokenSold(_tokenId, msg.value, msg.sender);
+        emit tokenSold(offerMap[_tokenId].index, _tokenId, msg.value, msg.sender);
     }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
@@ -143,7 +143,7 @@ contract Marketplace {
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
 
-        emit tokenSold(_tokenId, msg.value, msg.sender);
+        emit tokenSold(auctionMap[_tokenId].index, _tokenId, msg.value, msg.sender);
     }
 
     function deleteAuction(uint256 _tokenId) public {

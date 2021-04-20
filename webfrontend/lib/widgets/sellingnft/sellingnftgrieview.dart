@@ -10,30 +10,31 @@ import '../javascript_controller.dart';
 class SellingNFTGridView extends StatefulWidget {
   final String id;
   final List<dynamic> image;
+  final price;
 
-  SellingNFTGridView({this.id, this.image});
+  SellingNFTGridView({this.id, this.image, this.price});
 
   @override
   _SellingNFTGridViewState createState() => _SellingNFTGridViewState();
 }
 
 class _SellingNFTGridViewState extends State<SellingNFTGridView> {
-  var price = "0";
+  //var price = "0";
 
-  Future _getOfferData() async {
-    var promise = getOfferData(widget.id);
-    var result = await promiseToFuture(promise);
-    var _price = result[1];
-    setState(() {
-      price = _price;
-    });
-  }
+  //Future _getOfferData() async {
+  //  var promise = getOfferData(widget.id);
+  //  var result = await promiseToFuture(promise);
+  //  var _price = result[1];
+  //  setState(() {
+  //    price = _price;
+  //  });
+  //}
 
-  @override
-  void initState() {
-    super.initState();
-    _getOfferData();
-  }
+  //@override
+  //void initState() {
+  //  super.initState();
+  //  _getOfferData();
+  //}
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,8 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                 SizedBox(width: 2),
                 Container(
                   child: Text(
-                    (double.parse(price) / 1000000000000000000).toString(),
+                    (double.parse(widget.price) / 1000000000000000000)
+                        .toString(),
                   ),
                 ),
               ],
@@ -89,10 +91,10 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
             Center(
               child: button(
                   Theme.of(context).buttonColor,
-                  Theme.of(context).backgroundColor,
+                  Theme.of(context).highlightColor,
                   "Buy NFT",
                   Provider.of<Contractinteraction>(context).buyNFT,
-                  [widget.id, price]),
+                  [widget.id, widget.price]),
             )
           ],
         ),
