@@ -8,6 +8,7 @@ import 'package:web_app_template/provider/loginprovider.dart';
 import 'package:web_app_template/routing/route_names.dart';
 import 'package:web_app_template/services/navigation_service.dart';
 import 'package:web_app_template/widgets/button.dart';
+import 'package:web_app_template/widgets/ibutton.dart';
 import '/locator.dart';
 import '/widgets/javascript_controller.dart';
 import '../../widgets/sellingnft/sellingnftgrieview.dart';
@@ -86,17 +87,37 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
           ),
           child: Column(
             children: [
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "All Auctions", _changeGlobalSide, [HomeRoute, 0]),
+              ibutton(
+                  Icons.gavel_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "All Auctions",
+                  _changeGlobalSide,
+                  [HomeRoute, 0]),
               SizedBox(height: 20),
-              button(Colors.purpleAccent, Theme.of(context).highlightColor,
-                  "All Sellings", _changeGlobalSide, [AllOffersRoute, 1]),
+              ibutton(
+                  Icons.attach_money_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor,
+                  "All Sellings",
+                  _changeGlobalSide,
+                  [AllOffersRoute, 1]),
               SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "My Portfolio", _changeGlobalSide, [MyPortfolioRoute, 2]),
+              ibutton(
+                  Icons.account_balance_wallet_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "My Portfolio",
+                  _changeGlobalSide,
+                  [MyPortfolioRoute, 2]),
               SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "Create New NFT", _changeGlobalSide, [CreateNewNFTRoute, 3]),
+              ibutton(
+                  Icons.create_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "Create NFT",
+                  _changeGlobalSide,
+                  [CreateNewNFTRoute, 3]),
             ],
           ),
         ),

@@ -164,7 +164,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                 widget.isOffer || isOffer
                     ? button(
                         Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
+                        Theme.of(context).highlightColor,
                         widget.buttonRemoveOffer,
                         widget.functionRemoveOffer,
                         [widget.id])
@@ -185,7 +185,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                 })),
                         button(
                             Theme.of(context).buttonColor,
-                            Theme.of(context).backgroundColor,
+                            Theme.of(context).highlightColor,
                             "Start Offer",
                             Provider.of<Contractinteraction>(context)
                                 .startOffer,
@@ -194,13 +194,13 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                 widget.isAuction
                     ? button(
                         Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
+                        Theme.of(context).highlightColor,
                         widget.buttonRemoveAuction,
                         widget.functionRemoveAuction,
                         [widget.id])
                     : button(
                         Theme.of(context).buttonColor,
-                        Theme.of(context).backgroundColor,
+                        Theme.of(context).highlightColor,
                         widget.buttonStartAuction,
                         widget.functionStartAuction,
                         [widget.id, "3"]),

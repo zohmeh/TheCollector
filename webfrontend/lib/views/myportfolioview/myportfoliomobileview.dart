@@ -23,21 +23,53 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
   String addresse;
   var user;
 
-  Future _getMyNFTs() async {
-    var promise = getMyTokens();
+  //Future _getMyNFTs() async {
+  //  var promise = getMyTokens();
+  //  var result = await promiseToFuture(promise);
+  //  return (result);
+  //}
+
+  Future _getMyItems() async {
+    var promise = getUserItems();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var myTokens = await _getMyNFTs();
-    var myTokensdecoded = json.decode(myTokens);
-    var nftHashes = myTokensdecoded["tokenHash"];
+    var myItems = await _getMyItems();
+    //print("From Moralis");
+    //print(myItems);
+
+    //var myTokens = await _getMyNFTs();
+    //print("From Blockchain");
+    //print(myTokens);
+
+    //var myTokensdecoded = json.decode(myTokens);
+    //print(myTokensdecoded);
+
+    //var nftHashes = myTokensdecoded["tokenHash"];
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
     List<dynamic> isOffer = [];
+    List<dynamic> tokenIds = [];
 
-    for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
+    for (var i = 0; i < myItems.length; i++) {
+      var myItemdecoded = json.decode(myItems[i]);
+      var promise1 = getAuctionData(myItemdecoded["tokenId"]);
+      var auction = await promiseToFuture(promise1);
+      isAuction.add(auction[0]);
+
+      var promise2 = getOfferData(myItemdecoded["tokenId"]);
+      var offer = await promiseToFuture(promise2);
+      isOffer.add(offer[0]);
+
+      tokenIds.add(myItemdecoded["tokenId"]);
+
+      var data = await http.get(Uri.parse(myItemdecoded["tokenuri"]));
+      var jsonData = json.decode(data.body);
+      nftData.add(jsonData);
+    }
+    /*  for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
       var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
       var auction = await promiseToFuture(promise1);
       isAuction.add(auction[0]);
@@ -54,9 +86,9 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
       );
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
-    }
+    } */
     Map<String, dynamic> nftvalues = {
-      "tokenId": myTokensdecoded["tokenId"],
+      "tokenId": tokenIds,
       "isAuction": isAuction,
       "isOffer": isOffer,
       "tokenData": nftData

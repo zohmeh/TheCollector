@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
+import 'package:web_app_template/widgets/ibutton.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/routing/route_names.dart';
@@ -25,21 +26,52 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   String addresse;
   var user;
 
-  Future _getMyNFTs() async {
-    var promise = getMyTokens();
+  //Future _getMyNFTs() async {
+  //  var promise = getMyTokens();
+  //  var result = await promiseToFuture(promise);
+  //  return (result);
+  //}
+
+  Future _getMyItems() async {
+    var promise = getUserItems();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var myTokens = await _getMyNFTs();
-    var myTokensdecoded = json.decode(myTokens);
-    var nftHashes = myTokensdecoded["tokenHash"];
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
     List<dynamic> isOffer = [];
+    List<dynamic> tokenIds = [];
 
-    for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
+    var myItems = await _getMyItems();
+
+    //var myTokens = await _getMyNFTs();
+    //print("From Blockchain");
+    //print(myTokens);
+
+    //var myTokensdecoded = json.decode(myTokens);
+    //print(myTokensdecoded);
+
+    //var nftHashes = myTokensdecoded["tokenHash"];
+
+    for (var i = 0; i < myItems.length; i++) {
+      var myItemdecoded = json.decode(myItems[i]);
+      var promise1 = getAuctionData(myItemdecoded["tokenId"]);
+      var auction = await promiseToFuture(promise1);
+      isAuction.add(auction[0]);
+
+      var promise2 = getOfferData(myItemdecoded["tokenId"]);
+      var offer = await promiseToFuture(promise2);
+      isOffer.add(offer[0]);
+
+      tokenIds.add(myItemdecoded["tokenId"]);
+
+      var data = await http.get(Uri.parse(myItemdecoded["tokenuri"]));
+      var jsonData = json.decode(data.body);
+      nftData.add(jsonData);
+    }
+    /*  for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
       var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
       var auction = await promiseToFuture(promise1);
       isAuction.add(auction[0]);
@@ -56,9 +88,9 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
       );
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
-    }
+    } */
     Map<String, dynamic> nftvalues = {
-      "tokenId": myTokensdecoded["tokenId"],
+      "tokenId": tokenIds,
       "isAuction": isAuction,
       "isOffer": isOffer,
       "tokenData": nftData
@@ -92,17 +124,37 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
           ),
           child: Column(
             children: [
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "All Auctions", _changeGlobalSide, [HomeRoute, 0]),
+              ibutton(
+                  Icons.gavel_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "All Auctions",
+                  _changeGlobalSide,
+                  [HomeRoute, 0]),
               SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "All Sellings", _changeGlobalSide, [AllOffersRoute, 1]),
+              ibutton(
+                  Icons.attach_money_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "All Sellings",
+                  _changeGlobalSide,
+                  [AllOffersRoute, 1]),
               SizedBox(height: 20),
-              button(Colors.purpleAccent, Theme.of(context).highlightColor,
-                  "My Portfolio", _changeGlobalSide, [MyPortfolioRoute, 2]),
+              ibutton(
+                  Icons.account_balance_wallet_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).accentColor,
+                  "My Portfolio",
+                  _changeGlobalSide,
+                  [MyPortfolioRoute, 2]),
               SizedBox(height: 20),
-              button(Colors.blueAccent, Theme.of(context).highlightColor,
-                  "Create New NFT", _changeGlobalSide, [CreateNewNFTRoute, 3]),
+              ibutton(
+                  Icons.create_rounded,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).highlightColor,
+                  "Create NFT",
+                  _changeGlobalSide,
+                  [CreateNewNFTRoute, 3]),
             ],
           ),
         ),

@@ -33,6 +33,10 @@ contract Marketplace {
     address public owner;
     TheCollector collector;
 
+    event newAuction(uint256 tokenId);
+    event newOffer(uint256 tokenId, uint256 price);
+    event tokenSold(uint256 tokenId, uint256 price, address buyer);
+
     constructor(address _collector) public {
         require(address(this) != address(0));
         owner = msg.sender;
@@ -55,6 +59,7 @@ contract Marketplace {
         offerList.push(_offer);
         offerMap[_tokenId] = _offer;
 
+        emit newOffer(_tokenId, _price);
     }
 
     function removeOffer(uint256 _tokenId) public {
@@ -86,6 +91,8 @@ contract Marketplace {
         address payable originalOwner = payable(collector.ownerOf(_tokenId));
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
+
+        emit tokenSold(_tokenId, msg.value, msg.sender);
     }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
@@ -105,6 +112,8 @@ contract Marketplace {
 
         auctionList.push(_auction);
         auctionMap[_tokenId] = _auction;
+
+        emit newAuction(_tokenId);
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
@@ -133,6 +142,8 @@ contract Marketplace {
         address payable originalOwner = payable(collector.ownerOf(_tokenId));
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
+
+        emit tokenSold(_tokenId, msg.value, msg.sender);
     }
 
     function deleteAuction(uint256 _tokenId) public {

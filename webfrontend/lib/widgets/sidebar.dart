@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/provider/loginprovider.dart';
+import 'package:web_app_template/widgets/ibutton.dart';
 import '../routing/route_names.dart';
 import '../services/navigation_service.dart';
 import '../locator.dart';
@@ -46,31 +47,35 @@ class _SidebarState extends State<Sidebar> {
               Theme.of(context).highlightColor,
               "LogOut",
               Provider.of<LoginModel>(context).logOut),
-          button(
-              Theme.of(context).buttonColor,
+          ibutton(
+              Icons.gavel_rounded,
+              Theme.of(context).primaryColor,
               Theme.of(context).highlightColor,
               "All Auctions",
               _changeSide,
               [HomeRoute, 0]),
           SizedBox(height: 20),
-          button(
-              Theme.of(context).buttonColor,
+          ibutton(
+              Icons.attach_money_rounded,
+              Theme.of(context).primaryColor,
               Theme.of(context).highlightColor,
               "All Sellings",
               _changeSide,
               [AllOffersRoute, 1]),
           SizedBox(height: 20),
-          button(
-              Theme.of(context).buttonColor,
+          ibutton(
+              Icons.account_balance_wallet_rounded,
+              Theme.of(context).primaryColor,
               Theme.of(context).highlightColor,
               "My Portfolio",
               _changeSide,
               [MyPortfolioRoute, 2]),
           SizedBox(height: 20),
-          button(
-              Theme.of(context).buttonColor,
+          ibutton(
+              Icons.create_rounded,
+              Theme.of(context).primaryColor,
               Theme.of(context).highlightColor,
-              "Create New NFT",
+              "Create NFT",
               _changeSide,
               [CreateNewNFTRoute, 3]),
         ],

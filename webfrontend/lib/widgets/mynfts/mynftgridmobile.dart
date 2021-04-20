@@ -178,7 +178,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                             Container(height: 50, width: 150),
                             button(
                                 Theme.of(context).buttonColor,
-                                Theme.of(context).backgroundColor,
+                                Theme.of(context).highlightColor,
                                 widget.buttonRemoveOffer,
                                 widget.functionRemoveOffer,
                                 [widget.id.toString()])
@@ -205,7 +205,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                       })),
                               button(
                                   Theme.of(context).buttonColor,
-                                  Theme.of(context).backgroundColor,
+                                  Theme.of(context).highlightColor,
                                   "Start Offer",
                                   Provider.of<Contractinteraction>(context)
                                       .startOffer,
@@ -222,13 +222,13 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                       widget.isAuction
                           ? button(
                               Theme.of(context).buttonColor,
-                              Theme.of(context).backgroundColor,
+                              Theme.of(context).highlightColor,
                               widget.buttonRemoveAuction,
                               widget.functionRemoveAuction,
                               [widget.id.toString()])
                           : button(
                               Theme.of(context).buttonColor,
-                              Theme.of(context).backgroundColor,
+                              Theme.of(context).highlightColor,
                               widget.buttonStartAuction,
                               widget.functionStartAuction,
                               [widget.id.toString(), "3"]),
