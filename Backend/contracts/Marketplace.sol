@@ -79,6 +79,7 @@ contract Marketplace {
         require(offerMap[_tokenId].isActive == true, "There is no offer for this NFT");
         require(msg.value == offerMap[_tokenId].price, "Please send the correct Price for this NFT");
 
+        uint256 _id = offerMap[_tokenId].index; 
         delete offerMap[_tokenId];
         uint256 _offerId;
         for(_offerId = 0; _offerId < offerList.length; _offerId++){
@@ -92,7 +93,7 @@ contract Marketplace {
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
 
-        emit tokenSold(offerMap[_tokenId].index, _tokenId, msg.value, msg.sender);
+        emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
 
     function startAuction(uint256 _tokenId, uint256 _duration) public {
@@ -130,6 +131,7 @@ contract Marketplace {
         require(msg.value == auctionMap[_tokenId].highestBid, "Please send the correct bidding amount");
         require(now > auctionMap[_tokenId].ending, "Auction not finished yet");
 
+        uint256 _id = auctionMap[_tokenId].index;
         delete auctionMap[_tokenId];
         uint256 _auctionId;
         for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++){
@@ -143,7 +145,7 @@ contract Marketplace {
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
 
-        emit tokenSold(auctionMap[_tokenId].index, _tokenId, msg.value, msg.sender);
+        emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
 
     function deleteAuction(uint256 _tokenId) public {

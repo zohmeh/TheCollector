@@ -4,14 +4,13 @@ Moralis.Cloud.define("getUserItems", async (request) => {
   query.containedIn("owner_of", request.user.attributes.accounts);
   const queryresults = await query.find();
   const results = [];
-
+  
   for (let i = 0; i < queryresults.length; ++i) {
     results.push({
-      "id": queryresults[i].attributes.objectId,
-      "tokenId": queryresults[i].attributes.token_id,
-      "tokenAddress": queryresults[i].attributes.token_address,
-      "symbol": queryresults[i].attributes.symbol,
-      "tokenuri": queryresults[i].attributes.token_uri,
+    	"id": queryresults[i].attributes.objectId,
+      	"tokenId": queryresults[i].attributes.token_id,
+    	"symbol": queryresults[i].attributes.symbol,
+    	"tokenuri": queryresults[i].attributes.token_uri,
     })
   }
   return results;
@@ -24,14 +23,14 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
   query.equalTo("tokenId", request.object.get('token_Id'));
   const object = await query.first();
   if (object) {
-    const owner = object.attributes.owner_of;
+  	const owner = object.attributes.owner_of;
     const userquery = new Moralis.Query(Moralis.User);
     userquery.equalTo("accounts", owner);
-    const userobject = await userquery.first({ useMasterKey: true });
+    const userobject = await userquery.first({useMasterKey:true});
     if (userobject) {
-      request.object.set('user', userobject);
+    	request.object.set('user', userobject);
     }
-    request.object.set('token', object);
+    request.object.set('token', object); 
   }
 });
 
@@ -44,13 +43,13 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
     request.object.set('item', item);
     item.set('isSold', true);
     await item.save();
-
-
+  
+    
     const userquery = new Moralis.Query(Moralis.User);
     userquery.equalTo("accounts", request.object.get('buyer'));
-    const userobject = await userquery.first({ useMasterKey: true });
+    const userobject = await userquery.first({useMasterKey:true});
     if (userobject) {
-      request.object.set('user', userobject);
+    	request.object.set('user', userobject);
     }
   }
 });
@@ -58,26 +57,42 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
 Moralis.Cloud.define("getItems", async (request) => {
   const query = new Moralis.Query("ItemsForSale");
   query.notEqualTo("isSold", true);
-
-  if (request.user) {
-    query.notContainedIn("token.owner_of", request.user.attributes.accounts);
-  }
-
+ 
   query.select("uid", "tokenId", "price", "token.token_uri", "token.symbol", "token.owner_of", "user.username");
-  const queryresults = await query.find({ useMasterKey: true });
+  const queryresults = await query.find({useMasterKey:true});
   const results = [];
-
+  
   for (let i = 0; i < queryresults.length; ++i) {
+ 
+    
     results.push({
-      "uid": queryresults[i].attributes.uid,
-      "tokenId": queryresults[i].attributes.token_id,
-      "tokenAddress": queryresults[i].attributes.token_address,
-      "price": queryresults[i].attributes.price,
-      "symbol": queryresults[i].attributes.token.attributes.symbol,
-      "tokenuri": queryresults[i].attributes.token.attributes.token_uri,
-      "ownerOf": queryresults[i].attributes.token.attributes.owner_of,
-      "userName": queryresults[i].attributes.user.attributes.username,
-    })
-  }
+    	"uid": queryresults[i].attributes.uid,
+      	"tokenId": queryresults[i].attributes.tokenId,
+        "price": queryresults[i].attributes.price,
+    	"symbol": queryresults[i].attributes.token.attributes.symbol,
+    	"tokenuri": queryresults[i].attributes.token.attributes.token_uri,
+        "ownerOf": queryresults[i].attributes.token.attributes.owner_of,
+        "userName": queryresults[i].attributes.user.attributes.username,
+    })}
+ 
   return results;
+});
+
+Moralis.Cloud.define("getItem", async (request) => {
+  const query = new Moralis.Query("ItemsForSale");
+  query.equalTo("tokenId", request.params.tokenId);
+ 
+  query.select("uid", "tokenId", "price", "token.token_uri", "token.symbol", "token.owner_of", "user.username");
+  const queryresult = await query.first({useMasterKey:true});
+  if(!queryresult) return;
+
+ return {
+    	"uid": queryresult.attributes.uid,
+      	"tokenId": queryresult.attributes.tokenId,
+        "price": queryresult.attributes.price,
+    	"symbol": queryresult.attributes.token.attributes.symbol,
+    	"tokenuri": queryresult.attributes.token.attributes.token_uri,
+        "ownerOf": queryresult.attributes.token.attributes.owner_of,
+        "userName": queryresult.attributes.user.attributes.username,
+    };
 });
