@@ -24,45 +24,16 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
         queryParams: {"id": _arguments[1].toString()});
   }
 
-  Future _getAuctionNFTs() async {
-    var promise = getAllActiveAuctions();
-    var result = await promiseToFuture(promise);
-    return (result);
-  }
+  Future _getNFTData() async {
+    var promise = getItemsForAuction();
+    var itemsForAuction = await promiseToFuture(promise);
+    var itemsForAuctiondecoded = [];
 
-  Future<Map<String, dynamic>> _getNFTData() async {
-    var allAuctions = await _getAuctionNFTs();
-    List activeAuctions = [];
-    List tokenHashes = [];
-    List<dynamic> nftData = [];
-
-    for (var i = 0; i < allAuctions.length; i++) {
-      if (allAuctions[i] != "0") {
-        activeAuctions.add(allAuctions[i]);
-      }
+    for (var i = 0; i < itemsForAuction.length; i++) {
+      var forSaleItemsdecoded = json.decode(itemsForAuction[i]);
+      itemsForAuctiondecoded.add(forSaleItemsdecoded);
     }
-
-    for (var i = 0; i < activeAuctions.length; i++) {
-      var promise = getTokenHash(activeAuctions[i]);
-      var auctionTokenHashes = await promiseToFuture(promise);
-      tokenHashes.add(auctionTokenHashes);
-    }
-
-    for (var i = 0; i < tokenHashes.length; i++) {
-      var data = await http.get(
-        Uri.parse(
-          tokenHashes[i].toString(),
-        ),
-      );
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    }
-
-    Map<String, dynamic> nftvalues = {
-      "tokenId": activeAuctions,
-      "tokenData": nftData
-    };
-    return (nftvalues);
+    return (itemsForAuctiondecoded);
   }
 
   @override
@@ -90,8 +61,7 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    if (snapshot.data["tokenData"].length == 0 ||
-                        snapshot.data == null) {
+                    if (snapshot.data.length == 0 || snapshot.data == null) {
                       return Center(
                         child: Text("No active Auctions"),
                       );
@@ -102,11 +72,10 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
                             mainAxisSpacing: 50,
                             mainAxisExtent: 375,
                             maxCrossAxisExtent: 405),
-                        itemCount: snapshot.data["tokenData"].length,
+                        itemCount: snapshot.data.length,
                         itemBuilder: (ctx, idx) {
                           return AuctionNFTGridView(
-                              id: snapshot.data["tokenId"][idx],
-                              image: snapshot.data["tokenData"][idx]["file"],
+                              auctionData: snapshot.data[idx],
                               button1: "Detail View",
                               function1: _changeSide);
                         },

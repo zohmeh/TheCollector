@@ -33,9 +33,10 @@ contract Marketplace {
     address public owner;
     TheCollector collector;
 
-    event newAuction(uint256 tokenId);
+    event newAuction(uint256 id, uint256 tokenId, uint256 ending, uint256 highestBid, address highestBidder);
     event newOffer(uint256 id, uint256 tokenId, uint256 price);
     event tokenSold(uint256 id, uint256 tokenId, uint256 price, address buyer);
+    event newBid(uint256 id, uint256 tokenId, uint256 bid, address bidder);
 
     constructor(address _collector) public {
         require(address(this) != address(0));
@@ -59,7 +60,7 @@ contract Marketplace {
         offerList.push(_offer);
         offerMap[_tokenId] = _offer;
 
-        emit newOffer(offerList.length, _tokenId, _price);
+        emit newOffer(offerMap[_tokenId].index, _tokenId, _price);
     }
 
     function removeOffer(uint256 _tokenId) public {
@@ -114,7 +115,7 @@ contract Marketplace {
         auctionList.push(_auction);
         auctionMap[_tokenId] = _auction;
 
-        emit newAuction(_tokenId);
+        emit newAuction(auctionMap[_tokenId].index, _tokenId, auctionMap[_tokenId].ending, auctionMap[_tokenId].highestBid, auctionMap[_tokenId].highestBidder);
     }
     
     function bid(uint256 _tokenId, uint256 _bid) public {
@@ -124,6 +125,8 @@ contract Marketplace {
      
         auctionMap[_tokenId].highestBid = _bid;
         auctionMap[_tokenId].highestBidder = msg.sender;
+
+        newBid(auctionMap[_tokenId].index, _tokenId, auctionMap[_tokenId].highestBid, auctionMap[_tokenId].highestBidder);
     }
     
     function sellItem(uint256 _tokenId) public payable {

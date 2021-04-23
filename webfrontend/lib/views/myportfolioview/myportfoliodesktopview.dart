@@ -26,34 +26,27 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   String addresse;
   var user;
 
-  //Future _getMyNFTs() async {
-  //  var promise = getMyTokens();
-  //  var result = await promiseToFuture(promise);
-  //  return (result);
-  //}
-
   Future _getMyItems() async {
     var promise = getUserItems();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
+  Future _getMyBids() async {
+    var promise = getMyBids();
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
+
   Future<Map<String, dynamic>> _getNFTData() async {
+    var myBids = _getMyBids();
+
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
     List<dynamic> isOffer = [];
     List<dynamic> tokenIds = [];
 
     var myItems = await _getMyItems();
-
-    //var myTokens = await _getMyNFTs();
-    //print("From Blockchain");
-    //print(myTokens);
-
-    //var myTokensdecoded = json.decode(myTokens);
-    //print(myTokensdecoded);
-
-    //var nftHashes = myTokensdecoded["tokenHash"];
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
@@ -71,24 +64,6 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
     }
-    /*  for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
-      var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
-      var auction = await promiseToFuture(promise1);
-      isAuction.add(auction[0]);
-
-      var promise2 = getOfferData(myTokensdecoded["tokenId"][j]);
-      var offer = await promiseToFuture(promise2);
-      isOffer.add(offer[0]);
-    }
-    for (var i = 0; i < nftHashes.length; i++) {
-      var data = await http.get(
-        Uri.parse(
-          nftHashes[i].toString(),
-        ),
-      );
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    } */
     Map<String, dynamic> nftvalues = {
       "tokenId": tokenIds,
       "isAuction": isAuction,
@@ -192,7 +167,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
-                                    mainAxisExtent: 505,
+                                    mainAxisExtent: 510,
                                     maxCrossAxisExtent: 550),
                             itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {

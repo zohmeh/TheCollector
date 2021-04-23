@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../views/auctiondetail_view.dart';
 import '../routing/route_names.dart';
 import '../views/alloffers_view.dart';
 import '../views/myportfolio_view.dart';
@@ -19,13 +18,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(MyPortfolioView(), settings.name);
     case CreateNewNFTRoute:
       return _getPageRoute(CreateNFTView(), settings.name);
-    case AuctionDetailRoute:
-      var id = routingData['id'];
-      return _getPageRoute(
-          AuctionDetailView(
-            id: id,
-          ),
-          settings.name);
     default:
       return _getPageRoute(HomeView(), settings.name);
   }

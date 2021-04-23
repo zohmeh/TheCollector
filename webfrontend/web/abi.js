@@ -1,4 +1,4 @@
-window.abi = [
+var thecollectorAbi = [
   {
     "inputs": [],
     "stateMutability": "nonpayable",
@@ -498,7 +498,10 @@ window.abi = [
     "stateMutability": "view",
     "type": "function",
     "constant": true
-  },
+  }
+]
+
+var marketplaceAbi = [
   {
     "inputs": [
       {
@@ -516,11 +519,66 @@ window.abi = [
       {
         "indexed": false,
         "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "tokenId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "ending",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "highestBid",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "highestBidder",
+        "type": "address"
       }
     ],
     "name": "newAuction",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "bid",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "bidder",
+        "type": "address"
+      }
+    ],
+    "name": "newBid",
     "type": "event"
   },
   {

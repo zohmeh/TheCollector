@@ -1,21 +1,31 @@
-Moralis.initialize("pWNxIsee7b3MBAWdULyJx76GXGJ7GmhBYvXSQdnn")
-Moralis.serverURL = "https://f666xkvp7bl9.moralis.io:2053/server";
+Moralis.initialize("aQEtmAWQSGD54I81qQDvv6IHgDsJkVLp5M6xUsKa")
+Moralis.serverURL = "https://f3jseekuuf5j.moralis.io:2053/server";
 
 
-async function bidForNFT(_tokenId, _bid) {
+async function init() {
+    console.log("Hallo von init");
+    window.web3 = await Moralis.Web3.enable();
+    window.NFTAuctioncontractInstance = new web3.eth.Contract(marketplaceAbi, addresses["marketplace"]);
+    window.NFTTokencontractInstance = new web3.eth.Contract(thecollectorAbi, addresses["thecollector"]);
+}
+
+init()
+
+async function bidForNFT(_tokenId, _bid, _uid) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-    }
-
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
         const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send({ from: userAddress });
+        if(bid["status"] == true) {
+            const query = new Moralis.Query("ItemsForAuction");
+            query.equalTo("uid", _uid);
+            const result = await query.find();
+            const object = result[0];
+            object.set("highestBidder", userAddress),
+            object.set("highestBid", _bid),
+            object.save();
+        }     
         return bid["status"];
     } catch (error) { console.log(error); }
 }
@@ -46,21 +56,8 @@ async function createNewNFT(_file, _name, _description) {
         let hash = file.ipfs();
 
         //Mint NFT and store Hash on blockchain in NFTToken.sol Contract
-        window.web3 = await Moralis.Web3.enable();
-        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
         let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send({ from: userAddress });
         let nftId = mint.events.Transfer.returnValues.tokenId;
-
-        // Create a new item on Moralis
-        //const Item = Moralis.Object.extend("Item");
-        //const item = new Item();
-        //item.set('name', _name);
-        //item.set('description', _description);
-        //item.set('file', file);
-        //item.set('hash', hash);
-        //item.set('nftId', nftId);
-        //item.set('ntfContractAddress', addresses["thecollector"]);
-        //await item.save();
 
         return mint["status"];
     } catch (error) { console.log(error); }
@@ -68,9 +65,6 @@ async function createNewNFT(_file, _name, _description) {
 
 async function getAllActiveAuctions() {
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         //returns list with Id's of all active auctions
         let allAuctions = await NFTAuctioncontractInstance.methods.getAllActiveAuctions().call();
         return allAuctions;
@@ -93,13 +87,8 @@ async function getItemsForSale() {
     try {
         user = await Moralis.User.current();
         let ItemsForSale = [];
-        const forSaleItems = await Moralis.Cloud.run("getItems");
+        const forSaleItems = await Moralis.Cloud.run("getItemsForSale");
         for (var i = 0; i < forSaleItems.length; i++) {
-
-            //Filter das nur Angbote angezeigt werden die NICHT vom eingeloggeden user sind
-            //if (user) {
-            //    if (user.attributes.accounts.includes(forSaleItems[i].ownerOf)) return;
-            //}
 
             item = JSON.stringify(forSaleItems[i]);
             ItemsForSale.push(item);
@@ -108,13 +97,39 @@ async function getItemsForSale() {
     } catch (error) { console.log(error); }
 }
 
+async function getItemsForAuction() {
+    try {
+        user = await Moralis.User.current();
+        let ItemsForAuction = [];
+        const forAuctionItems = await Moralis.Cloud.run("getItemsForAuction");
+        for (var i = 0; i < forAuctionItems.length; i++) {
+
+            item = JSON.stringify(forAuctionItems[i]);
+            ItemsForAuction.push(item);
+        }
+        return ItemsForAuction;
+    } catch (error) { console.log(error); }
+}
+
+async function getAuctionItem(_tokenId) {
+    try {
+        const query = new Moralis.Query("ItemsForAuction");
+        query.equalTo("tokenId", _tokenId);
+        const result = await query.find();
+        console.log("Hallo von Javascript");
+        console.log(_tokenId);
+        console.log(result[0].get("ending"));
+        const object = result[0];
+        item = JSON.stringify(object);
+
+        return item;
+    } catch (error) { console.log(error); }
+}
+
 async function getMyTokens() {
     try {
         var tokenIds = [];
         var tokenHashes = [];
-
-        window.web3 = await Moralis.Web3.enable();
-        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
 
         //get balance of loggedIn account
         let balanceOf = await NFTTokencontractInstance.methods.balanceOf(ethereum.selectedAddress).call();
@@ -140,9 +155,6 @@ async function getMyTokens() {
 
 async function getAuctionData(_tokenId) {
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         let data = await NFTAuctioncontractInstance.methods.getAuctionData(_tokenId).call();
         return [data[0], data[1], data[2], data[3]];
     } catch (error) { console.log(error); }
@@ -151,9 +163,6 @@ async function getAuctionData(_tokenId) {
 
 async function getTokenHash(_tokenId) {
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
-
         let tokenHash = await NFTTokencontractInstance.methods.getTokenhash(_tokenId).call();
         return tokenHash;
     } catch (error) { console.log(error) }
@@ -194,10 +203,16 @@ async function removeAuction(_tokenId) {
     };
 
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send({ from: userAddress });
+        
+        if(remove["status"] == true) {
+            const query = new Moralis.Query("ItemsForAuction");
+            query.equalTo("tokenId", _tokenId);
+            const result = await query.find();
+            const object = result[0];
+            object.destroy();
+        }       
+        
         return remove["status"];
     } catch (error) { console.log(error); }
 }
@@ -214,9 +229,6 @@ async function sellNFT(_tokenId, _price) {
     };
 
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({ from: userAddress });
         return sellNFT["status"];
     } catch (error) { console.log(error); }
@@ -226,21 +238,12 @@ async function startNewAuction(_tokenId, _duration) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-    };
-
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         //Approve NFT Auction Contract to use my NFT
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress });
         //Start Auction
         let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send({ from: userAddress });
+
         return auction["status"];
     } catch (error) { console.log(error); }
 }
@@ -256,10 +259,6 @@ async function startNewOffer(_tokenId, _price) {
     };
 
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTTokencontractInstance = new web3.eth.Contract(window.abi, addresses["thecollector"]);
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         //Approve NFT Auction Contract to use my NFT
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress });
         //Start Offer
@@ -272,18 +271,42 @@ async function removeOffer(_tokenId) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-    };
+    try {
+        let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send({ from: userAddress });
+        
+        if(remove["status"] == true) {
+            const query = new Moralis.Query("ItemsForSale");
+            query.equalTo("tokenId", _tokenId);
+            const result = await query.find();
+            const object = result[0];
+            object.destroy();
+        }
+        
+        return remove["status"];
+    } catch (error) { console.log(error); }
+}
+
+async function getMyBids() {
+    user = await Moralis.User.current();
+    const userAddress = user.get("ethAddress");
+    let myBids = new Array();
 
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
+            const query = new Moralis.Query("ItemsForAuction");
+            query.equalTo("highestBidder", userAddress);
+            const result = await query.find();
 
-        let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send({ from: userAddress });
-        return remove["status"];
+            for(var i = 0; i < result.length; i++){
+                const object = {
+                    "tokenId": result[i].get("tokenId"),
+                    "highestBid": result[i].get("highestBid"),
+                    "tokenuri": result[i].get("token").get("token_uri")
+                }
+                myBids.push(object);
+            }
+            console.log(myBids);
+        
+        //return object;
     } catch (error) { console.log(error); }
 }
 
@@ -300,18 +323,15 @@ async function buy(_tokenId, _price) {
     };
 
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send({ from: userAddress, value: _price, });    
         
-        //const ItemForSale = Moralis.Object.extend("ItemsForSale")
-        const query = new Moralis.Query("ItemsForSale");
-        query.equalTo("tokenId", _tokenId);
-        const result = await query.find();
-        const object = result[0];
-        object.destroy();
-        console.log(object);       
+        if(buy["status"] == true) {
+            const query = new Moralis.Query("ItemsForSale");
+            query.equalTo("tokenId", _tokenId);
+            const result = await query.find();
+            const object = result[0];
+            object.destroy();
+        }       
         
         return buy["status"];
     } catch (error) { console.log(error); }
@@ -319,9 +339,6 @@ async function buy(_tokenId, _price) {
 
 async function getAllActiveOffers() {
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
         let offers = await NFTAuctioncontractInstance.methods.getAllActiveOffers().call();
         return offers;
     } catch (error) { console.log(error); }
@@ -329,10 +346,7 @@ async function getAllActiveOffers() {
 
 async function getOfferData(_tokenId) {
     try {
-        window.web3 = await Moralis.Web3.enable();
-        let NFTAuctioncontractInstance = new web3.eth.Contract(window.abi, addresses["marketplace"]);
-
-        let data = await NFTAuctioncontractInstance.methods.getOfferData(_tokenId).call();
+         let data = await NFTAuctioncontractInstance.methods.getOfferData(_tokenId).call();
         return [data[0], data[1]];
     } catch (error) { console.log(error); }
 }

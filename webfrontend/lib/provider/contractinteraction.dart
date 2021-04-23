@@ -67,7 +67,7 @@ class Contractinteraction with ChangeNotifier {
     String _bidBN =
         BigInt.from(double.parse(_arguments[1]) * 1000000000000000000)
             .toString();
-    var promise = bidForNFT(_arguments[0], _bidBN);
+    var promise = bidForNFT(_arguments[0], _bidBN, _arguments[2]);
     var bid = await promiseToFuture(promise);
     _tx = bid.toString();
     notifyListeners();
