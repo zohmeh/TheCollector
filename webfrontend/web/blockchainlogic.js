@@ -254,12 +254,6 @@ async function startNewOffer(_tokenId, _price) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-    };
-
     try {
         //Approve NFT Auction Contract to use my NFT
         let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress });

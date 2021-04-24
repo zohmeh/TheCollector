@@ -20,66 +20,21 @@ class AllOffersDesktopView extends StatefulWidget {
 class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
   ScrollController _scrollController = ScrollController();
 
-  //Future _getOfferNFTs() async {
-  //  var promise = getAllActiveOffers();
-  //  var result = await promiseToFuture(promise);
-  //  return (result);
-  //}
-
   Future _getItemsForSale() async {
     var promise = getItemsForSale();
     var result = await promiseToFuture(promise);
     return (result);
   }
 
-  Future<Map<String, dynamic>> _getNFTData() async {
+  Future _getNFTData() async {
     var items = await _getItemsForSale();
-    //print(items);
-
-    //var allOffers = await _getOfferNFTs();
-    //List activeOffers = [];
-    //List tokenHashes = [];
-    List<dynamic> nftData = [];
-    List tokenIds = [];
-    List prices = [];
+    var itemsdecoded = [];
 
     for (var i = 0; i < items.length; i++) {
       var forSaleItemsdecoded = json.decode(items[i]);
-      tokenIds.add(forSaleItemsdecoded["tokenId"]);
-      var data = await http.get(Uri.parse(forSaleItemsdecoded["tokenuri"]));
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-      prices.add(forSaleItemsdecoded["price"]);
+      itemsdecoded.add(forSaleItemsdecoded);
     }
-
-    /*  for (var i = 0; i < allOffers.length; i++) {
-      if (allOffers[i] != "0") {
-        activeOffers.add(allOffers[i]);
-      }
-    }
-
-    for (var i = 0; i < activeOffers.length; i++) {
-      var promise = getTokenHash(activeOffers[i]);
-      var offerTokenHashes = await promiseToFuture(promise);
-      tokenHashes.add(offerTokenHashes);
-    }
-
-    for (var i = 0; i < tokenHashes.length; i++) {
-      var data = await http.get(
-        Uri.parse(
-          tokenHashes[i].toString(),
-        ),
-      );
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    } */
-
-    Map<String, dynamic> nftvalues = {
-      "tokenId": tokenIds,
-      "tokenData": nftData,
-      "price": prices
-    };
-    return (nftvalues);
+    return (itemsdecoded);
   }
 
   _changeGlobalSide(List _arguments) {
@@ -165,7 +120,7 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
                           child: CircularProgressIndicator(),
                         );
                       } else {
-                        if (snapshot.data["tokenData"].length == 0 ||
+                        if (snapshot.data.length == 0 ||
                             snapshot.data == null) {
                           return Center(
                             child: Text("No active Sellings"),
@@ -178,12 +133,10 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
                                     mainAxisSpacing: 50,
                                     mainAxisExtent: 375,
                                     maxCrossAxisExtent: 405),
-                            itemCount: snapshot.data["tokenData"].length,
+                            itemCount: snapshot.data.length,
                             itemBuilder: (ctx, idx) {
                               return SellingNFTGridView(
-                                id: snapshot.data["tokenId"][idx],
-                                image: snapshot.data["tokenData"][idx]["file"],
-                                price: snapshot.data["price"][idx],
+                                itemdata: snapshot.data[idx],
                               );
                             },
                           );

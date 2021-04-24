@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_app_template/widgets/auctionnft/auctionnftgridmobileview.dart';
 import '/provider/loginprovider.dart';
-import '../../widgets/auctionnft/auctionnftgridview.dart';
+import '../../widgets/auctionnft/auctionnftgriddesktopview.dart';
 import '/widgets/javascript_controller.dart';
 import '/services/navigation_service.dart';
 import '/locator.dart';
@@ -68,16 +69,14 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
                     } else {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: 50,
-                            mainAxisSpacing: 50,
-                            mainAxisExtent: 375,
-                            maxCrossAxisExtent: 405),
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                            mainAxisExtent: 530,
+                            maxCrossAxisExtent: 450),
                         itemCount: snapshot.data.length,
                         itemBuilder: (ctx, idx) {
-                          return AuctionNFTGridView(
-                              auctionData: snapshot.data[idx],
-                              button1: "Detail View",
-                              function1: _changeSide);
+                          return AuctionNFTGridMobileView(
+                              auctionData: snapshot.data[idx]);
                         },
                       );
                     }

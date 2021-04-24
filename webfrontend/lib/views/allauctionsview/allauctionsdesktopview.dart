@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:web_app_template/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/routing/route_names.dart';
-import '../../widgets/auctionnft/auctionnftgridview.dart';
+import '../../widgets/auctionnft/auctionnftgriddesktopview.dart';
 import '/widgets/button.dart';
 import '/widgets/ibutton.dart';
 import '/widgets/javascript_controller.dart';
@@ -141,10 +141,8 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
                                     maxCrossAxisExtent: 450),
                             itemCount: snapshot.data.length,
                             itemBuilder: (ctx, idx) {
-                              return AuctionNFTGridView(
-                                  auctionData: snapshot.data[idx],
-                                  button1: "Detail View",
-                                  function1: _changeSide);
+                              return AuctionNFTGridDesktopView(
+                                  auctionData: snapshot.data[idx]);
                             },
                           );
                         }

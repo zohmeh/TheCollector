@@ -1,26 +1,28 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'dart:typed_data';
-import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
 import '../button.dart';
-import '../javascript_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:flip_card/flip_card.dart';
+import '../inputField.dart';
 
-class SellingNFTGridView extends StatefulWidget {
-  Map itemdata;
+class AuctionNFTGridDesktopView extends StatefulWidget {
+  final Map auctionData;
+  final TextEditingController bidamountController = TextEditingController();
 
-  SellingNFTGridView({this.itemdata});
+  AuctionNFTGridDesktopView({this.auctionData});
 
   @override
-  _SellingNFTGridViewState createState() => _SellingNFTGridViewState();
+  _AuctionNFTGridDesktopViewState createState() =>
+      _AuctionNFTGridDesktopViewState();
 }
 
-class _SellingNFTGridViewState extends State<SellingNFTGridView> {
+class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
   Future _getImage() async {
-    var data = await http.get(Uri.parse(widget.itemdata["tokenuri"]));
+    var data = await http.get(Uri.parse(widget.auctionData["tokenuri"]));
     var jsonData = json.decode(data.body);
     var image = jsonData["file"];
     return image;
@@ -28,7 +30,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
 
   Future _getTokenData() async {
     Map tokenData;
-    var data = await http.get(Uri.parse(widget.itemdata["tokenuri"]));
+    var data = await http.get(Uri.parse(widget.auctionData["tokenuri"]));
     var jsonData = json.decode(data.body);
     tokenData = {
       "name": jsonData["name"],
@@ -39,7 +41,6 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.itemdata);
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(
@@ -73,43 +74,111 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: 5),
                       child: Text(
                         "Token Id: ",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )),
                   SizedBox(width: 2),
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(widget.itemdata["tokenId"])),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(widget.auctionData["tokenId"]),
+                  ),
                 ],
               ),
               Row(
                 children: [
                   Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Price in Eth: ",
+                      "Highest Bid in Eth: ",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(width: 2),
                   Container(
-                    child: Text(
-                      (double.parse(widget.itemdata["price"]) /
-                              1000000000000000000)
-                          .toString(),
-                    ),
-                  ),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: widget.auctionData["highestBid"] != null
+                        ? Text(
+                            (double.parse(widget.auctionData["highestBid"]) /
+                                    1000000000000000000)
+                                .toString(),
+                          )
+                        : Text(
+                            ("0"),
+                          ),
+                  )
                 ],
               ),
-              Center(
-                child: button(
-                    Theme.of(context).buttonColor,
-                    Theme.of(context).highlightColor,
-                    "Buy NFT",
-                    Provider.of<Contractinteraction>(context).buyNFT,
-                    [widget.itemdata["tokenId"], widget.itemdata["price"]]),
-              )
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Highest Bidder: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        widget.auctionData["highestBidder"],
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Auction Ending: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(convertDate(widget.auctionData["ending"])),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: button(
+                        Theme.of(context).buttonColor,
+                        Theme.of(context).highlightColor,
+                        "Place your bid",
+                        Provider.of<Contractinteraction>(context).bidForNFT1, [
+                      widget.auctionData["tokenId"],
+                      widget.bidamountController.text,
+                      widget.auctionData["uid"]
+                    ]),
+                  ),
+                  Container(
+                      height: 75,
+                      width: 150,
+                      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                      child: inputField(
+                          ctx: context,
+                          controller: widget.bidamountController,
+                          labelText: "e.g. 1ETH",
+                          leftMargin: 0,
+                          topMargin: 0,
+                          rightMargin: 0,
+                          bottomMargin: 0,
+                          onSubmitted: (_) {
+                            setState(() {});
+                          }))
+                ],
+              ),
             ],
           ),
         ),
@@ -175,7 +244,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(widget.itemdata["userName"]),
+                            child: Text(widget.auctionData["userName"]),
                           ),
                         )
                       ],
