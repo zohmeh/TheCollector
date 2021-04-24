@@ -3,13 +3,9 @@ import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:http/http.dart' as http;
-import 'package:web_app_template/widgets/auctionnft/auctionnftgridmobileview.dart';
+import '/widgets/auctionnft/auctionnftgridmobileview.dart';
 import '/provider/loginprovider.dart';
-import '../../widgets/auctionnft/auctionnftgriddesktopview.dart';
 import '/widgets/javascript_controller.dart';
-import '/services/navigation_service.dart';
-import '/locator.dart';
 
 class AllAuctionsMobileView extends StatefulWidget {
   @override
@@ -19,11 +15,6 @@ class AllAuctionsMobileView extends StatefulWidget {
 class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
   ScrollController _scrollController = ScrollController();
   String addresse;
-
-  _changeSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0],
-        queryParams: {"id": _arguments[1].toString()});
-  }
 
   Future _getNFTData() async {
     var promise = getItemsForAuction();

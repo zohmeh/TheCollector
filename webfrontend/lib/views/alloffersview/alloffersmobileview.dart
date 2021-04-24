@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:js_util';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/services/navigation_service.dart';
-import '/locator.dart';
+import '/provider/loginprovider.dart';
 import '/widgets/javascript_controller.dart';
 import '../../widgets/sellingnft/sellingnftgrieview.dart';
 

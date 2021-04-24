@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:js_util';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';

@@ -202,6 +202,9 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                         topMargin: 0,
                                         rightMargin: 0,
                                         bottomMargin: 0,
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
                                         onSubmitted: (_) {
                                           setState(() {});
                                         })),

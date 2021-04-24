@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:web_app_template/widgets/ibutton.dart';
-import 'package:web_app_template/widgets/myBids/myBids.dart';
+import '/widgets/ibutton.dart';
+import '/widgets/myBids/myBids.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/routing/route_names.dart';
 import '/services/navigation_service.dart';
-import '/widgets/button.dart';
 import '../../widgets/mynfts/mynftgriddesktop.dart';
 import '../../locator.dart';
 import '../../widgets/javascript_controller.dart';
@@ -235,7 +234,6 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                           return Center(
                               child: Text("You have no Bids for NFT Autions"));
                         } else {
-                          print(snapshot.data);
                           return ListView.builder(
                               itemCount: snapshot.data.length,
                               itemBuilder: (ctx, idx) {

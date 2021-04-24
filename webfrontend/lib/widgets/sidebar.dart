@@ -47,6 +47,7 @@ class _SidebarState extends State<Sidebar> {
               Theme.of(context).highlightColor,
               "LogOut",
               Provider.of<LoginModel>(context).logOut),
+          SizedBox(height: 100),
           ibutton(
               Icons.gavel_rounded,
               Theme.of(context).primaryColor,

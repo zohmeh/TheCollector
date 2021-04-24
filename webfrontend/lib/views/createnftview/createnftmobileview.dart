@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:js/js_util.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/widgets/button.dart';
+import '/provider/contractinteraction.dart';
+import '/provider/loginprovider.dart';
+import '/widgets/button.dart';
 import 'package:path/path.dart' as Path;
-import 'package:web_app_template/widgets/inputField.dart';
-import 'package:web_app_template/widgets/javascript_controller.dart';
+import '/widgets/inputField.dart';
 
 class CreateNFTMobileView extends StatefulWidget {
   //const CreateNFTView({Key key}) : super(key: key);
@@ -25,6 +24,8 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
   String _loadedFile;
   var data;
   var _image;
+  var name;
+  var description;
 
   Future _loadPicture() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
@@ -40,12 +41,6 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
         }
       },
     );
-  }
-
-  Future _createNewNFT(List _arguments) async {
-    var promise = createNewNFT(_arguments[0], widget.nftNameController.text,
-        widget.nftDescriptionController.text);
-    await promiseToFuture(promise);
   }
 
   @override
@@ -129,7 +124,16 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
                                   topMargin: 0,
                                   rightMargin: 0,
                                   bottomMargin: 0,
-                                  onSubmitted: (_) {}),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      name = value;
+                                    });
+                                  },
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      name = value;
+                                    });
+                                  }),
                             )),
                         SizedBox(height: 10),
                         Container(
@@ -163,14 +167,23 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
                                   topMargin: 0,
                                   rightMargin: 0,
                                   bottomMargin: 0,
-                                  onSubmitted: () {}),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      description = value;
+                                    });
+                                  },
+                                  onSubmitted: (value) {
+                                    setState(() {
+                                      description = value;
+                                    });
+                                  }),
                             )),
                         button(
                           Theme.of(context).buttonColor,
                           Theme.of(context).highlightColor,
                           "Mint your NFT",
-                          _createNewNFT,
-                          [data],
+                          Provider.of<Contractinteraction>(context).createNFT,
+                          [data, name, description],
                         ),
                       ],
                     ),

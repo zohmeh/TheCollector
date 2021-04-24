@@ -4,12 +4,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
-import 'package:http/http.dart' as http;
-import 'package:web_app_template/provider/contractinteraction.dart';
+import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/routing/route_names.dart';
 import '../../widgets/auctionnft/auctionnftgriddesktopview.dart';
-import '/widgets/button.dart';
 import '/widgets/ibutton.dart';
 import '/widgets/javascript_controller.dart';
 import '/services/navigation_service.dart';
@@ -23,12 +21,6 @@ class AllAuctionsDesktopView extends StatefulWidget {
 class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
   ScrollController _scrollController = ScrollController();
   String addresse;
-
-  _changeSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0], queryParams: {
-      "id": _arguments[1].toString(),
-    });
-  }
 
   Future _getNFTData() async {
     var promise = getItemsForAuction();

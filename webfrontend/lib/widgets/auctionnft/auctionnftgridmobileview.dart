@@ -172,6 +172,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                             topMargin: 0,
                             rightMargin: 0,
                             bottomMargin: 0,
+                            onChanged: (_) {
+                              setState(() {});
+                            },
                             onSubmitted: (_) {
                               setState(() {});
                             })),

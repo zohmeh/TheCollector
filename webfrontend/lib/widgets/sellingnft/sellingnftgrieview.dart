@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app_template/provider/contractinteraction.dart';
+import '/provider/contractinteraction.dart';
 import '../button.dart';
-import '../javascript_controller.dart';
 import 'package:http/http.dart' as http;
 
 class SellingNFTGridView extends StatefulWidget {

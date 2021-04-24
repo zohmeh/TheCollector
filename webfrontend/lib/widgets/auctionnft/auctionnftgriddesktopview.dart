@@ -174,6 +174,9 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                           topMargin: 0,
                           rightMargin: 0,
                           bottomMargin: 0,
+                          onChanged: (_) {
+                            setState(() {});
+                          },
                           onSubmitted: (_) {
                             setState(() {});
                           }))

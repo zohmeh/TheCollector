@@ -80,4 +80,12 @@ class Contractinteraction with ChangeNotifier {
     _tx = sell.toString();
     notifyListeners();
   }
+
+  Future createNFT(List _arguments) async {
+    setTxHash();
+    var promise = createNewNFT(_arguments[0], _arguments[1], _arguments[2]);
+    var create = await promiseToFuture(promise);
+    _tx = create.toString();
+    notifyListeners();
+  }
 }

@@ -3,9 +3,8 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
-import 'package:web_app_template/provider/contractinteraction.dart';
-import 'package:web_app_template/widgets/button.dart';
+import '/provider/contractinteraction.dart';
+import '/widgets/button.dart';
 import '/helpers/dateconverter.dart';
 
 class MyBidsList extends StatelessWidget {

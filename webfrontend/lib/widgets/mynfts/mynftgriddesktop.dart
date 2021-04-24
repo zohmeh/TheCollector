@@ -192,6 +192,9 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                         topMargin: 0,
                                         rightMargin: 0,
                                         bottomMargin: 0,
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
                                         onSubmitted: (_) {
                                           setState(() {});
                                         })),
