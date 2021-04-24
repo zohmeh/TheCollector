@@ -4,6 +4,7 @@ import 'package:js/js_util.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
 import 'package:web_app_template/widgets/ibutton.dart';
+import 'package:web_app_template/widgets/myBids/myBids.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '/routing/route_names.dart';
@@ -34,13 +35,16 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
 
   Future _getMyBids() async {
     var promise = getMyBids();
-    var result = await promiseToFuture(promise);
-    return (result);
+    var mybids = await promiseToFuture(promise);
+    var mybidsdecoded = [];
+    for (var i = 0; i < mybids.length; i++) {
+      var mybiddecoded = json.decode(mybids[i]);
+      mybidsdecoded.add(mybiddecoded);
+    }
+    return mybidsdecoded;
   }
 
   Future<Map<String, dynamic>> _getNFTData() async {
-    var myBids = _getMyBids();
-
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
     List<dynamic> isOffer = [];
@@ -135,7 +139,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
         ),
         Container(
           padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width - 150,
+          width: (MediaQuery.of(context).size.width - 150) * (2 / 3),
           child: user != null
               ? VsScrollbar(
                   controller: _scrollController,
@@ -167,7 +171,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
-                                    mainAxisExtent: 510,
+                                    mainAxisExtent: 530,
                                     maxCrossAxisExtent: 550),
                             itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {
@@ -202,6 +206,48 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                 )
               : Center(child: Text("Please log in with Metamask")),
         ),
+        Container(
+          padding: EdgeInsets.all(10),
+          width: (MediaQuery.of(context).size.width - 150) * (1 / 3),
+          child: user != null
+              ? VsScrollbar(
+                  controller: _scrollController,
+                  showTrackOnHover: true,
+                  isAlwaysShown: false,
+                  scrollbarFadeDuration: Duration(milliseconds: 500),
+                  scrollbarTimeToFade: Duration(milliseconds: 800),
+                  style: VsScrollbarStyle(
+                    hoverThickness: 10.0,
+                    radius: Radius.circular(10),
+                    thickness: 10.0,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                  child: FutureBuilder(
+                    future: _getMyBids(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        if (snapshot.data.length == 0 ||
+                            snapshot.data == null) {
+                          return Center(
+                              child: Text("You have no Bids for NFT Autions"));
+                        } else {
+                          print(snapshot.data);
+                          return ListView.builder(
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (ctx, idx) {
+                                return MyBidsList(mybid: snapshot.data[idx]);
+                              });
+                        }
+                      }
+                    },
+                  ),
+                )
+              : Center(child: Text("Please log in with Metamask")),
+        )
       ],
     );
   }

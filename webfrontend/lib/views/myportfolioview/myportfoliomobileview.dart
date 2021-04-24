@@ -37,17 +37,6 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
 
   Future<Map<String, dynamic>> _getNFTData() async {
     var myItems = await _getMyItems();
-    //print("From Moralis");
-    //print(myItems);
-
-    //var myTokens = await _getMyNFTs();
-    //print("From Blockchain");
-    //print(myTokens);
-
-    //var myTokensdecoded = json.decode(myTokens);
-    //print(myTokensdecoded);
-
-    //var nftHashes = myTokensdecoded["tokenHash"];
     List<dynamic> nftData = [];
     List<dynamic> isAuction = [];
     List<dynamic> isOffer = [];
@@ -69,24 +58,6 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
       var jsonData = json.decode(data.body);
       nftData.add(jsonData);
     }
-    /*  for (var j = 0; j < myTokensdecoded["tokenId"].length; j++) {
-      var promise1 = getAuctionData(myTokensdecoded["tokenId"][j]);
-      var auction = await promiseToFuture(promise1);
-      isAuction.add(auction[0]);
-
-      var promise2 = getOfferData(myTokensdecoded["tokenId"][j]);
-      var offer = await promiseToFuture(promise2);
-      isOffer.add(offer[0]);
-    }
-    for (var i = 0; i < nftHashes.length; i++) {
-      var data = await http.get(
-        Uri.parse(
-          nftHashes[i].toString(),
-        ),
-      );
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    } */
     Map<String, dynamic> nftvalues = {
       "tokenId": tokenIds,
       "isAuction": isAuction,
@@ -129,7 +100,7 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
-                          mainAxisExtent: 400,
+                          mainAxisExtent: 415,
                           maxCrossAxisExtent: double.maxFinite),
                       itemCount: snapshot.data["tokenId"].length,
                       itemBuilder: (ctx, idx) {

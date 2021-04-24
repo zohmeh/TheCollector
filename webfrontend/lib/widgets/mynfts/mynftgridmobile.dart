@@ -115,7 +115,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
@@ -125,12 +125,14 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                     ),
                   ),
                   SizedBox(width: 2),
-                  Container(
-                      width: 234,
-                      height: 50,
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: SingleChildScrollView(
-                          child: Text(widget.description))),
+                  Flexible(
+                    child: Container(
+                        //width: double.maxFinite,
+                        height: 50,
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: SingleChildScrollView(
+                            child: Text(widget.description))),
+                  ),
                 ],
               ),
               widget.isAuction
@@ -171,69 +173,56 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.isOffer || isOffer
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(height: 50, width: 150),
-                            button(
-                                Theme.of(context).buttonColor,
-                                Theme.of(context).highlightColor,
-                                widget.buttonRemoveOffer,
-                                widget.functionRemoveOffer,
-                                [widget.id.toString()])
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                              Container(
-                                  height: 50,
-                                  width: 150,
-                                  child: inputField(
-                                      ctx: context,
-                                      controller:
-                                          widget.sellpriceamountController,
-                                      labelText: "Selling Price e.g. 1ETH",
-                                      leftMargin: 0,
-                                      topMargin: 0,
-                                      rightMargin: 0,
-                                      bottomMargin: 0,
-                                      onSubmitted: (_) {
-                                        setState(() {});
-                                      })),
-                              button(
-                                  Theme.of(context).buttonColor,
-                                  Theme.of(context).highlightColor,
-                                  "Start Offer",
-                                  Provider.of<Contractinteraction>(context)
-                                      .startOffer,
-                                  [
-                                    widget.id.toString(),
-                                    widget.sellpriceamountController.text
-                                  ])
-                            ]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(width: 150),
-                      widget.isAuction
+                      ? button(
+                          Theme.of(context).buttonColor,
+                          Theme.of(context).highlightColor,
+                          widget.buttonRemoveOffer,
+                          widget.functionRemoveOffer,
+                          [widget.id.toString()])
+                      : widget.isAuction
                           ? button(
                               Theme.of(context).buttonColor,
                               Theme.of(context).highlightColor,
                               widget.buttonRemoveAuction,
                               widget.functionRemoveAuction,
                               [widget.id.toString()])
-                          : button(
-                              Theme.of(context).buttonColor,
-                              Theme.of(context).highlightColor,
-                              widget.buttonStartAuction,
-                              widget.functionStartAuction,
-                              [widget.id.toString(), "3"]),
-                    ],
-                  )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: 50,
+                                    width: 150,
+                                    child: inputField(
+                                        ctx: context,
+                                        controller:
+                                            widget.sellpriceamountController,
+                                        labelText: "Selling Price e.g. 1ETH",
+                                        leftMargin: 0,
+                                        topMargin: 0,
+                                        rightMargin: 0,
+                                        bottomMargin: 0,
+                                        onSubmitted: (_) {
+                                          setState(() {});
+                                        })),
+                                button(
+                                    Theme.of(context).buttonColor,
+                                    Theme.of(context).highlightColor,
+                                    "Start Offer",
+                                    Provider.of<Contractinteraction>(context)
+                                        .startOffer,
+                                    [
+                                      widget.id.toString(),
+                                      widget.sellpriceamountController.text
+                                    ]),
+                                button(
+                                    Theme.of(context).buttonColor,
+                                    Theme.of(context).highlightColor,
+                                    widget.buttonStartAuction,
+                                    widget.functionStartAuction,
+                                    [widget.id.toString(), "3"]),
+                              ],
+                            ),
                 ],
               ),
             ],

@@ -120,12 +120,14 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                   ),
                 ),
                 SizedBox(width: 2),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    width: 275,
-                    height: 64,
-                    child:
-                        SingleChildScrollView(child: Text(widget.description))),
+                Flexible(
+                  child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      //width: 275,
+                      height: 64,
+                      child: SingleChildScrollView(
+                          child: Text(widget.description))),
+                ),
               ],
             ),
             widget.isAuction
@@ -168,44 +170,52 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                         widget.buttonRemoveOffer,
                         widget.functionRemoveOffer,
                         [widget.id])
-                    : Row(children: [
-                        Container(
-                            height: 75,
-                            width: 150,
-                            child: inputField(
-                                ctx: context,
-                                controller: widget.sellpriceamountController,
-                                labelText: "Selling Price e.g. 1ETH",
-                                leftMargin: 0,
-                                topMargin: 0,
-                                rightMargin: 0,
-                                bottomMargin: 0,
-                                onSubmitted: (_) {
-                                  setState(() {});
-                                })),
-                        button(
+                    : widget.isAuction
+                        ? button(
                             Theme.of(context).buttonColor,
                             Theme.of(context).highlightColor,
-                            "Start Offer",
-                            Provider.of<Contractinteraction>(context)
-                                .startOffer,
-                            [widget.id, widget.sellpriceamountController.text])
-                      ]),
-                widget.isAuction
-                    ? button(
-                        Theme.of(context).buttonColor,
-                        Theme.of(context).highlightColor,
-                        widget.buttonRemoveAuction,
-                        widget.functionRemoveAuction,
-                        [widget.id])
-                    : button(
-                        Theme.of(context).buttonColor,
-                        Theme.of(context).highlightColor,
-                        widget.buttonStartAuction,
-                        widget.functionStartAuction,
-                        [widget.id, "3"]),
+                            widget.buttonRemoveAuction,
+                            widget.functionRemoveAuction,
+                            [widget.id])
+                        : Column(
+                            children: [
+                              Row(children: [
+                                Container(
+                                    height: 75,
+                                    width: 120,
+                                    child: inputField(
+                                        ctx: context,
+                                        controller:
+                                            widget.sellpriceamountController,
+                                        labelText: "Selling Price e.g. 1ETH",
+                                        leftMargin: 0,
+                                        topMargin: 0,
+                                        rightMargin: 0,
+                                        bottomMargin: 0,
+                                        onSubmitted: (_) {
+                                          setState(() {});
+                                        })),
+                                button(
+                                    Theme.of(context).buttonColor,
+                                    Theme.of(context).highlightColor,
+                                    "Start Offer",
+                                    Provider.of<Contractinteraction>(context)
+                                        .startOffer,
+                                    [
+                                      widget.id,
+                                      widget.sellpriceamountController.text
+                                    ])
+                              ]),
+                              button(
+                                  Theme.of(context).buttonColor,
+                                  Theme.of(context).highlightColor,
+                                  widget.buttonStartAuction,
+                                  widget.functionStartAuction,
+                                  [widget.id, "3"]),
+                            ],
+                          ),
               ],
-            )
+            ),
           ],
         ),
       ),

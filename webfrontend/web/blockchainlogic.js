@@ -221,15 +221,17 @@ async function sellNFT(_tokenId, _price) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-        value: _price
-    };
-
     try {
-        let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({ from: userAddress });
+        let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({ from: userAddress, value: _price });
+        
+        if(sellNFT["status"] == true) {
+            const query = new Moralis.Query("ItemsForAuction");
+            query.equalTo("tokenId", _tokenId);
+            const result = await query.find();
+            const object = result[0];
+            object.destroy();
+        } 
+        
         return sellNFT["status"];
     } catch (error) { console.log(error); }
 }
@@ -297,16 +299,19 @@ async function getMyBids() {
             const result = await query.find();
 
             for(var i = 0; i < result.length; i++){
+                const token = result[i].get("token");
+                await token.fetch();
+                const uri = token.get("token_uri");
+                
                 const object = {
                     "tokenId": result[i].get("tokenId"),
                     "highestBid": result[i].get("highestBid"),
-                    "tokenuri": result[i].get("token").get("token_uri")
+                    "ending": result[i].get("ending"),
+                    "tokenuri": uri,
                 }
-                myBids.push(object);
+                myBids.push(JSON.stringify(object));
             }
-            console.log(myBids);
-        
-        //return object;
+        return myBids;
     } catch (error) { console.log(error); }
 }
 
