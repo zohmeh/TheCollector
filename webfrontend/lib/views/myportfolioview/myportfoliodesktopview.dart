@@ -171,7 +171,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                     crossAxisSpacing: 50,
                                     mainAxisSpacing: 50,
                                     mainAxisExtent: 530,
-                                    maxCrossAxisExtent: 550),
+                                    maxCrossAxisExtent: 500),
                             itemCount: snapshot.data["tokenId"].length,
                             itemBuilder: (ctx, idx) {
                               return MyNFTGridDesktopView(

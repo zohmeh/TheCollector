@@ -154,15 +154,15 @@ contract Marketplace {
     function deleteAuction(uint256 _tokenId) public {
         require(collector.ownerOf(_tokenId) == msg.sender, "Only owner of NFT can end Auction");
         require(auctionMap[_tokenId].hasStarted == true, "Auction has not started yet");
-        require(auctionMap[_tokenId].highestBid == 0, "There is already a bid for the NFT");
+        require(auctionMap[_tokenId].highestBid == 0 || now > auctionMap[_tokenId].ending + 10 * 1 minutes, "There is already a bid for the NFT");
 
         delete auctionMap[_tokenId];
         uint256 _auctionId;
         for(_auctionId = 0; _auctionId < auctionList.length; _auctionId++){
             if(auctionList[_auctionId].tokenId == _tokenId) {
                 auctionList[_auctionId].hasStarted = false;
-            }
-        }
+            }    
+        }    
     }
 
 //--------------------Some Getter Functions----------------------------------------------------------------

@@ -74,8 +74,8 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
             children: [
               //Center(
               Container(
-                height: 125,
-                width: 200,
+                height: 250,
+                width: double.infinity,
                 child: Image.memory(
                   Uint8List.fromList(
                     widget.image.cast<int>(),

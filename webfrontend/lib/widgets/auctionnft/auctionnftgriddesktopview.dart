@@ -59,7 +59,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                     return Container(height: 245, width: double.infinity);
                   } else {
                     return Container(
-                      height: 245,
+                      height: 250,
                       width: double.infinity,
                       child: Image.memory(
                         Uint8List.fromList(

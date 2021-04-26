@@ -1,5 +1,5 @@
-Moralis.initialize("aQEtmAWQSGD54I81qQDvv6IHgDsJkVLp5M6xUsKa")
-Moralis.serverURL = "https://f3jseekuuf5j.moralis.io:2053/server";
+Moralis.initialize("59RojEM97czZiY7o26mUoUrsjLUj15a4HiU2dLft")
+Moralis.serverURL = "https://k742ovagnkmg.moralis.io:2053/server";
 
 
 async function init() {
