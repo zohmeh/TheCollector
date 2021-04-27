@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/widgets/ibutton.dart';
-import '../routing/route_names.dart';
-import '../services/navigation_service.dart';
-import '../locator.dart';
-import './button.dart';
+import '/widgets/ibutton.dart';
+import '../../routing/route_names.dart';
+import '../../services/navigation_service.dart';
+import '../../locator.dart';
 
-String globalPage;
+class SidebarDesktop extends StatefulWidget {
+  final side;
 
-class Sidebar extends StatefulWidget {
+  SidebarDesktop(this.side);
+
   @override
-  _SidebarState createState() => _SidebarState();
+  _SidebarDesktopState createState() => _SidebarDesktopState();
 }
 
-class _SidebarState extends State<Sidebar> {
+class _SidebarDesktopState extends State<SidebarDesktop> {
   _changeSide(List _arguments) {
     locator<NavigationService>().navigateTo(_arguments[0]);
   }
@@ -37,21 +36,12 @@ class _SidebarState extends State<Sidebar> {
       ),
       child: Column(
         children: [
-          button(
-              Theme.of(context).buttonColor,
-              Theme.of(context).highlightColor,
-              "LogIn",
-              Provider.of<LoginModel>(context).logIn),
-          button(
-              Theme.of(context).buttonColor,
-              Theme.of(context).highlightColor,
-              "LogOut",
-              Provider.of<LoginModel>(context).logOut),
-          SizedBox(height: 100),
           ibutton(
               Icons.gavel_rounded,
               Theme.of(context).primaryColor,
-              Theme.of(context).highlightColor,
+              widget.side == 1
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).highlightColor,
               "All Auctions",
               _changeSide,
               [HomeRoute, 0]),
@@ -59,7 +49,9 @@ class _SidebarState extends State<Sidebar> {
           ibutton(
               Icons.attach_money_rounded,
               Theme.of(context).primaryColor,
-              Theme.of(context).highlightColor,
+              widget.side == 2
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).highlightColor,
               "All Sellings",
               _changeSide,
               [AllOffersRoute, 1]),
@@ -67,7 +59,9 @@ class _SidebarState extends State<Sidebar> {
           ibutton(
               Icons.account_balance_wallet_rounded,
               Theme.of(context).primaryColor,
-              Theme.of(context).highlightColor,
+              widget.side == 3
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).highlightColor,
               "My Portfolio",
               _changeSide,
               [MyPortfolioRoute, 2]),
@@ -75,8 +69,20 @@ class _SidebarState extends State<Sidebar> {
           ibutton(
               Icons.create_rounded,
               Theme.of(context).primaryColor,
-              Theme.of(context).highlightColor,
+              widget.side == 4
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).highlightColor,
               "Create NFT",
+              _changeSide,
+              [CreateNewNFTRoute, 3]),
+          SizedBox(height: 20),
+          ibutton(
+              Icons.analytics,
+              Theme.of(context).primaryColor,
+              widget.side == 5
+                  ? Theme.of(context).accentColor
+                  : Theme.of(context).highlightColor,
+              "Analytics",
               _changeSide,
               [CreateNewNFTRoute, 3]),
         ],

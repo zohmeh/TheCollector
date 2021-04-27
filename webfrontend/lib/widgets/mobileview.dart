@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app_template/widgets/sidebar.dart';
+import 'package:web_app_template/widgets/sidebar/sidebarmobile.dart';
 import '../provider/contractinteraction.dart';
 import '../provider/loginprovider.dart';
 
@@ -21,7 +21,7 @@ class _Mobileview extends State<Mobileview> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       key: _scaffoldKey,
-      drawer: Sidebar(),
+      drawer: SidebarMobile(),
       body: Column(
         children: [
           Container(

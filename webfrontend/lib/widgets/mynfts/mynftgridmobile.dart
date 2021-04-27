@@ -48,17 +48,6 @@ class MyNFTGridMobileView extends StatefulWidget {
 class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
   bool isOffer = false;
 
-  Future loadMyItems() async {
-    var promise = getUserItems();
-    var get = await promiseToFuture(promise);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadMyItems();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -80,7 +69,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                   Uint8List.fromList(
                     widget.image.cast<int>(),
                   ),
-                  fit: BoxFit.fill,
+                  //fit: BoxFit.fill,
                 ),
               ),
               //),

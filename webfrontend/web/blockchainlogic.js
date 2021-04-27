@@ -1,5 +1,5 @@
-Moralis.initialize("59RojEM97czZiY7o26mUoUrsjLUj15a4HiU2dLft")
-Moralis.serverURL = "https://k742ovagnkmg.moralis.io:2053/server";
+Moralis.initialize("wmLjw9RSz3zPlLNpm0wEGsSLuNlvCoeAthmqbVv9")
+Moralis.serverURL = "https://w8ixbr0xvchp.moralis.io:2053/server";
 
 
 async function init() {
@@ -63,14 +63,6 @@ async function createNewNFT(_file, _name, _description) {
     } catch (error) { console.log(error); }
 }
 
-async function getAllActiveAuctions() {
-    try {
-        //returns list with Id's of all active auctions
-        let allAuctions = await NFTAuctioncontractInstance.methods.getAllActiveAuctions().call();
-        return allAuctions;
-    } catch (error) { console.log(error); }
-}
-
 async function getUserItems() {
     try {
         let userItems = [];
@@ -116,9 +108,6 @@ async function getAuctionItem(_tokenId) {
         const query = new Moralis.Query("ItemsForAuction");
         query.equalTo("tokenId", _tokenId);
         const result = await query.find();
-        console.log("Hallo von Javascript");
-        console.log(_tokenId);
-        console.log(result[0].get("ending"));
         const object = result[0];
         item = JSON.stringify(object);
 
@@ -126,46 +115,16 @@ async function getAuctionItem(_tokenId) {
     } catch (error) { console.log(error); }
 }
 
-async function getMyTokens() {
+async function getOfferItem(_tokenId) {
     try {
-        var tokenIds = [];
-        var tokenHashes = [];
+        const query = new Moralis.Query("ItemsForSale");
+        query.equalTo("tokenId", _tokenId);
+        const result = await query.find();
+        const object = result[0];
+        item = JSON.stringify(object);
 
-        //get balance of loggedIn account
-        let balanceOf = await NFTTokencontractInstance.methods.balanceOf(ethereum.selectedAddress).call();
-
-        //get all tokenIds fpr loggedIn account
-        for (var i = 0; i < balanceOf; i++) {
-            let tokenId = await await NFTTokencontractInstance.methods.tokenOfOwnerByIndex(ethereum.selectedAddress, i).call();
-            tokenIds.push(tokenId);
-        }
-
-        //get all hashes of owners token
-        for (var i = 0; i < tokenIds.length; i++) {
-            let tokenHash = await NFTTokencontractInstance.methods.getTokenhash(tokenIds[i]).call();
-            tokenHashes.push(tokenHash);
-        }
-        const returnobject = {
-            "tokenId": tokenIds,
-            "tokenHash": tokenHashes
-        }
-        return JSON.stringify(returnobject);
+        return item;
     } catch (error) { console.log(error); }
-}
-
-async function getAuctionData(_tokenId) {
-    try {
-        let data = await NFTAuctioncontractInstance.methods.getAuctionData(_tokenId).call();
-        return [data[0], data[1], data[2], data[3]];
-    } catch (error) { console.log(error); }
-}
-
-
-async function getTokenHash(_tokenId) {
-    try {
-        let tokenHash = await NFTTokencontractInstance.methods.getTokenhash(_tokenId).call();
-        return tokenHash;
-    } catch (error) { console.log(error) }
 }
 
 async function loggedIn() {
@@ -333,19 +292,5 @@ async function buy(_tokenId, _price) {
         }       
         
         return buy["status"];
-    } catch (error) { console.log(error); }
-}
-
-async function getAllActiveOffers() {
-    try {
-        let offers = await NFTAuctioncontractInstance.methods.getAllActiveOffers().call();
-        return offers;
-    } catch (error) { console.log(error); }
-}
-
-async function getOfferData(_tokenId) {
-    try {
-         let data = await NFTAuctioncontractInstance.methods.getOfferData(_tokenId).call();
-        return [data[0], data[1]];
     } catch (error) { console.log(error); }
 }

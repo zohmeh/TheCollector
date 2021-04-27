@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
-import '/routing/route_names.dart';
-import '/services/navigation_service.dart';
 import '/widgets/button.dart';
 import 'package:path/path.dart' as Path;
-import '/widgets/ibutton.dart';
 import '/widgets/inputField.dart';
-import '/locator.dart';
 
 class CreateNFTDesktopView extends StatefulWidget {
   //const CreateNFTView({Key key}) : super(key: key);
@@ -47,65 +44,12 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
     );
   }
 
-  _changeGlobalSide(List _arguments) {
-    locator<NavigationService>().navigateTo(_arguments[0]);
-  }
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
     return Row(
       children: [
-        Container(
-          width: 150,
-          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              ibutton(
-                  Icons.gavel_rounded,
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).highlightColor,
-                  "All Auctions",
-                  _changeGlobalSide,
-                  [HomeRoute, 0]),
-              SizedBox(height: 20),
-              ibutton(
-                  Icons.attach_money_rounded,
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).highlightColor,
-                  "All Sellings",
-                  _changeGlobalSide,
-                  [AllOffersRoute, 1]),
-              SizedBox(height: 20),
-              ibutton(
-                  Icons.account_balance_wallet_rounded,
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).highlightColor,
-                  "My Portfolio",
-                  _changeGlobalSide,
-                  [MyPortfolioRoute, 2]),
-              SizedBox(height: 20),
-              ibutton(
-                  Icons.create_rounded,
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).accentColor,
-                  "Create NFT",
-                  _changeGlobalSide,
-                  [CreateNewNFTRoute, 3]),
-            ],
-          ),
-        ),
+        SidebarDesktop(4),
         Container(
           padding: EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width - 150,

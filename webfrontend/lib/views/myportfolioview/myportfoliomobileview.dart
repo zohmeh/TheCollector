@@ -49,13 +49,13 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
-      var promise1 = getAuctionData(myItemdecoded["tokenId"]);
+      var promise1 = getAuctionItem(myItemdecoded["tokenId"]);
       var auction = await promiseToFuture(promise1);
-      isAuction.add(auction[0]);
+      auction != null ? isAuction.add(true) : isAuction.add(false);
 
-      var promise2 = getOfferData(myItemdecoded["tokenId"]);
+      var promise2 = getOfferItem(myItemdecoded["tokenId"]);
       var offer = await promiseToFuture(promise2);
-      isOffer.add(offer[0]);
+      offer != null ? isOffer.add(true) : isOffer.add(false);
 
       tokenIds.add(myItemdecoded["tokenId"]);
 

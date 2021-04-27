@@ -65,7 +65,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         Uint8List.fromList(
                           snapshot.data.cast<int>(),
                         ),
-                        fit: BoxFit.fill,
+                        //fit: BoxFit.fill,
                       ),
                     );
                   }

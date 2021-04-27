@@ -48,17 +48,6 @@ class MyNFTGridDesktopView extends StatefulWidget {
 class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
 
-  Future loadMyItems() async {
-    var promise = getUserItems();
-    var get = await promiseToFuture(promise);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadMyItems();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -77,7 +66,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                 Uint8List.fromList(
                   widget.image.cast<int>(),
                 ),
-                fit: BoxFit.fill,
+                //fit: BoxFit.fill,
               ),
             ),
             Row(

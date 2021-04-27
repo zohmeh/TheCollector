@@ -62,7 +62,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                         Uint8List.fromList(
                           snapshot.data.cast<int>(),
                         ),
-                        fit: BoxFit.fill,
+                        //fit: BoxFit.fill,
                       ),
                     );
                   }

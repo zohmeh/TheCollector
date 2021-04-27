@@ -66,7 +66,7 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                         Uint8List.fromList(
                           snapshot.data.cast<int>(),
                         ),
-                        fit: BoxFit.fill,
+                        //fit: BoxFit.fill,
                       ),
                     );
                   }
