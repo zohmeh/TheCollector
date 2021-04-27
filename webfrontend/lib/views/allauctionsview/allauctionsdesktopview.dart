@@ -26,6 +26,7 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
       var forSaleItemsdecoded = json.decode(itemsForAuction[i]);
       itemsForAuctiondecoded.add(forSaleItemsdecoded);
     }
+
     return (itemsForAuctiondecoded);
   }
 

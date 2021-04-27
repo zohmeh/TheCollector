@@ -46,40 +46,6 @@ class MyNFTGridDesktopView extends StatefulWidget {
 class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
 
-  /*Future<Map<String, dynamic>> _getNFTData() async {
-    List<dynamic> nftData = [];
-    List<dynamic> isAuction = [];
-    List<dynamic> isOffer = [];
-    List<dynamic> tokenIds = [];
-
-    var myItems = await _getMyItems();
-
-    for (var i = 0; i < myItems.length; i++) {
-      var myItemdecoded = json.decode(myItems[i]);
-      var promise1 = getAuctionItem(myItemdecoded["tokenId"]);
-      var auction = await promiseToFuture(promise1);
-      auction != null ? isAuction.add(true) : isAuction.add(false);
-
-      var promise2 = getOfferItem(myItemdecoded["tokenId"]);
-      var offer = await promiseToFuture(promise2);
-      offer != null ? isOffer.add(true) : isOffer.add(false);
-
-      tokenIds.add(myItemdecoded["tokenId"]);
-
-      var data = await http.get(Uri.parse(myItemdecoded["tokenuri"]));
-      var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
-    }
-    Map<String, dynamic> nftvalues = {
-      "tokenId": tokenIds,
-      "isAuction": isAuction,
-      "isOffer": isOffer,
-      "tokenData": nftData
-    };
-    nfts = nftvalues;
-    return (nftvalues);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Card(

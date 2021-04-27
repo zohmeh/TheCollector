@@ -75,7 +75,7 @@ Moralis.Cloud.define("getItemsForSale", async (request) => {
   const query = new Moralis.Query("ItemsForSale");
   query.notEqualTo("isSold", true);
  
-  query.select("uid", "tokenId", "price", "token.token_uri", "token.symbol", "token.owner_of", "user.username");
+  query.select("uid", "tokenId", "price", "token.token_uri", "token.symbol", "token.owner_of", "user.username", "user.avatar");
   const queryresults = await query.find({useMasterKey:true});
   const results = [];
   
@@ -89,6 +89,7 @@ Moralis.Cloud.define("getItemsForSale", async (request) => {
     	"tokenuri": queryresults[i].attributes.token.attributes.token_uri,
         "ownerOf": queryresults[i].attributes.token.attributes.owner_of,
         "userName": queryresults[i].attributes.user.attributes.username,
+      	"userAvatar": queryresults[i].attributes.user.attributes.avatar,
     })}}
  
   return results;
@@ -98,7 +99,7 @@ Moralis.Cloud.define("getItemsForAuction", async (request) => {
   const query = new Moralis.Query("ItemsForAuction");
   query.notEqualTo("isSold", true);
  
-  query.select("uid", "tokenId", "ending", "highestBid", "highestBidder", "token.token_uri", "token.symbol", "token.owner_of", "user.username");
+  query.select("uid", "tokenId", "ending", "highestBid", "highestBidder", "token.token_uri", "token.symbol", "token.owner_of", "user.username", "user.avatar");
   const queryresults = await query.find({useMasterKey:true});
   const results = [];
   
@@ -115,6 +116,7 @@ Moralis.Cloud.define("getItemsForAuction", async (request) => {
     	"tokenuri": queryresults[i].attributes.token.attributes.token_uri,
         "ownerOf": queryresults[i].attributes.token.attributes.owner_of,
         "userName": queryresults[i].attributes.user.attributes.username,
+        "userAvatar": queryresults[i].attributes.user.attributes.avatar,
     })}}
  
   return results;

@@ -4,21 +4,17 @@ import '../widgets/javascript_controller.dart';
 
 class LoginModel with ChangeNotifier {
   var _user;
-  String _image;
+  var image;
 
   String get user {
     return _user;
-  }
-
-  String get image {
-    return _image;
   }
 
   Future logIn() async {
     var promise = login();
     var logIn = await promiseToFuture(promise);
     _user = logIn[0];
-    _image = logIn[1];
+    image = logIn[1];
     notifyListeners();
   }
 

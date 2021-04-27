@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/widgets/useravatar.dart';
 import '/provider/contractinteraction.dart';
 import '../button.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +38,6 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.itemdata);
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(
@@ -173,7 +173,16 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(widget.itemdata["userName"]),
+                            child: Row(
+                              children: [
+                                Text(widget.itemdata["userName"]),
+                                SizedBox(width: 10),
+                                Useravatar(
+                                    image: widget.itemdata["userAvatar"],
+                                    width: 25,
+                                    height: 25),
+                              ],
+                            ),
                           ),
                         )
                       ],

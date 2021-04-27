@@ -8,6 +8,7 @@ import '../button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
 import '../inputField.dart';
+import '../useravatar.dart';
 
 class AuctionNFTGridMobileView extends StatefulWidget {
   final Map auctionData;
@@ -258,7 +259,16 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(widget.auctionData["userName"]),
+                            child: Row(
+                              children: [
+                                Text(widget.auctionData["userName"]),
+                                SizedBox(width: 10),
+                                Useravatar(
+                                    image: widget.auctionData["userAvatar"],
+                                    width: 25,
+                                    height: 25)
+                              ],
+                            ),
                           ),
                         )
                       ],

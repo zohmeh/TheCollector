@@ -16,9 +16,7 @@ class _NavbardesktopState extends State<Navbardesktop> {
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
     final image = Provider.of<LoginModel>(context).image;
-    print(image.runtimeType);
     final tx = Provider.of<Contractinteraction>(context).tx;
-    print(user);
     return Container(
       height: 75,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -90,7 +88,8 @@ class _NavbardesktopState extends State<Navbardesktop> {
                                         fontSize: 10))),
                       ],
                     ),
-                    //Useravatar(image),
+                    Useravatar(image: image, width: 50, height: 50),
+                    SizedBox(width: 15),
                     Container(
                       child: Text(
                         user.toString(),

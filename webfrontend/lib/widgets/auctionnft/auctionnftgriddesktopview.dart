@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
+import 'package:web_app_template/widgets/useravatar.dart';
 import '../button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
@@ -247,7 +248,16 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(widget.auctionData["userName"]),
+                            child: Row(
+                              children: [
+                                Text(widget.auctionData["userName"]),
+                                SizedBox(width: 10),
+                                Useravatar(
+                                    image: widget.auctionData["userAvatar"],
+                                    width: 25,
+                                    height: 25)
+                              ],
+                            ),
                           ),
                         )
                       ],
