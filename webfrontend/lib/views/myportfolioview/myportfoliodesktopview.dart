@@ -88,118 +88,133 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
     return Row(
       children: [
         SidebarDesktop(3),
-        Container(
-          padding: EdgeInsets.all(10),
-          width: (MediaQuery.of(context).size.width - 150) * (2 / 3),
-          child: user != null
-              //? nfts != null
-              ? VsScrollbar(
-                  controller: _scrollController,
-                  showTrackOnHover: true,
-                  isAlwaysShown: false,
-                  scrollbarFadeDuration: Duration(milliseconds: 500),
-                  scrollbarTimeToFade: Duration(milliseconds: 800),
-                  style: VsScrollbarStyle(
-                    hoverThickness: 10.0,
-                    radius: Radius.circular(10),
-                    thickness: 10.0,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  child: FutureBuilder(
-                    future: _getNFTData(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        if (snapshot.data["tokenId"].length == 0 ||
-                            snapshot.data == null) {
-                          return Center(
-                              child: Text("No NFTs in your Portfolio"));
-                        } else {
-                          return GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 50,
-                                    mainAxisSpacing: 50,
-                                    mainAxisExtent: 530,
-                                    maxCrossAxisExtent: 500),
-                            itemCount: nfts["tokenId"].length,
-                            itemBuilder: (ctx, idx) {
-                              return MyNFTGridDesktopView(
-                                id: nfts["tokenId"][idx],
-                                name: nfts["tokenData"][idx]["name"],
-                                description: nfts["tokenData"][idx]
-                                    ["description"],
-                                isAuction: nfts["isAuction"][idx],
-                                isOffer: nfts["isOffer"][idx],
-                                image: nfts["tokenData"][idx]["file"],
-                                buttonStartAuction: "Start Auction",
-                                functionStartAuction:
-                                    Provider.of<Contractinteraction>(context)
-                                        .startAuction,
-                                buttonRemoveAuction: "Delete Auction",
-                                functionRemoveAuction:
-                                    Provider.of<Contractinteraction>(context)
-                                        .removeAuction1,
-                                buttonStartOffer: "Sell NFT",
-                                buttonRemoveOffer: "Remove Offer",
-                                functionRemoveOffer:
-                                    Provider.of<Contractinteraction>(context)
-                                        .removeOffer1,
+        user != null
+            ? Row(
+                children: [
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      //height: double.infinity,
+                      width:
+                          (MediaQuery.of(context).size.width - 150) * (2 / 3),
+                      child:
+                          //? nfts != null
+                          VsScrollbar(
+                        controller: _scrollController,
+                        showTrackOnHover: true,
+                        isAlwaysShown: false,
+                        scrollbarFadeDuration: Duration(milliseconds: 500),
+                        scrollbarTimeToFade: Duration(milliseconds: 800),
+                        style: VsScrollbarStyle(
+                          hoverThickness: 10.0,
+                          radius: Radius.circular(10),
+                          thickness: 10.0,
+                          color: Theme.of(context).highlightColor,
+                        ),
+                        child: FutureBuilder(
+                          future: _getNFTData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
                               );
-                            },
-                          );
-                        }
-                      }
-                    },
-                  ),
-                )
-              //: Center(child: Text("No NFT Token in you Portfolio"))
-              : Center(child: Text("Please log in with Metamask")),
-        ),
-        Container(
-          padding: EdgeInsets.all(10),
-          width: (MediaQuery.of(context).size.width - 150) * (1 / 3),
-          child: user != null
-              ? VsScrollbar(
-                  controller: _scrollController,
-                  showTrackOnHover: true,
-                  isAlwaysShown: false,
-                  scrollbarFadeDuration: Duration(milliseconds: 500),
-                  scrollbarTimeToFade: Duration(milliseconds: 800),
-                  style: VsScrollbarStyle(
-                    hoverThickness: 10.0,
-                    radius: Radius.circular(10),
-                    thickness: 10.0,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  child: FutureBuilder(
-                    future: _getMyBids(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        if (snapshot.data.length == 0 ||
-                            snapshot.data == null) {
-                          return Center(
-                              child: Text("You have no Bids for NFT Autions"));
-                        } else {
-                          return ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (ctx, idx) {
-                                return MyBidsList(mybid: snapshot.data[idx]);
-                              });
-                        }
-                      }
-                    },
-                  ),
-                )
-              : Center(child: Text("Please log in with Metamask")),
-        )
+                            } else {
+                              if (snapshot.data["tokenId"].length == 0 ||
+                                  snapshot.data == null) {
+                                return Center(
+                                    child: Text("No NFTs in your Portfolio"));
+                              } else {
+                                return GridView.builder(
+                                  gridDelegate:
+                                      SliverGridDelegateWithMaxCrossAxisExtent(
+                                          crossAxisSpacing: 50,
+                                          mainAxisSpacing: 50,
+                                          mainAxisExtent: 530,
+                                          maxCrossAxisExtent: 500),
+                                  itemCount: nfts["tokenId"].length,
+                                  itemBuilder: (ctx, idx) {
+                                    return MyNFTGridDesktopView(
+                                      id: nfts["tokenId"][idx],
+                                      name: nfts["tokenData"][idx]["name"],
+                                      description: nfts["tokenData"][idx]
+                                          ["description"],
+                                      isAuction: nfts["isAuction"][idx],
+                                      isOffer: nfts["isOffer"][idx],
+                                      image: nfts["tokenData"][idx]["file"],
+                                      buttonStartAuction: "Start Auction",
+                                      functionStartAuction:
+                                          Provider.of<Contractinteraction>(
+                                                  context)
+                                              .startAuction,
+                                      buttonRemoveAuction: "Delete Auction",
+                                      functionRemoveAuction:
+                                          Provider.of<Contractinteraction>(
+                                                  context)
+                                              .removeAuction1,
+                                      buttonStartOffer: "Sell NFT",
+                                      buttonRemoveOffer: "Remove Offer",
+                                      functionRemoveOffer:
+                                          Provider.of<Contractinteraction>(
+                                                  context)
+                                              .removeOffer1,
+                                    );
+                                  },
+                                );
+                              }
+                            }
+                          },
+                        ),
+                      )
+                      //: Center(child: Text("No NFT Token in you Portfolio"))
+                      ),
+                  Container(
+                    //height: double.infinity,
+                    padding: EdgeInsets.all(10),
+                    width: (MediaQuery.of(context).size.width - 150) * (1 / 3),
+                    child: VsScrollbar(
+                      controller: _scrollController,
+                      showTrackOnHover: true,
+                      isAlwaysShown: false,
+                      scrollbarFadeDuration: Duration(milliseconds: 500),
+                      scrollbarTimeToFade: Duration(milliseconds: 800),
+                      style: VsScrollbarStyle(
+                        hoverThickness: 10.0,
+                        radius: Radius.circular(10),
+                        thickness: 10.0,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      child: FutureBuilder(
+                        future: _getMyBids(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            if (snapshot.data.length == 0 ||
+                                snapshot.data == null) {
+                              return Center(
+                                  child:
+                                      Text("You have no Bids for NFT Autions"));
+                            } else {
+                              return ListView.builder(
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (ctx, idx) {
+                                    return MyBidsList(
+                                        mybid: snapshot.data[idx]);
+                                  });
+                            }
+                          }
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              )
+            : Container(
+                width: (MediaQuery.of(context).size.width - 150),
+                child: Center(child: Text("Please log in with Metamask"))),
       ],
     );
   }

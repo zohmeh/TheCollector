@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:web_app_template/views/accountsettings.dart';
 import '../routing/route_names.dart';
 import '../views/alloffers_view.dart';
 import '../views/myportfolio_view.dart';
@@ -18,6 +19,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(MyPortfolioView(), settings.name);
     case CreateNewNFTRoute:
       return _getPageRoute(CreateNFTView(), settings.name);
+    case SettingsRoute:
+      return _getPageRoute(AccountSettingsView(), settings.name);
     default:
       return _getPageRoute(HomeView(), settings.name);
   }

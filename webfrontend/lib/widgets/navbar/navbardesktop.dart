@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/widgets/useravatar.dart';
 import '../../provider/contractinteraction.dart';
 import '../../provider/loginprovider.dart';
 import '../button.dart';
@@ -14,7 +15,10 @@ class _NavbardesktopState extends State<Navbardesktop> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    final image = Provider.of<LoginModel>(context).image;
+    print(image.runtimeType);
     final tx = Provider.of<Contractinteraction>(context).tx;
+    print(user);
     return Container(
       height: 75,
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -86,6 +90,7 @@ class _NavbardesktopState extends State<Navbardesktop> {
                                         fontSize: 10))),
                       ],
                     ),
+                    //Useravatar(image),
                     Container(
                       child: Text(
                         user.toString(),

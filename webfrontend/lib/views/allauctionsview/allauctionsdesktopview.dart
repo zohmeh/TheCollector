@@ -32,7 +32,7 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    Provider.of<Contractinteraction>(context).tx;
+    final tx = Provider.of<Contractinteraction>(context).tx;
     return Row(
       children: [
         SidebarDesktop(1),

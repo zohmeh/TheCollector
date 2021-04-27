@@ -22,3 +22,4 @@ external dynamic getItemsForAuction();
 external dynamic getAuctionItem(String _tokenId);
 external dynamic getOfferItem(String _tokenId);
 external dynamic getMyBids();
+external dynamic setUserData(var _file, String _username);

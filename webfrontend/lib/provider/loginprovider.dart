@@ -4,15 +4,21 @@ import '../widgets/javascript_controller.dart';
 
 class LoginModel with ChangeNotifier {
   var _user;
+  String _image;
 
   String get user {
     return _user;
   }
 
+  String get image {
+    return _image;
+  }
+
   Future logIn() async {
     var promise = login();
     var logIn = await promiseToFuture(promise);
-    _user = logIn;
+    _user = logIn[0];
+    _image = logIn[1];
     notifyListeners();
   }
 
@@ -27,6 +33,13 @@ class LoginModel with ChangeNotifier {
     var promise = loggedIn();
     var loggedin = await promiseToFuture(promise);
     _user = loggedin;
+    notifyListeners();
+  }
+
+  Future setMyData(List _arguments) async {
+    var promise = setUserData(_arguments[0], _arguments[1]);
+    var userdata = await promiseToFuture(promise);
+    _user = userdata;
     notifyListeners();
   }
 }

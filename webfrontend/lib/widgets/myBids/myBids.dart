@@ -16,6 +16,7 @@ class MyBidsList extends StatelessWidget {
     var data = await http.get(Uri.parse(mybid["tokenuri"]));
     var jsonData = json.decode(data.body);
     var image = jsonData["file"];
+    print(image);
     return image;
   }
 

@@ -3,7 +3,6 @@ Moralis.serverURL = "https://w8ixbr0xvchp.moralis.io:2053/server";
 
 
 async function init() {
-    console.log("Hallo von init");
     window.web3 = await Moralis.Web3.enable();
     window.NFTAuctioncontractInstance = new web3.eth.Contract(marketplaceAbi, addresses["marketplace"]);
     window.NFTTokencontractInstance = new web3.eth.Contract(thecollectorAbi, addresses["thecollector"]);
@@ -130,7 +129,9 @@ async function getOfferItem(_tokenId) {
 async function loggedIn() {
     try {
         user = await Moralis.User.current();
-        return user.id
+        let name = user.get("username");
+        let avatar = user.get("avatar");
+        return [name, avatar];
     } catch (error) { console.log(error); }
 }
 
@@ -140,7 +141,9 @@ async function login() {
         if (!user) {
             var user = await Moralis.Web3.authenticate();
         }
-        return user.id
+        let name = user.get("username");
+        let avatar = user.get("avatar");
+        return [name, JSON.stringify(avatar)];
     } catch (error) { console.log(error); }
 }
 
@@ -148,6 +151,17 @@ async function logout() {
     try {
         user = await Moralis.User.logOut();
         return (Moralis.User.current());
+    } catch (error) { console.log(error); }
+}
+
+async function setUserData(_file, _username) {
+    user = await Moralis.User.current();
+    try {
+        if(user) {
+        user.set("username", _username);
+        user.set("avatar", _file);
+        return _username;
+        }
     } catch (error) { console.log(error); }
 }
 
