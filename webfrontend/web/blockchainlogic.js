@@ -1,6 +1,5 @@
-Moralis.initialize("NxlkAbcOLT1iC0fHcjPogrKjqMuiO1NmtutpVdl8")
-Moralis.serverURL = "https://k1wcf9mxn8od.moralis.io:2053/server";
-
+Moralis.initialize("ZtNl6bkhMbBcELIcZfbwcMnjeRauoQt7MXqpxzMd")
+Moralis.serverURL = "https://x69mt9bwsnqc.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -304,11 +303,11 @@ async function buy(_tokenId, _price) {
             const object = result[0];
             object.destroy();
 
-            const queryItem = new Moralis.Query("Item");
-            queryItem.equalTo("tokenId", _tokenId);
-            const item = await queryItem.first();
-            item.set("price", _price);
-            item.save();
+            //const queryItem = new Moralis.Query("Item");
+            //queryItem.equalTo("tokenId", _tokenId);
+            //const item = await queryItem.first();
+            //item.set("price", _price);
+            //item.save();
         }
 
         return buy["status"];

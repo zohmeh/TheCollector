@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './createnftview/createnftmobileview.dart';
-import '../responsive.dart';
-import './createnftview/createnftdektopview.dart';
+import 'createnftmobileview.dart';
+import '../../responsive.dart';
+import 'createnftdektopview.dart';
 
 class CreateNFTView extends StatefulWidget {
   @override

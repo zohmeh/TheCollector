@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
-import '../button.dart';
+import '../buttons/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
 import '../inputField.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_app_template/views/allauctionsview/allauctionsmobileview.dart';
-import '../responsive.dart';
-import './allauctionsview/allauctionsdesktopview.dart';
+import '../../responsive.dart';
+import 'allauctionsdesktopview.dart';
 
 class HomeView extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import './alloffersview/alloffersmobileview.dart';
-import '../responsive.dart';
-import './alloffersview/alloffersdesktopview.dart';
+import 'alloffersmobileview.dart';
+import '../../responsive.dart';
+import 'alloffersdesktopview.dart';
 
 class AllOffersView extends StatefulWidget {
   @override

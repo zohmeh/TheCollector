@@ -8,7 +8,7 @@ Moralis.Cloud.define("getUserItems", async (request) => {
   for (let i = 0; i < queryresults.length; ++i) {
     results.push({
     	"id": queryresults[i].attributes.objectId,
-      	"tokenId": queryresults[i].attributes.token_id,
+      "tokenId": queryresults[i].attributes.token_id,
     	"symbol": queryresults[i].attributes.symbol,
     	"tokenuri": queryresults[i].attributes.token_uri,
     })

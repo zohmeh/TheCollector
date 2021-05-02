@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/contractinteraction.dart';
-import '../button.dart';
+import '../buttons/button.dart';
 import '../inputField.dart';
 
 class MyNFTGridDesktopView extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web_app_template/responsive.dart';
-import 'package:web_app_template/widgets/mobileview.dart';
+import 'package:web_app_template/views/mobileview.dart';
 import '../widgets/navbar/navbardesktop.dart';
 
 class LayoutTemplate extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_app_template/responsive.dart';
-import '../views/myportfolioview/myportfoliomobileview.dart';
-import './myportfolioview/myportfoliodesktopview.dart';
+import 'myportfoliomobileview.dart';
+import 'myportfoliodesktopview.dart';
 
 class MyPortfolioView extends StatefulWidget {
   const MyPortfolioView({Key key}) : super(key: key);

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/provider/contractinteraction.dart';
-import '/widgets/button.dart';
+import '../buttons/button.dart';
 import '/helpers/dateconverter.dart';
 
 class MyBidsList extends StatelessWidget {

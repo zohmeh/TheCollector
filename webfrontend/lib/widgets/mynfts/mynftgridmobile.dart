@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
-import '../button.dart';
+import '../buttons/button.dart';
 import '../inputField.dart';
 import '../javascript_controller.dart';
 

@@ -4,7 +4,7 @@ import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
-import '/widgets/button.dart';
+import '../../widgets/buttons/button.dart';
 import 'package:path/path.dart' as Path;
 import '/widgets/inputField.dart';
 

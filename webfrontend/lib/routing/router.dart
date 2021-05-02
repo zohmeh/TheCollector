@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:web_app_template/views/accountsettings.dart';
 import '../routing/route_names.dart';
-import '../views/alloffers_view.dart';
-import '../views/myportfolio_view.dart';
-import '../views/createnft_view.dart';
-import '../views/home_view.dart';
+import '../views/alloffersview/alloffers_view.dart';
+import '../views/myportfolioview/myportfolio_view.dart';
+import '../views/createnftview/createnft_view.dart';
+import '../views/allauctionsview/home_view.dart';
 import '../widgets/string_extensions.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {

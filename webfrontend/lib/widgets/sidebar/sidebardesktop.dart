@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/widgets/ibutton.dart';
+import '../../widgets/buttons/ibutton.dart';
 import '../../routing/route_names.dart';
 import '../../services/navigation_service.dart';
 import '../../locator.dart';

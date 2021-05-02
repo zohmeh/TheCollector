@@ -11,12 +11,12 @@ class Useravatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (avatar.length != 0) {
+    if (image != null) {
       for (var i = 0; i < image.length; i++) {
         avatar.add(image[i]);
       }
     }
-    return avatar.length != 0
+    return image != null
         ? Container(
             width: width,
             height: height,

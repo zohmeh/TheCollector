@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:web_app_template/widgets/useravatar.dart';
 import '../../provider/contractinteraction.dart';
 import '../../provider/loginprovider.dart';
-import '../button.dart';
+import '../buttons/button.dart';
 
 class Navbardesktop extends StatefulWidget {
   @override

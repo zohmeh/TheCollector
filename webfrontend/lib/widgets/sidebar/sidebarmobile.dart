@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app_template/provider/loginprovider.dart';
-import 'package:web_app_template/widgets/ibutton.dart';
+import '../../provider/loginprovider.dart';
+import '../../widgets/buttons/ibutton.dart';
 import '../../routing/route_names.dart';
 import '../../services/navigation_service.dart';
 import '../../locator.dart';
-import '../button.dart';
+import '../buttons/button.dart';
 
 class SidebarMobile extends StatefulWidget {
   @override
