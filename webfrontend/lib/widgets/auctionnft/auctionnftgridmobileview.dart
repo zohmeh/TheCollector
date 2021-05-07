@@ -251,7 +251,7 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            "Current User: ",
+                            "Current Owner: ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

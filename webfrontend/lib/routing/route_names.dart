@@ -4,3 +4,4 @@ const String MyPortfolioRoute = "/myPortfolio";
 const String CreateNewNFTRoute = "/createNewNFT";
 const String AuctionDetailRoute = "/auctionDetail";
 const String SettingsRoute = "/settings";
+const String AnalyticsRoute = "/analytics";

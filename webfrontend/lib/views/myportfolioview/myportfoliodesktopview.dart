@@ -20,8 +20,7 @@ class MyPortfolioDesktopView extends StatefulWidget {
 
 class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   ScrollController _scrollController = ScrollController();
-  var nfts;
-  var user;
+  Future myNFTs;
 
   Future _getMyItems() async {
     var promise = getUserItems();
@@ -40,45 +39,42 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
     return mybidsdecoded;
   }
 
-  Future<Map<String, dynamic>> _getNFTData() async {
-    List<dynamic> nftData = [];
-    List<dynamic> isAuction = [];
-    List<dynamic> isOffer = [];
-    List<dynamic> tokenIds = [];
-
+  Future _getNFTData() async {
+    List<dynamic> _myNFTs = [];
     var myItems = await _getMyItems();
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
-      var promise1 = getAuctionItem(myItemdecoded["tokenId"]);
+      var promise1 = getAuctionItem(myItemdecoded["token_id"]);
       var auction = await promiseToFuture(promise1);
-      auction != null ? isAuction.add(true) : isAuction.add(false);
 
-      var promise2 = getOfferItem(myItemdecoded["tokenId"]);
+      auction == null
+          ? myItemdecoded["isAuction"] = false
+          : myItemdecoded["isAuction"] = true;
+
+      var promise2 = getOfferItem(myItemdecoded["token_id"]);
       var offer = await promiseToFuture(promise2);
-      offer != null ? isOffer.add(true) : isOffer.add(false);
 
-      tokenIds.add(myItemdecoded["tokenId"]);
+      offer == null
+          ? myItemdecoded["isOffer"] = false
+          : myItemdecoded["isOffer"] = true;
 
-      var data = await http.get(Uri.parse(myItemdecoded["tokenuri"]));
+      var data = await http.get(Uri.parse(myItemdecoded["token_uri"]));
       var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
+
+      myItemdecoded["name"] = jsonData["name"];
+      myItemdecoded["description"] = jsonData["description"];
+      myItemdecoded["file"] = jsonData["file"];
+
+      _myNFTs.add(myItemdecoded);
     }
-    Map<String, dynamic> nftvalues = {
-      "tokenId": tokenIds,
-      "isAuction": isAuction,
-      "isOffer": isOffer,
-      "tokenData": nftData
-    };
-    nfts = nftvalues;
-    return (nftvalues);
+    return (_myNFTs);
   }
 
   @override
   void initState() {
+    myNFTs = _getNFTData();
     super.initState();
-    print("Hallo von initState");
-    _getNFTData();
   }
 
   @override
@@ -96,9 +92,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                       //height: double.infinity,
                       width:
                           (MediaQuery.of(context).size.width - 150) * (2 / 3),
-                      child:
-                          //? nfts != null
-                          VsScrollbar(
+                      child: VsScrollbar(
                         controller: _scrollController,
                         showTrackOnHover: true,
                         isAlwaysShown: false,
@@ -111,16 +105,14 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                           color: Theme.of(context).highlightColor,
                         ),
                         child: FutureBuilder(
-                          future: _getNFTData(),
+                          future: myNFTs,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
+                              return Center(child: CircularProgressIndicator());
                             } else {
-                              if (snapshot.data["tokenId"].length == 0 ||
-                                  snapshot.data == null) {
+                              if (snapshot.data == null ||
+                                  snapshot.data.length == 0) {
                                 return Center(
                                     child: Text("No NFTs in your Portfolio"));
                               } else {
@@ -131,16 +123,17 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                           mainAxisSpacing: 50,
                                           mainAxisExtent: 530,
                                           maxCrossAxisExtent: 500),
-                                  itemCount: nfts["tokenId"].length,
+                                  itemCount: snapshot.data.length,
                                   itemBuilder: (ctx, idx) {
                                     return MyNFTGridDesktopView(
-                                      id: nfts["tokenId"][idx],
-                                      name: nfts["tokenData"][idx]["name"],
-                                      description: nfts["tokenData"][idx]
+                                      id: snapshot.data[idx]["token_id"],
+                                      name: snapshot.data[idx]["name"],
+                                      description: snapshot.data[idx]
                                           ["description"],
-                                      isAuction: nfts["isAuction"][idx],
-                                      isOffer: nfts["isOffer"][idx],
-                                      image: nfts["tokenData"][idx]["file"],
+                                      isAuction: snapshot.data[idx]
+                                          ["isAuction"],
+                                      isOffer: snapshot.data[idx]["isOffer"],
+                                      image: snapshot.data[idx]["file"],
                                       buttonStartAuction: "Start Auction",
                                       functionStartAuction:
                                           Provider.of<Contractinteraction>(

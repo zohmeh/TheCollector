@@ -15,9 +15,16 @@ class AllOffersDesktopView extends StatefulWidget {
 
 class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
   ScrollController _scrollController = ScrollController();
+  Future sellingNFTs;
 
   Future _getItemsForSale() async {
     var promise = getItemsForSale();
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
+
+  Future _getPriceHistory(String _tokenId) async {
+    var promise = getPriceHistory(_tokenId);
     var result = await promiseToFuture(promise);
     return (result);
   }
@@ -28,9 +35,17 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
 
     for (var i = 0; i < items.length; i++) {
       var forSaleItemsdecoded = json.decode(items[i]);
+      var priceHistory = await _getPriceHistory(forSaleItemsdecoded["tokenId"]);
+      forSaleItemsdecoded["priceHistory"] = priceHistory;
       itemsdecoded.add(forSaleItemsdecoded);
     }
     return (itemsdecoded);
+  }
+
+  @override
+  void initState() {
+    sellingNFTs = _getNFTData();
+    super.initState();
   }
 
   @override
@@ -56,7 +71,7 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
                     color: Theme.of(context).highlightColor,
                   ),
                   child: FutureBuilder(
-                    future: _getNFTData(),
+                    future: sellingNFTs,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

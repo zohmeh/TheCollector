@@ -84,7 +84,7 @@ class _SidebarDesktopState extends State<SidebarDesktop> {
                   : Theme.of(context).highlightColor,
               "Analytics",
               _changeSide,
-              [CreateNewNFTRoute]),
+              [AnalyticsRoute]),
           SizedBox(height: 20),
           ibutton(
               Icons.settings_applications_rounded,

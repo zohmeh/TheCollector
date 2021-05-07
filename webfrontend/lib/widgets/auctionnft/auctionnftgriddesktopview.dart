@@ -240,7 +240,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            "Current User: ",
+                            "Current Owner: ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -250,7 +250,9 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
                               children: [
-                                Text(widget.auctionData["userName"]),
+                                SingleChildScrollView(
+                                    child:
+                                        Text(widget.auctionData["userName"])),
                                 SizedBox(width: 10),
                                 Useravatar(
                                     image: widget.auctionData["userAvatar"],

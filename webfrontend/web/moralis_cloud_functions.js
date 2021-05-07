@@ -22,15 +22,21 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
   const object = await query.first();
-  if (object) {
-  	const owner = object.attributes.owner_of;
+  
+  const creatorquery = new Moralis.Query("Item");
+  creatorquery.equalTo("tokenId", request.object.get('tokenId'));
+  const objectItem = await creatorquery.first();
+  
+  if (object) {    
+    const owner = object.attributes.owner_of;
     const userquery = new Moralis.Query(Moralis.User);
     userquery.equalTo("accounts", owner);
     const userobject = await userquery.first({useMasterKey:true});
     if (userobject) {
     	request.object.set('user', userobject);
     }
-    request.object.set('token', object); 
+    request.object.set('token', object);
+    request.object.set('creator', objectItem.attributes.creator);
   }
 });
 
@@ -39,6 +45,11 @@ Moralis.Cloud.beforeSave("ItemsForAuction", async (request) => {
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
   const object = await query.first();
+  
+  const creatorquery = new Moralis.Query("Item");
+  creatorquery.equalTo("tokenId", request.object.get('tokenId'));
+  const objectItem = await creatorquery.first();
+  
   if (object) {
   	const owner = object.attributes.owner_of;
     const userquery = new Moralis.Query(Moralis.User);
@@ -47,7 +58,8 @@ Moralis.Cloud.beforeSave("ItemsForAuction", async (request) => {
     if (userobject) {
     	request.object.set('user', userobject);
     }
-    request.object.set('token', object); 
+    request.object.set('token', object);
+    request.object.set('creator', objectItem.attributes.creator);
   }
 });
 
@@ -56,6 +68,10 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("uid", request.object.get('uid'));
   const item = await query.first();
+   const creatorquery = new Moralis.Query("Item");
+  creatorquery.equalTo("tokenId", request.object.get('tokenId'));
+  const objectItem = await creatorquery.first();
+  
   if (item) {
     request.object.set('item', item);
     item.set('isSold', true);
@@ -67,6 +83,7 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
     const userobject = await userquery.first({useMasterKey:true});
     if (userobject) {
     	request.object.set('user', userobject);
+      request.object.set('creator', objectItem.attributes.creator);
     }
   }
 });
@@ -80,7 +97,7 @@ Moralis.Cloud.define("getItemsForSale", async (request) => {
   const results = [];
   
   for (let i = 0; i < queryresults.length; ++i) {
- 	if(queryresults[i].attributes.user) {    
+ 	if(queryresults[i].attributes.user && queryresults[i].attributes.user != undefined) {    
     results.push({
     	"uid": queryresults[i].attributes.uid,
       	"tokenId": queryresults[i].attributes.tokenId,
@@ -105,7 +122,7 @@ Moralis.Cloud.define("getItemsForAuction", async (request) => {
   
   for (let i = 0; i < queryresults.length; ++i) {
  
-    if(queryresults[i].attributes.user) {
+    if(queryresults[i].attributes.user && queryresults[i].attributes.user != undefined) {
     results.push({
     	"uid": queryresults[i].attributes.uid,
       	"tokenId": queryresults[i].attributes.tokenId,

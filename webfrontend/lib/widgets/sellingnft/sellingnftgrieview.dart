@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/widgets/charts/linechart.dart';
 import 'package:web_app_template/widgets/useravatar.dart';
 import '/provider/contractinteraction.dart';
 import '../buttons/button.dart';
@@ -165,7 +166,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            "Current User: ",
+                            "Current Owner: ",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -175,7 +176,9 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
                               children: [
-                                Text(widget.itemdata["userName"]),
+                                Text(
+                                  widget.itemdata["userName"],
+                                ),
                                 SizedBox(width: 10),
                                 Useravatar(
                                     image: widget.itemdata["userAvatar"],
@@ -184,9 +187,22 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Pricehistory: ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Container(
+                        height: 200,
+                        width: double.infinity,
+                        child: LineChartWidget(
+                            prices: widget.itemdata["priceHistory"]))
                   ],
                 ),
               ),

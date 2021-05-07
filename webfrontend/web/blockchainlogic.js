@@ -1,5 +1,5 @@
-Moralis.initialize("ZtNl6bkhMbBcELIcZfbwcMnjeRauoQt7MXqpxzMd")
-Moralis.serverURL = "https://x69mt9bwsnqc.moralis.io:2053/server";
+Moralis.initialize("fuqBKX8i1oFdapkZLLz9JEXjc8yOMmshKjJYU196")
+Moralis.serverURL = "https://rlblxuq4eg3u.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -68,8 +68,12 @@ async function createNewNFT(_file, _name, _description) {
 
 async function getUserItems() {
     try {
+        user = await Moralis.User.current();
         let userItems = [];
-        const ownedItems = await Moralis.Cloud.run("getUserItems");
+        const query = new Moralis.Query("EthNFTTokenOwners");
+        query.equalTo("owner_of", user.attributes.ethAddress);
+        const ownedItems = await query.find();
+        //const ownedItems = await Moralis.Cloud.run("getUserItems", {param: user});
         for (var i = 0; i < ownedItems.length; i++) {
             useritem = JSON.stringify(ownedItems[i]);
             userItems.push(useritem);
@@ -80,7 +84,6 @@ async function getUserItems() {
 
 async function getItemsForSale() {
     try {
-        user = await Moralis.User.current();
         let ItemsForSale = [];
         const forSaleItems = await Moralis.Cloud.run("getItemsForSale");
         for (var i = 0; i < forSaleItems.length; i++) {
@@ -97,7 +100,6 @@ async function getItemsForAuction() {
         let ItemsForAuction = [];
         const forAuctionItems = await Moralis.Cloud.run("getItemsForAuction");
         for (var i = 0; i < forAuctionItems.length; i++) {
-
             item = JSON.stringify(forAuctionItems[i]);
             ItemsForAuction.push(item);
         }
@@ -112,8 +114,25 @@ async function getAuctionItem(_tokenId) {
         const result = await query.find();
         const object = result[0];
         item = JSON.stringify(object);
-
         return item;
+    } catch (error) { console.log(error); }
+}
+
+async function getPriceHistory(_tokenId) {
+    try {
+        const priceHistoy = [];
+        let obj;
+        let price;
+        const query = new Moralis.Query("SoldItems");
+        query.equalTo("tokenId", _tokenId);
+        query.ascending("block_number");
+        const result = await query.find();
+        for(var i = 0; i < result.length; i++) {
+            obj = result[i];
+            price = obj.get("price");
+            priceHistoy.push(price);
+        }
+        return priceHistoy;
     } catch (error) { console.log(error); }
 }
 
@@ -289,6 +308,17 @@ async function getMyBids() {
     } catch (error) { console.log(error); }
 }
 
+async function getSoldItems() {
+    let soldItems = [];
+    const query = new Moralis.Query("SoldItems");
+    const result = await query.find();
+    for(var i = 0; i < result.length; i++) {
+        let obj = result[i];
+        soldItems.push(obj);
+     }
+    return JSON.stringify(soldItems);
+}
+
 async function buy(_tokenId, _price) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
@@ -302,12 +332,6 @@ async function buy(_tokenId, _price) {
             const result = await query.find();
             const object = result[0];
             object.destroy();
-
-            //const queryItem = new Moralis.Query("Item");
-            //queryItem.equalTo("tokenId", _tokenId);
-            //const item = await queryItem.first();
-            //item.set("price", _price);
-            //item.save();
         }
 
         return buy["status"];
