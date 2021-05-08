@@ -52,8 +52,9 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(
-        shadowColor: Colors.grey,
-        elevation: 10,
+        color: Theme.of(context).primaryColor,
+        //shadowColor: Colors.grey,
+        //elevation: 10,
         child: Container(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -85,12 +86,16 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: Text(
                         "Token Id: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
                       )),
                   SizedBox(width: 2),
                   Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
-                      child: Text(widget.itemdata["tokenId"])),
+                      child: Text(widget.itemdata["tokenId"],
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor))),
                 ],
               ),
               Row(
@@ -98,16 +103,19 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                   Container(
                     child: Text(
                       "Price in Eth: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
                     ),
                   ),
                   SizedBox(width: 2),
                   Container(
                     child: Text(
-                      (double.parse(widget.itemdata["price"]) /
-                              1000000000000000000)
-                          .toString(),
-                    ),
+                        (double.parse(widget.itemdata["price"]) /
+                                1000000000000000000)
+                            .toString(),
+                        style:
+                            TextStyle(color: Theme.of(context).highlightColor)),
                   ),
                 ],
               ),
@@ -130,8 +138,9 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
             return Container();
           } else {
             return Card(
-              shadowColor: Colors.grey,
-              elevation: 10,
+              color: Theme.of(context).primaryColor,
+              //shadowColor: Colors.grey,
+              //elevation: 10,
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -144,12 +153,16 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 "Token Name: ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).highlightColor),
                               )),
                           SizedBox(width: 2),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(snapshot.data["name"]),
+                            child: Text(snapshot.data["name"],
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor)),
                           ),
                         ],
                       ),
@@ -159,14 +172,18 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "Description: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).highlightColor),
                             ),
                           ),
                           SizedBox(width: 2),
                           Flexible(
                             child: Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Text(snapshot.data["description"]),
+                              child: Text(snapshot.data["description"],
+                                  style: TextStyle(
+                                      color: Theme.of(context).highlightColor)),
                             ),
                           )
                         ],
@@ -177,7 +194,9 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "Current Owner: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).highlightColor),
                             ),
                           ),
                           SizedBox(width: 2),
@@ -186,9 +205,10 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Row(
                                 children: [
-                                  Text(
-                                    widget.itemdata["userName"],
-                                  ),
+                                  Text(widget.itemdata["userName"],
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .highlightColor)),
                                   SizedBox(width: 10),
                                   Useravatar(
                                       image: widget.itemdata["userAvatar"],
@@ -204,7 +224,9 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           "Pricehistory: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).highlightColor),
                         ),
                       ),
                       SizedBox(height: 15),
@@ -215,7 +237,10 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                               child: LineChartWidget(
                                   prices: widget.itemdata["priceHistory"]))
                           : Container(
-                              child: Text("No Pricehistory for this NFT yet")),
+                              child: Text("No Pricehistory for this NFT yet",
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).highlightColor))),
                     ]),
               ),
             );

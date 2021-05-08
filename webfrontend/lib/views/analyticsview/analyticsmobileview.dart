@@ -53,10 +53,16 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
                       sortAscending: _isAscending,
                       columns: [
                         DataColumn(
-                            label:
-                                Flexible(child: Container(child: Text("NFT")))),
+                            label: Flexible(
+                                child: Container(
+                                    child: Text("NFT",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .accentColor))))),
                         DataColumn(
-                            label: Text("Price"),
+                            label: Text("Price",
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor)),
                             onSort: (columnIndex, _) {
                               setState(() {
                                 _currentSortColumn = columnIndex;
@@ -73,18 +79,32 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
                             }),
                         DataColumn(
                             label: Flexible(
-                                child: Container(child: Text("Creator")))),
+                                child: Container(
+                                    child: Text("Creator",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .accentColor))))),
                       ],
                       rows: allItems
                           .map((element) => DataRow(cells: [
-                                DataCell(Text(element["tokenId"])),
-                                DataCell(Text((int.parse(element["price"]) /
-                                            1000000000000000000)
-                                        .toString() +
-                                    " Eth")),
+                                DataCell(Text(element["tokenId"],
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).highlightColor))),
+                                DataCell(Text(
+                                    (int.parse(element["price"]) /
+                                                1000000000000000000)
+                                            .toString() +
+                                        " Eth",
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).highlightColor))),
                                 DataCell(Row(
                                   children: [
-                                    Text(element["creator"]["username"]),
+                                    Text(element["creator"]["username"],
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor)),
                                     SizedBox(width: 10),
                                     Useravatar(
                                       width: 25,
@@ -101,6 +121,9 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
           )
         : Container(
             width: (MediaQuery.of(context).size.width - 150),
-            child: Center(child: Text("Please log in with Metamask")));
+            child: Center(
+                child: Text("Please log in with Metamask",
+                    style:
+                        TextStyle(color: Theme.of(context).highlightColor))));
   }
 }

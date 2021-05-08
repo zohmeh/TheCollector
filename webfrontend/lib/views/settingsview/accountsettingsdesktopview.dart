@@ -3,7 +3,6 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
-import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '../../widgets/buttons/button.dart';
 import 'package:path/path.dart' as Path;
@@ -54,7 +53,8 @@ class _AccountSettingsDesktopViewState
           child: user != null
               ? Center(
                   child: Card(
-                    elevation: 10,
+                    color: Theme.of(context).primaryColor,
+                    //elevation: 10,
                     child: Container(
                       padding: EdgeInsets.all(30),
                       height: 500,
@@ -97,7 +97,10 @@ class _AccountSettingsDesktopViewState
                                 child: Center(
                                   child: _loadedFile != null
                                       ? _image
-                                      : Text("No Picture"),
+                                      : Text("No Picture",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor)),
                                 ),
                               )
                             ],
@@ -157,7 +160,10 @@ class _AccountSettingsDesktopViewState
                     ),
                   ),
                 )
-              : Center(child: Text("Please log in with Metamask")),
+              : Center(
+                  child: Text("Please log in with Metamask",
+                      style:
+                          TextStyle(color: Theme.of(context).highlightColor))),
         ),
       ],
     );

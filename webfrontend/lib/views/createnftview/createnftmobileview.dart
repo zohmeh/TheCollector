@@ -51,7 +51,8 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
             child: SingleChildScrollView(
               child: Expanded(
                 child: Card(
-                  elevation: 10,
+                  color: Theme.of(context).primaryColor,
+                  //elevation: 10,
                   child: Container(
                     padding: EdgeInsets.all(30),
                     child: Column(
@@ -89,7 +90,10 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
                           child: Center(
                             child: _loadedFile != null
                                 ? _image
-                                : Text("No Picture"),
+                                : Text("No Picture",
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).highlightColor)),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -192,6 +196,8 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
               ),
             ),
           )
-        : Center(child: Text("Please log in with Metamask"));
+        : Center(
+            child: Text("Please log in with Metamask",
+                style: TextStyle(color: Theme.of(context).highlightColor)));
   }
 }

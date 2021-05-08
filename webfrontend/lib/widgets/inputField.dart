@@ -18,14 +18,18 @@ inputField(
         EdgeInsets.fromLTRB(leftMargin, topMargin, rightMargin, bottomMargin),
     padding: EdgeInsets.all(3),
     decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        color: Theme.of(ctx).primaryColor,
+        borderRadius: BorderRadius.circular(10)),
     child: TextFormField(
+      style: TextStyle(color: Theme.of(ctx).highlightColor),
       keyboardType: TextInputType.text,
       maxLines: null,
       controller: controller,
       focusNode: node2,
       decoration: InputDecoration(
-          labelText: labelText, labelStyle: TextStyle(fontSize: 12)),
+          labelText: labelText,
+          labelStyle:
+              TextStyle(fontSize: 12, color: Theme.of(ctx).highlightColor)),
       onChanged: (value) {
         onSubmitted(value);
       },

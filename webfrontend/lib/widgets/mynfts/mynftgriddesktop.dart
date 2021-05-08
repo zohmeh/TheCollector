@@ -49,8 +49,9 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Colors.grey,
-      elevation: 10,
+      //shadowColor: Colors.grey,
+      color: Theme.of(context).primaryColor,
+      //elevation: 10,
       child: Container(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -73,12 +74,18 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Token Id: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
                     )),
                 SizedBox(width: 2),
                 Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Text(widget.id)),
+                  margin: EdgeInsets.symmetric(vertical: 5),
+                  child: Text(
+                    widget.id,
+                    style: TextStyle(color: Theme.of(context).highlightColor),
+                  ),
+                )
               ],
             ),
             Row(
@@ -87,13 +94,18 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "Name: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).highlightColor),
                   ),
                 ),
                 SizedBox(width: 2),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Text(widget.name)),
+                    child: Text(
+                      widget.name,
+                      style: TextStyle(color: Theme.of(context).highlightColor),
+                    )),
               ],
             ),
             Row(
@@ -103,7 +115,9 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     "Description: ",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).highlightColor),
                   ),
                 ),
                 SizedBox(width: 2),
@@ -113,7 +127,11 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                       //width: 275,
                       height: 64,
                       child: SingleChildScrollView(
-                          child: Text(widget.description))),
+                          child: Text(
+                        widget.description,
+                        style:
+                            TextStyle(color: Theme.of(context).highlightColor),
+                      ))),
                 ),
               ],
             ),
@@ -124,11 +142,18 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Text(
                           "NFT is in an Auction: ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).highlightColor),
                         ),
                       ),
                       SizedBox(width: 2),
-                      Container(child: Text("Yes")),
+                      Container(
+                          child: Text(
+                        "Yes",
+                        style:
+                            TextStyle(color: Theme.of(context).highlightColor),
+                      )),
                     ],
                   )
                 : //SizedBox(height: 25),
@@ -139,11 +164,18 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "Direct offer for NTF: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).highlightColor),
                             ),
                           ),
                           SizedBox(width: 2),
-                          Container(child: Text("Yes")),
+                          Container(
+                              child: Text(
+                            "Yes",
+                            style: TextStyle(
+                                color: Theme.of(context).highlightColor),
+                          )),
                         ],
                       )
                     : SizedBox(height: 0),

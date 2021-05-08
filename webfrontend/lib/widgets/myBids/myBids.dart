@@ -23,8 +23,9 @@ class MyBidsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shadowColor: Colors.grey,
-      elevation: 10,
+      color: Theme.of(context).primaryColor,
+      //shadowColor: Colors.grey,
+      //elevation: 10,
       child: ListTile(
         leading: FutureBuilder(
           future: _getImage(),
@@ -54,10 +55,13 @@ class MyBidsList extends StatelessWidget {
           children: [
             Text(
               "Token ID: ",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).highlightColor),
             ),
             SizedBox(width: 10),
-            Text(mybid["tokenId"]),
+            Text(mybid["tokenId"],
+                style: TextStyle(color: Theme.of(context).highlightColor)),
           ],
         ),
         subtitle: Column(
@@ -66,19 +70,26 @@ class MyBidsList extends StatelessWidget {
               children: [
                 Text(
                   "Auction Ending: ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).highlightColor),
                 ),
                 SizedBox(width: 10),
-                Text(convertDate(mybid["ending"])),
+                Text(convertDate(mybid["ending"]),
+                    style: TextStyle(color: Theme.of(context).highlightColor)),
               ],
             ),
             Row(
               children: [
                 Text("Your actual Bid in Eth: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).highlightColor)),
                 SizedBox(width: 10),
-                Text((int.parse(mybid["highestBid"]) / 1000000000000000000)
-                    .toString())
+                Text(
+                    (int.parse(mybid["highestBid"]) / 1000000000000000000)
+                        .toString(),
+                    style: TextStyle(color: Theme.of(context).highlightColor))
               ],
             ),
           ],

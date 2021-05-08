@@ -56,9 +56,14 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                           sortColumnIndex: _currentSortColumn,
                           sortAscending: _isAscending,
                           columns: [
-                            DataColumn(label: Text("NFT")),
                             DataColumn(
-                                label: Text("Price"),
+                                label: Text("NFT",
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor))),
+                            DataColumn(
+                                label: Text("Price",
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor)),
                                 onSort: (columnIndex, _) {
                                   setState(() {
                                     _currentSortColumn = columnIndex;
@@ -75,18 +80,31 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                                     }
                                   });
                                 }),
-                            DataColumn(label: Text("Creator")),
+                            DataColumn(
+                                label: Text("Creator",
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor))),
                           ],
                           rows: allItems
                               .map((element) => DataRow(cells: [
-                                    DataCell(Text(element["tokenId"])),
-                                    DataCell(Text((int.parse(element["price"]) /
-                                                1000000000000000000)
-                                            .toString() +
-                                        " Eth")),
+                                    DataCell(Text(element["tokenId"],
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor))),
+                                    DataCell(Text(
+                                        (int.parse(element["price"]) /
+                                                    1000000000000000000)
+                                                .toString() +
+                                            " Eth",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor))),
                                     DataCell(Row(
                                       children: [
-                                        Text(element["creator"]["username"]),
+                                        Text(element["creator"]["username"],
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .highlightColor)),
                                         SizedBox(width: 10),
                                         Useravatar(
                                           width: 25,
@@ -103,7 +121,10 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
               )
             : Container(
                 width: (MediaQuery.of(context).size.width - 150),
-                child: Center(child: Text("Please log in with Metamask"))),
+                child: Center(
+                    child: Text("Please log in with Metamask",
+                        style: TextStyle(
+                            color: Theme.of(context).highlightColor)))),
       ],
     );
   }

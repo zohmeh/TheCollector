@@ -108,12 +108,15 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                     );
                   } else {
                     if (snapshot.data.length == 0 || snapshot.data == null) {
-                      return Center(child: Text("No NFTs in your Portfolio"));
+                      return Center(
+                          child: Text("No NFTs in your Portfolio",
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor)));
                     } else {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
                             mainAxisExtent: 540,
                             maxCrossAxisExtent: double.maxFinite),
                         itemCount: snapshot.data.length,
@@ -168,7 +171,9 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                   } else {
                     if (snapshot.data.length == 0 || snapshot.data == null) {
                       return Center(
-                          child: Text("You have no Bids for NFT Autions"));
+                          child: Text("You have no Bids for NFT Autions",
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor)));
                     } else {
                       return ListView.builder(
                           itemCount: snapshot.data.length,
@@ -180,6 +185,8 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                 },
               ),
             ))
-        : Center(child: Text("Please log in with Metamask"));
+        : Center(
+            child: Text("Please log in with Metamask",
+                style: TextStyle(color: Theme.of(context).highlightColor)));
   }
 }

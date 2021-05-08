@@ -116,13 +116,16 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                               if (snapshot.data == null ||
                                   snapshot.data.length == 0) {
                                 return Center(
-                                    child: Text("No NFTs in your Portfolio"));
+                                    child: Text("No NFTs in your Portfolio",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .highlightColor)));
                               } else {
                                 return GridView.builder(
                                   gridDelegate:
                                       SliverGridDelegateWithMaxCrossAxisExtent(
-                                          crossAxisSpacing: 50,
-                                          mainAxisSpacing: 50,
+                                          crossAxisSpacing: 0,
+                                          mainAxisSpacing: 0,
                                           mainAxisExtent: 530,
                                           maxCrossAxisExtent: 500),
                                   itemCount: snapshot.data.length,
@@ -190,8 +193,11 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                             if (snapshot.data.length == 0 ||
                                 snapshot.data == null) {
                               return Center(
-                                  child:
-                                      Text("You have no Bids for NFT Autions"));
+                                  child: Text(
+                                      "You have no Bids for NFT Autions",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .highlightColor)));
                             } else {
                               return ListView.builder(
                                   itemCount: snapshot.data.length,
@@ -209,7 +215,10 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
               )
             : Container(
                 width: (MediaQuery.of(context).size.width - 150),
-                child: Center(child: Text("Please log in with Metamask"))),
+                child: Center(
+                    child: Text("Please log in with Metamask",
+                        style: TextStyle(
+                            color: Theme.of(context).highlightColor)))),
       ],
     );
   }

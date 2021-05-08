@@ -55,8 +55,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(
-        shadowColor: Colors.grey,
-        elevation: 10,
+        color: Theme.of(context).primaryColor,
+        //shadowColor: Colors.grey,
+        //elevation: 10,
         child: Container(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -88,12 +89,16 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: Text(
                         "Token Id: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
                       )),
                   SizedBox(width: 2),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Text(widget.auctionData["tokenId"]),
+                    child: Text(widget.auctionData["tokenId"],
+                        style:
+                            TextStyle(color: Theme.of(context).highlightColor)),
                   ),
                 ],
               ),
@@ -103,7 +108,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Highest Bid in Eth: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
                     ),
                   ),
                   SizedBox(width: 2),
@@ -114,10 +121,11 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                             (double.parse(widget.auctionData["highestBid"]) /
                                     1000000000000000000)
                                 .toString(),
-                          )
-                        : Text(
-                            ("0"),
-                          ),
+                            style: TextStyle(
+                                color: Theme.of(context).highlightColor))
+                        : Text("0",
+                            style: TextStyle(
+                                color: Theme.of(context).highlightColor)),
                   )
                 ],
               ),
@@ -129,7 +137,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Highest Bidder: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
                     ),
                   ),
                   SizedBox(width: 2),
@@ -140,7 +150,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                       child: SingleChildScrollView(
                         child: Text(
                           widget.auctionData["highestBidder"],
-                          style: TextStyle(fontSize: 13),
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Theme.of(context).highlightColor),
                         ),
                       ),
                     ),
@@ -153,7 +165,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Auction Ending: ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
                     ),
                   ),
                   SizedBox(width: 2),
@@ -162,8 +176,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                       height: 25,
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: SingleChildScrollView(
-                          child:
-                              Text(convertDate(widget.auctionData["ending"]))),
+                          child: Text(convertDate(widget.auctionData["ending"]),
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor))),
                     ),
                   )
                 ],
@@ -214,8 +229,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
             return Container();
           } else {
             return Card(
-              shadowColor: Colors.grey,
-              elevation: 10,
+              color: Theme.of(context).primaryColor,
+              //shadowColor: Colors.grey,
+              //elevation: 10,
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -228,12 +244,16 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
                               "Token Name: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).highlightColor),
                             )),
                         SizedBox(width: 2),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(snapshot.data["name"]),
+                          child: Text(snapshot.data["name"],
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor)),
                         ),
                       ],
                     ),
@@ -243,14 +263,18 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
                             "Description: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor),
                           ),
                         ),
                         SizedBox(width: 2),
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(snapshot.data["description"]),
+                            child: Text(snapshot.data["description"],
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor)),
                           ),
                         )
                       ],
@@ -261,7 +285,9 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
                             "Current Owner: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor),
                           ),
                         ),
                         SizedBox(width: 2),
@@ -270,7 +296,10 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
                               children: [
-                                Text(widget.auctionData["userName"]),
+                                Text(widget.auctionData["userName"],
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).highlightColor)),
                                 SizedBox(width: 10),
                                 Useravatar(
                                     image: widget.auctionData["userAvatar"],

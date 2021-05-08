@@ -29,12 +29,14 @@ class LineChartWidget extends StatelessWidget {
                 showTitle: true,
                 titleText: "Prices in Eth",
                 textStyle: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold)),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).highlightColor)),
             bottomTitle: AxisTitle(
                 showTitle: true,
                 titleText: "Selling Events",
                 textStyle: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold)),
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).highlightColor)),
           ),
           lineBarsData: [
             LineChartBarData(spots: spots),

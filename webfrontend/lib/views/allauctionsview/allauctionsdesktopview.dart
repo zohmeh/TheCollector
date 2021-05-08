@@ -84,14 +84,16 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
                         if (snapshot.data.length == 0 ||
                             snapshot.data == null) {
                           return Center(
-                            child: Text("No active Auctions"),
+                            child: Text("No active Auctions",
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor)),
                           );
                         } else {
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithMaxCrossAxisExtent(
-                                    crossAxisSpacing: 50,
-                                    mainAxisSpacing: 50,
+                                    crossAxisSpacing: 0,
+                                    mainAxisSpacing: 0,
                                     mainAxisExtent: 530,
                                     maxCrossAxisExtent: 500),
                             itemCount: snapshot.data.length,
@@ -105,7 +107,10 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
                     },
                   ),
                 )
-              : Center(child: Text("Please log in with Metamask")),
+              : Center(
+                  child: Text("Please log in with Metamask",
+                      style:
+                          TextStyle(color: Theme.of(context).highlightColor))),
         )
       ],
     );

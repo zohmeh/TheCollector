@@ -57,7 +57,8 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
           child: user != null
               ? Center(
                   child: Card(
-                    elevation: 10,
+                    color: Theme.of(context).primaryColor,
+                    //elevation: 10,
                     child: Container(
                       padding: EdgeInsets.all(30),
                       height: 500,
@@ -100,7 +101,10 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
                                 child: Center(
                                   child: _loadedFile != null
                                       ? _image
-                                      : Text("No Picture"),
+                                      : Text("No Picture",
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .highlightColor)),
                                 ),
                               )
                             ],
@@ -203,7 +207,10 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
                     ),
                   ),
                 )
-              : Center(child: Text("Please log in with Metamask")),
+              : Center(
+                  child: Text("Please log in with Metamask",
+                      style:
+                          TextStyle(color: Theme.of(context).highlightColor))),
         ),
       ],
     );
