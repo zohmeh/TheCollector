@@ -127,7 +127,7 @@ async function getPriceHistory(_tokenId) {
         query.equalTo("tokenId", _tokenId);
         query.ascending("block_number");
         const result = await query.find();
-        for(var i = 0; i < result.length; i++) {
+        for (var i = 0; i < result.length; i++) {
             obj = result[i];
             price = obj.get("price");
             priceHistoy.push(price);
@@ -312,10 +312,12 @@ async function getSoldItems() {
     let soldItems = [];
     const query = new Moralis.Query("SoldItems");
     const result = await query.find();
-    for(var i = 0; i < result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
         let obj = result[i];
-        soldItems.push(obj);
-     }
+        if (obj.attributes.creator != undefined) {
+            soldItems.push(obj);
+        }
+    }
     return JSON.stringify(soldItems);
 }
 

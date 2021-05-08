@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../views/accountsettings.dart';
+import '../views/settingsview/accountsettingsview.dart';
 import '../views/analyticsview/analyticsview.dart';
 import '../routing/route_names.dart';
 import '../views/alloffersview/alloffers_view.dart';

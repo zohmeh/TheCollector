@@ -19,6 +19,9 @@ class SellingNFTGridView extends StatefulWidget {
 }
 
 class _SellingNFTGridViewState extends State<SellingNFTGridView> {
+  Future image;
+  Future tokenData;
+
   Future _getImage() async {
     var data = await http.get(Uri.parse(widget.itemdata["tokenuri"]));
     var jsonData = json.decode(data.body);
@@ -38,6 +41,13 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
   }
 
   @override
+  void initState() {
+    image = _getImage();
+    tokenData = _getTokenData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
@@ -51,7 +61,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder(
-                future: _getImage(),
+                future: image,
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(height: 245, width: double.infinity);
@@ -114,7 +124,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
         ),
       ),
       back: FutureBuilder(
-        future: _getTokenData(),
+        future: tokenData,
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container();
@@ -125,86 +135,88 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(
+                                "Token Name: ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )),
+                          SizedBox(width: 2),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(snapshot.data["name"]),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                              "Token Name: ",
+                              "Description: ",
                               style: TextStyle(fontWeight: FontWeight.bold),
-                            )),
-                        SizedBox(width: 2),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(snapshot.data["name"]),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            "Description: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(width: 2),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(snapshot.data["description"]),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            "Current Owner: ",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(width: 2),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              children: [
-                                Text(
-                                  widget.itemdata["userName"],
-                                ),
-                                SizedBox(width: 10),
-                                Useravatar(
-                                    image: widget.itemdata["userAvatar"],
-                                    width: 25,
-                                    height: 25),
-                              ],
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "Pricehistory: ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                          SizedBox(width: 2),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(snapshot.data["description"]),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 15),
-                    Container(
-                        height: 200,
-                        width: double.infinity,
-                        child: LineChartWidget(
-                            prices: widget.itemdata["priceHistory"]))
-                  ],
-                ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Current Owner: ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    widget.itemdata["userName"],
+                                  ),
+                                  SizedBox(width: 10),
+                                  Useravatar(
+                                      image: widget.itemdata["userAvatar"],
+                                      width: 25,
+                                      height: 25),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Text(
+                          "Pricehistory: ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      widget.itemdata["priceHistory"].length != 0
+                          ? Container(
+                              height: 200,
+                              width: double.infinity,
+                              child: LineChartWidget(
+                                  prices: widget.itemdata["priceHistory"]))
+                          : Container(
+                              child: Text("No Pricehistory for this NFT yet")),
+                    ]),
               ),
             );
           }

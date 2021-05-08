@@ -21,6 +21,7 @@ class MyPortfolioDesktopView extends StatefulWidget {
 class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   ScrollController _scrollController = ScrollController();
   Future myNFTs;
+  Future myBids;
 
   Future _getMyItems() async {
     var promise = getUserItems();
@@ -74,6 +75,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   @override
   void initState() {
     myNFTs = _getNFTData();
+    myBids = _getMyBids();
     super.initState();
   }
 
@@ -177,7 +179,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                         color: Theme.of(context).highlightColor,
                       ),
                       child: FutureBuilder(
-                        future: _getMyBids(),
+                        future: myBids,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {

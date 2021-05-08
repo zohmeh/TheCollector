@@ -5,19 +5,21 @@ import 'package:provider/provider.dart';
 import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
 import '/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
-import '../widgets/buttons/button.dart';
+import '../../widgets/buttons/button.dart';
 import 'package:path/path.dart' as Path;
 import '/widgets/inputField.dart';
 
-class AccountSettingsView extends StatefulWidget {
+class AccountSettingsDesktopView extends StatefulWidget {
   //const CreateNFTView({Key key}) : super(key: key);
   final TextEditingController userNameController = TextEditingController();
 
   @override
-  _AccountSettingsViewState createState() => _AccountSettingsViewState();
+  _AccountSettingsDesktopViewState createState() =>
+      _AccountSettingsDesktopViewState();
 }
 
-class _AccountSettingsViewState extends State<AccountSettingsView> {
+class _AccountSettingsDesktopViewState
+    extends State<AccountSettingsDesktopView> {
   var name;
   var _loadedFile;
   var data;

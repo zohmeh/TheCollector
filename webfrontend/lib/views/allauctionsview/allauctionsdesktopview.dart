@@ -16,18 +16,38 @@ class AllAuctionsDesktopView extends StatefulWidget {
 
 class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
   ScrollController _scrollController = ScrollController();
+  Future auctionNFTs;
+
+  Future _getItemsForAuction() async {
+    var promise = getItemsForAuction();
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
+
+  Future _getPriceHistory(String _tokenId) async {
+    var promise = getPriceHistory(_tokenId);
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
 
   Future _getNFTData() async {
-    var promise = getItemsForAuction();
-    var itemsForAuction = await promiseToFuture(promise);
-    var itemsForAuctiondecoded = [];
+    var items = await _getItemsForAuction();
+    var itemsdecoded = [];
 
-    for (var i = 0; i < itemsForAuction.length; i++) {
-      var forSaleItemsdecoded = json.decode(itemsForAuction[i]);
-      itemsForAuctiondecoded.add(forSaleItemsdecoded);
+    for (var i = 0; i < items.length; i++) {
+      var forAuctionItemsdecoded = json.decode(items[i]);
+      var priceHistory =
+          await _getPriceHistory(forAuctionItemsdecoded["tokenId"]);
+      forAuctionItemsdecoded["priceHistory"] = priceHistory;
+      itemsdecoded.add(forAuctionItemsdecoded);
     }
+    return (itemsdecoded);
+  }
 
-    return (itemsForAuctiondecoded);
+  @override
+  void initState() {
+    auctionNFTs = _getNFTData();
+    super.initState();
   }
 
   @override
@@ -54,7 +74,7 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
                     color: Theme.of(context).highlightColor,
                   ),
                   child: FutureBuilder(
-                    future: _getNFTData(),
+                    future: auctionNFTs,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

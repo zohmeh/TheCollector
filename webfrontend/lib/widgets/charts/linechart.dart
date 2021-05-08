@@ -22,7 +22,6 @@ class LineChartWidget extends StatelessWidget {
     List<FlSpot> spots = intPrices.asMap().entries.map((e) {
       return FlSpot(e.key.toDouble(), e.value);
     }).toList();
-
     return LineChart(
       LineChartData(
           axisTitleData: FlAxisTitleData(

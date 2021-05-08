@@ -1,0 +1,151 @@
+import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
+import 'package:mime_type/mime_type.dart';
+import 'package:provider/provider.dart';
+import '/provider/loginprovider.dart';
+import '../../widgets/buttons/button.dart';
+import 'package:path/path.dart' as Path;
+import '/widgets/inputField.dart';
+
+class AccountSettingsMobileView extends StatefulWidget {
+  //const CreateNFTView({Key key}) : super(key: key);
+  final TextEditingController userNameController = TextEditingController();
+
+  @override
+  _AccountSettingsMobileViewState createState() =>
+      _AccountSettingsMobileViewState();
+}
+
+class _AccountSettingsMobileViewState extends State<AccountSettingsMobileView> {
+  var name;
+  var _loadedFile;
+  var data;
+  var _image;
+
+  Future _loadPicture() async {
+    var mediaData = await ImagePickerWeb.getImageInfo;
+    mime(Path.basename(mediaData.fileName));
+    setState(
+      () {
+        if (mediaData.data != null) {
+          _image = Image.memory(mediaData.data);
+          data = mediaData.data;
+          _loadedFile = mediaData.fileName;
+        } else {
+          print('No image selected.');
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<LoginModel>(context).user;
+    return Container(
+      padding: EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width - 150,
+      height: MediaQuery.of(context).size.height,
+      child: user != null
+          ? Center(
+              child: Card(
+                elevation: 10,
+                child: Container(
+                  padding: EdgeInsets.all(30),
+                  height: 500,
+                  width: 500,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(2),
+                        height: 200,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                                color: Colors.black,
+                                width: 1,
+                                style: BorderStyle.solid),
+                            bottom: BorderSide(
+                                color: Colors.black,
+                                width: 1,
+                                style: BorderStyle.solid),
+                            left: BorderSide(
+                                color: Colors.black,
+                                width: 1,
+                                style: BorderStyle.solid),
+                            right: BorderSide(
+                                color: Colors.black,
+                                width: 1,
+                                style: BorderStyle.solid),
+                          ),
+                        ),
+                        child: Center(
+                          child:
+                              _loadedFile != null ? _image : Text("No Picture"),
+                        ),
+                      ),
+                      button(
+                          Theme.of(context).buttonColor,
+                          Theme.of(context).highlightColor,
+                          "Load Avatar",
+                          _loadPicture),
+                      Container(
+                          //height: 250,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                  color: Colors.black,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              left: BorderSide(
+                                  color: Colors.black,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                              right: BorderSide(
+                                  color: Colors.black,
+                                  width: 1,
+                                  style: BorderStyle.solid),
+                            ),
+                          ),
+                          child: Center(
+                            child: inputField(
+                                ctx: context,
+                                controller: widget.userNameController,
+                                labelText: "Input your Username",
+                                leftMargin: 0,
+                                topMargin: 0,
+                                rightMargin: 0,
+                                bottomMargin: 0,
+                                onChanged: (value) {
+                                  setState(() {
+                                    name = value;
+                                  });
+                                },
+                                onSubmitted: (value) {
+                                  setState(() {
+                                    name = value;
+                                  });
+                                }),
+                          )),
+                      button(
+                        Theme.of(context).buttonColor,
+                        Theme.of(context).highlightColor,
+                        "Set Userdata",
+                        Provider.of<LoginModel>(context).setMyData,
+                        [data, name],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : Center(child: Text("Please log in with Metamask")),
+    );
+  }
+}

@@ -52,7 +52,7 @@ class _SidebarMobileState extends State<SidebarMobile> {
               Theme.of(context).highlightColor,
               "All Auctions",
               _changeSide,
-              [HomeRoute, 0]),
+              [HomeRoute]),
           SizedBox(height: 20),
           ibutton(
               Icons.attach_money_rounded,
@@ -60,7 +60,7 @@ class _SidebarMobileState extends State<SidebarMobile> {
               Theme.of(context).highlightColor,
               "All Sellings",
               _changeSide,
-              [AllOffersRoute, 1]),
+              [AllOffersRoute]),
           SizedBox(height: 20),
           ibutton(
               Icons.account_balance_wallet_rounded,
@@ -68,7 +68,7 @@ class _SidebarMobileState extends State<SidebarMobile> {
               Theme.of(context).highlightColor,
               "My Portfolio",
               _changeSide,
-              [MyPortfolioRoute, 2]),
+              [MyPortfolioRoute]),
           SizedBox(height: 20),
           ibutton(
               Icons.create_rounded,
@@ -76,7 +76,7 @@ class _SidebarMobileState extends State<SidebarMobile> {
               Theme.of(context).highlightColor,
               "Create NFT",
               _changeSide,
-              [CreateNewNFTRoute, 3]),
+              [CreateNewNFTRoute]),
           SizedBox(height: 20),
           ibutton(
               Icons.analytics,
@@ -84,7 +84,15 @@ class _SidebarMobileState extends State<SidebarMobile> {
               Theme.of(context).highlightColor,
               "Analytics",
               _changeSide,
-              [CreateNewNFTRoute, 3]),
+              [CreateNewNFTRoute]),
+          SizedBox(height: 20),
+          ibutton(
+              Icons.settings_applications_rounded,
+              Theme.of(context).primaryColor,
+              Theme.of(context).highlightColor,
+              "Settings",
+              _changeSide,
+              [SettingsRoute]),
         ],
       ),
     );

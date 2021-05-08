@@ -22,6 +22,8 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
   ScrollController _scrollController = ScrollController();
   String addresse;
   var user;
+  Future myNFTs;
+  Future myBids;
 
   Future _getMyItems() async {
     var promise = getUserItems();
@@ -40,36 +42,43 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
     return mybidsdecoded;
   }
 
-  Future<Map<String, dynamic>> _getNFTData() async {
+  Future _getNFTData() async {
+    List<dynamic> _myNFTs = [];
     var myItems = await _getMyItems();
-    List<dynamic> nftData = [];
-    List<dynamic> isAuction = [];
-    List<dynamic> isOffer = [];
-    List<dynamic> tokenIds = [];
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
-      var promise1 = getAuctionItem(myItemdecoded["tokenId"]);
+      var promise1 = getAuctionItem(myItemdecoded["token_id"]);
       var auction = await promiseToFuture(promise1);
-      auction != null ? isAuction.add(true) : isAuction.add(false);
 
-      var promise2 = getOfferItem(myItemdecoded["tokenId"]);
+      auction == null
+          ? myItemdecoded["isAuction"] = false
+          : myItemdecoded["isAuction"] = true;
+
+      var promise2 = getOfferItem(myItemdecoded["token_id"]);
       var offer = await promiseToFuture(promise2);
-      offer != null ? isOffer.add(true) : isOffer.add(false);
 
-      tokenIds.add(myItemdecoded["tokenId"]);
+      offer == null
+          ? myItemdecoded["isOffer"] = false
+          : myItemdecoded["isOffer"] = true;
 
-      var data = await http.get(Uri.parse(myItemdecoded["tokenuri"]));
+      var data = await http.get(Uri.parse(myItemdecoded["token_uri"]));
       var jsonData = json.decode(data.body);
-      nftData.add(jsonData);
+
+      myItemdecoded["name"] = jsonData["name"];
+      myItemdecoded["description"] = jsonData["description"];
+      myItemdecoded["file"] = jsonData["file"];
+
+      _myNFTs.add(myItemdecoded);
     }
-    Map<String, dynamic> nftvalues = {
-      "tokenId": tokenIds,
-      "isAuction": isAuction,
-      "isOffer": isOffer,
-      "tokenData": nftData
-    };
-    return (nftvalues);
+    return (_myNFTs);
+  }
+
+  @override
+  void initState() {
+    myNFTs = _getNFTData();
+    myBids = _getMyBids();
+    super.initState();
   }
 
   @override
@@ -91,15 +100,14 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                 color: Theme.of(context).highlightColor,
               ),
               child: FutureBuilder(
-                future: _getNFTData(),
+                future: myNFTs,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    if (snapshot.data["tokenId"].length == 0 ||
-                        snapshot.data == null) {
+                    if (snapshot.data.length == 0 || snapshot.data == null) {
                       return Center(child: Text("No NFTs in your Portfolio"));
                     } else {
                       return GridView.builder(
@@ -108,16 +116,15 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                             mainAxisSpacing: 5,
                             mainAxisExtent: 540,
                             maxCrossAxisExtent: double.maxFinite),
-                        itemCount: snapshot.data["tokenId"].length,
+                        itemCount: snapshot.data.length,
                         itemBuilder: (ctx, idx) {
                           return MyNFTGridMobileView(
-                            id: snapshot.data["tokenId"][idx],
-                            name: snapshot.data["tokenData"][idx]["name"],
-                            description: snapshot.data["tokenData"][idx]
-                                ["description"],
-                            isAuction: snapshot.data["isAuction"][idx],
-                            isOffer: snapshot.data["isOffer"][idx],
-                            image: snapshot.data["tokenData"][idx]["file"],
+                            id: snapshot.data[idx]["token_id"],
+                            name: snapshot.data[idx]["name"],
+                            description: snapshot.data[idx]["description"],
+                            isAuction: snapshot.data[idx]["isAuction"],
+                            isOffer: snapshot.data[idx]["isOffer"],
+                            image: snapshot.data[idx]["file"],
                             buttonStartAuction: "Start Auction",
                             functionStartAuction:
                                 Provider.of<Contractinteraction>(context)
@@ -152,7 +159,7 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                 color: Theme.of(context).highlightColor,
               ),
               child: FutureBuilder(
-                future: _getMyBids(),
+                future: myBids,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(

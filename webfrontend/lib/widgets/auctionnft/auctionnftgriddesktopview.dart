@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
+import 'package:web_app_template/widgets/charts/linechart.dart';
 import 'package:web_app_template/widgets/useravatar.dart';
 import '../buttons/button.dart';
 import 'package:http/http.dart' as http;
@@ -22,6 +23,9 @@ class AuctionNFTGridDesktopView extends StatefulWidget {
 }
 
 class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
+  Future image;
+  Future tokenData;
+
   Future _getImage() async {
     var data = await http.get(Uri.parse(widget.auctionData["tokenuri"]));
     var jsonData = json.decode(data.body);
@@ -41,6 +45,13 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
   }
 
   @override
+  void initState() {
+    image = _getImage();
+    tokenData = _getTokenData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
@@ -54,7 +65,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder(
-                future: _getImage(),
+                future: image,
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(height: 245, width: double.infinity);
@@ -188,7 +199,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
         ),
       ),
       back: FutureBuilder(
-        future: _getTokenData(),
+        future: tokenData,
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container();
@@ -264,6 +275,22 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         )
                       ],
                     ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Pricehistory: ",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    widget.auctionData["priceHistory"].length != 0
+                        ? Container(
+                            height: 200,
+                            width: double.infinity,
+                            child: LineChartWidget(
+                                prices: widget.auctionData["priceHistory"]))
+                        : Container(
+                            child: Text("No Pricehistory for this NFT yet")),
                   ],
                 ),
               ),

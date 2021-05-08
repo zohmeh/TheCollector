@@ -22,6 +22,9 @@ class AuctionNFTGridMobileView extends StatefulWidget {
 }
 
 class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
+  Future image;
+  Future tokenData;
+
   Future _getImage() async {
     var data = await http.get(Uri.parse(widget.auctionData["tokenuri"]));
     var jsonData = json.decode(data.body);
@@ -41,8 +44,14 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
   }
 
   @override
+  void initState() {
+    image = _getImage();
+    tokenData = _getTokenData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(widget.auctionData);
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(
@@ -55,7 +64,7 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FutureBuilder(
-                future: _getImage(),
+                future: image,
                 builder: (ctx, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(height: 245, width: double.infinity);
@@ -199,7 +208,7 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
         ),
       ),
       back: FutureBuilder(
-        future: _getTokenData(),
+        future: tokenData,
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container();
