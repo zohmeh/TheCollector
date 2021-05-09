@@ -14,72 +14,90 @@ class AllAuctionsMobileView extends StatefulWidget {
 
 class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
   ScrollController _scrollController = ScrollController();
-  String addresse;
+  Future auctionNFTs;
+
+  Future _getItemsForAuction() async {
+    var promise = getItemsForAuction();
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
+
+  Future _getPriceHistory(String _tokenId) async {
+    var promise = getPriceHistory(_tokenId);
+    var result = await promiseToFuture(promise);
+    return (result);
+  }
 
   Future _getNFTData() async {
-    var promise = getItemsForAuction();
-    var itemsForAuction = await promiseToFuture(promise);
-    var itemsForAuctiondecoded = [];
+    var items = await _getItemsForAuction();
+    var itemsdecoded = [];
 
-    for (var i = 0; i < itemsForAuction.length; i++) {
-      var forSaleItemsdecoded = json.decode(itemsForAuction[i]);
-      itemsForAuctiondecoded.add(forSaleItemsdecoded);
+    for (var i = 0; i < items.length; i++) {
+      var forAuctionItemsdecoded = json.decode(items[i]);
+      var priceHistory =
+          await _getPriceHistory(forAuctionItemsdecoded["tokenId"]);
+      forAuctionItemsdecoded["priceHistory"] = priceHistory;
+      itemsdecoded.add(forAuctionItemsdecoded);
     }
-    return (itemsForAuctiondecoded);
+    return (itemsdecoded);
+  }
+
+  @override
+  void initState() {
+    auctionNFTs = _getNFTData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    return Expanded(
-      child: user != null
-          ? VsScrollbar(
-              controller: _scrollController,
-              showTrackOnHover: true,
-              isAlwaysShown: false,
-              scrollbarFadeDuration: Duration(milliseconds: 500),
-              scrollbarTimeToFade: Duration(milliseconds: 800),
-              style: VsScrollbarStyle(
-                hoverThickness: 10.0,
-                radius: Radius.circular(10),
-                thickness: 10.0,
-                color: Theme.of(context).highlightColor,
-              ),
-              child: FutureBuilder(
-                future: _getNFTData(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+    return user != null
+        ? VsScrollbar(
+            controller: _scrollController,
+            showTrackOnHover: true,
+            isAlwaysShown: false,
+            scrollbarFadeDuration: Duration(milliseconds: 500),
+            scrollbarTimeToFade: Duration(milliseconds: 800),
+            style: VsScrollbarStyle(
+              hoverThickness: 10.0,
+              radius: Radius.circular(10),
+              thickness: 10.0,
+              color: Theme.of(context).highlightColor,
+            ),
+            child: FutureBuilder(
+              future: auctionNFTs,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  if (snapshot.data.length == 0 || snapshot.data == null) {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Text("No active Auctions",
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor)),
                     );
                   } else {
-                    if (snapshot.data.length == 0 || snapshot.data == null) {
-                      return Center(
-                        child: Text("No active Auctions",
-                            style: TextStyle(
-                                color: Theme.of(context).highlightColor)),
-                      );
-                    } else {
-                      return GridView.builder(
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            mainAxisExtent: 530,
-                            maxCrossAxisExtent: 450),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (ctx, idx) {
-                          return AuctionNFTGridMobileView(
-                              auctionData: snapshot.data[idx]);
-                        },
-                      );
-                    }
+                    return GridView.builder(
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 0,
+                          mainAxisExtent: 560,
+                          maxCrossAxisExtent: double.maxFinite),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (ctx, idx) {
+                        return AuctionNFTGridMobileView(
+                            auctionData: snapshot.data[idx]);
+                      },
+                    );
                   }
-                },
-              ),
-            )
-          : Center(
-              child: Text("Please log in with Metamask",
-                  style: TextStyle(color: Theme.of(context).highlightColor))),
-    );
+                }
+              },
+            ),
+          )
+        : Center(
+            child: Text("Please log in with Metamask",
+                style: TextStyle(color: Theme.of(context).highlightColor)));
   }
 }

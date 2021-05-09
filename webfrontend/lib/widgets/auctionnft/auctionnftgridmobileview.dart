@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/provider/contractinteraction.dart';
+import 'package:web_app_template/widgets/charts/linechart.dart';
 import '../buttons/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:flip_card/flip_card.dart';
@@ -105,6 +106,45 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
               Row(
                 children: [
                   Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Creator: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
+                      )),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        widget.auctionData["creatorName"],
+                        style:
+                            TextStyle(color: Theme.of(context).highlightColor),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "         ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor),
+                          )),
+                      Useravatar(
+                          image: widget.auctionData["creatorAvatar"],
+                          width: 20,
+                          height: 20),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Highest Bid in Eth: ",
@@ -173,12 +213,11 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                   SizedBox(width: 2),
                   Flexible(
                     child: Container(
-                      height: 25,
+                      //height: 25,
                       margin: EdgeInsets.symmetric(vertical: 5),
-                      child: SingleChildScrollView(
-                          child: Text(convertDate(widget.auctionData["ending"]),
-                              style: TextStyle(
-                                  color: Theme.of(context).highlightColor))),
+                      child: Text(convertDate(widget.auctionData["ending"]),
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor)),
                     ),
                   )
                 ],
@@ -308,9 +347,29 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Pricehistory: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    widget.auctionData["priceHistory"].length != 0
+                        ? Container(
+                            height: 200,
+                            width: double.infinity,
+                            child: LineChartWidget(
+                                prices: widget.auctionData["priceHistory"]))
+                        : Container(
+                            child: Text("No Pricehistory for this NFT yet",
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor))),
                   ],
                 ),
               ),

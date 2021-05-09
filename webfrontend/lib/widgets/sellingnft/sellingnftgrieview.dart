@@ -83,7 +83,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: 5),
                       child: Text(
                         "Token Id: ",
                         style: TextStyle(
@@ -92,7 +92,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                       )),
                   SizedBox(width: 2),
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
+                      margin: EdgeInsets.symmetric(vertical: 5),
                       child: Text(widget.itemdata["tokenId"],
                           style: TextStyle(
                               color: Theme.of(context).highlightColor))),
@@ -101,6 +101,34 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               Row(
                 children: [
                   Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Creator: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
+                      )),
+                  SizedBox(width: 2),
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(widget.itemdata["creatorName"],
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor))),
+                      SizedBox(width: 10),
+                      Useravatar(
+                          image: widget.itemdata["creatorAvatar"],
+                          width: 20,
+                          height: 20),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Price in Eth: ",
                       style: TextStyle(
@@ -110,6 +138,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                   ),
                   SizedBox(width: 2),
                   Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                         (double.parse(widget.itemdata["price"]) /
                                 1000000000000000000)
@@ -201,21 +230,18 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                           ),
                           SizedBox(width: 2),
                           Flexible(
-                            child: Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                children: [
-                                  Text(widget.itemdata["userName"],
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .highlightColor)),
-                                  SizedBox(width: 10),
-                                  Useravatar(
-                                      image: widget.itemdata["userAvatar"],
-                                      width: 25,
-                                      height: 25),
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                Text(widget.itemdata["userName"],
+                                    style: TextStyle(
+                                        color:
+                                            Theme.of(context).highlightColor)),
+                                SizedBox(width: 10),
+                                Useravatar(
+                                    image: widget.itemdata["userAvatar"],
+                                    width: 20,
+                                    height: 20),
+                              ],
                             ),
                           ),
                         ],

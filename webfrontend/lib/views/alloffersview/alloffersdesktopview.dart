@@ -91,7 +91,7 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 0,
                                     mainAxisSpacing: 0,
-                                    mainAxisExtent: 375,
+                                    mainAxisExtent: 405,
                                     maxCrossAxisExtent: 405),
                             itemCount: snapshot.data.length,
                             itemBuilder: (ctx, idx) {

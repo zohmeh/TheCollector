@@ -1,5 +1,5 @@
-Moralis.initialize("fuqBKX8i1oFdapkZLLz9JEXjc8yOMmshKjJYU196")
-Moralis.serverURL = "https://rlblxuq4eg3u.moralis.io:2053/server";
+Moralis.initialize("RWXhZEXIhPPqpvMwSp9Sds1U3L33YPqYQff82WtM")
+Moralis.serverURL = "https://9zv5pla0sgxg.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -14,7 +14,8 @@ async function bidForNFT(_tokenId, _bid, _uid) {
     const userAddress = user.get("ethAddress");
 
     try {
-        const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send({ from: userAddress });
+        const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
         if (bid["status"] == true) {
             const query = new Moralis.Query("ItemsForAuction");
             query.equalTo("uid", _uid);
@@ -49,7 +50,8 @@ async function createNewNFT(_file, _name, _description) {
         let hash = file.ipfs();
 
         //Mint NFT and store Hash on blockchain in NFTToken.sol Contract
-        let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send({ from: userAddress });
+        let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
         let nftId = mint.events.Transfer.returnValues.tokenId;
 
         if (mint["status"] == true) {
@@ -73,7 +75,6 @@ async function getUserItems() {
         const query = new Moralis.Query("EthNFTTokenOwners");
         query.equalTo("owner_of", user.attributes.ethAddress);
         const ownedItems = await query.find();
-        //const ownedItems = await Moralis.Cloud.run("getUserItems", {param: user});
         for (var i = 0; i < ownedItems.length; i++) {
             useritem = JSON.stringify(ownedItems[i]);
             userItems.push(useritem);
@@ -111,9 +112,9 @@ async function getAuctionItem(_tokenId) {
     try {
         const query = new Moralis.Query("ItemsForAuction");
         query.equalTo("tokenId", _tokenId);
-        const result = await query.find();
-        const object = result[0];
-        item = JSON.stringify(object);
+        query.notEqualTo("isSold", true);
+        const result = await query.first();
+        item = JSON.stringify(result);
         return item;
     } catch (error) { console.log(error); }
 }
@@ -140,9 +141,9 @@ async function getOfferItem(_tokenId) {
     try {
         const query = new Moralis.Query("ItemsForSale");
         query.equalTo("tokenId", _tokenId);
-        const result = await query.find();
-        const object = result[0];
-        item = JSON.stringify(object);
+        query.notEqualTo("isSold", true);
+        const result = await query.first();
+        item = JSON.stringify(result);
 
         return item;
     } catch (error) { console.log(error); }
@@ -202,36 +203,18 @@ async function removeAuction(_tokenId) {
     };
 
     try {
-        let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send({ from: userAddress });
+        let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send({ from: userAddress,gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
 
         if (remove["status"] == true) {
             const query = new Moralis.Query("ItemsForAuction");
             query.equalTo("tokenId", _tokenId);
-            const result = await query.find();
-            const object = result[0];
-            object.destroy();
+            query.notEqualTo("isSold", true);
+            const result = await query.first();
+            result.destroy();
         }
 
         return remove["status"];
-    } catch (error) { console.log(error); }
-}
-
-async function sellNFT(_tokenId, _price) {
-    user = await Moralis.User.current();
-    const userAddress = user.get("ethAddress");
-
-    try {
-        let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({ from: userAddress, value: _price });
-
-        if (sellNFT["status"] == true) {
-            const query = new Moralis.Query("ItemsForAuction");
-            query.equalTo("tokenId", _tokenId);
-            const result = await query.find();
-            const object = result[0];
-            object.destroy();
-        }
-
-        return sellNFT["status"];
     } catch (error) { console.log(error); }
 }
 
@@ -241,9 +224,11 @@ async function startNewAuction(_tokenId, _duration) {
 
     try {
         //Approve NFT Auction Contract to use my NFT
-        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress });
+        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
         //Start Auction
-        let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send({ from: userAddress });
+        let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
 
         return auction["status"];
     } catch (error) { console.log(error); }
@@ -255,9 +240,11 @@ async function startNewOffer(_tokenId, _price) {
 
     try {
         //Approve NFT Auction Contract to use my NFT
-        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress });
+        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
         //Start Offer
-        let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send({ from: userAddress });
+        let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
         return offer["status"];
     } catch (error) { console.log(error); }
 }
@@ -267,14 +254,15 @@ async function removeOffer(_tokenId) {
     const userAddress = user.get("ethAddress");
 
     try {
-        let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send({ from: userAddress });
+        let remove = await NFTAuctioncontractInstance.methods.removeOffer(_tokenId).send({ from: userAddress, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
 
         if (remove["status"] == true) {
             const query = new Moralis.Query("ItemsForSale");
             query.equalTo("tokenId", _tokenId);
-            const result = await query.find();
-            const object = result[0];
-            object.destroy();
+            query.notEqualTo("isSold", true);
+            const result = await query.first();
+            result.destroy();
         }
 
         return remove["status"];
@@ -289,6 +277,7 @@ async function getMyBids() {
     try {
         const query = new Moralis.Query("ItemsForAuction");
         query.equalTo("highestBidder", userAddress);
+        query.notEqualTo("isSold", true);
         const result = await query.find();
 
         for (var i = 0; i < result.length; i++) {
@@ -326,16 +315,37 @@ async function buy(_tokenId, _price) {
     const userAddress = user.get("ethAddress");
 
     try {
-        let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send({ from: userAddress, value: _price, });
+        let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send({ from: userAddress, value: _price, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
 
-        if (buy["status"] == true) {
-            const query = new Moralis.Query("ItemsForSale");
-            query.equalTo("tokenId", _tokenId);
-            const result = await query.find();
-            const object = result[0];
-            object.destroy();
-        }
+        //if (buy["status"] == true) {
+        //    const query = new Moralis.Query("ItemsForSale");
+        //    query.equalTo("tokenId", _tokenId);
+        //    const result = await query.find();
+        //    const object = result[0];
+        //    object.destroy();
+        //}
 
         return buy["status"];
+    } catch (error) { console.log(error); }
+}
+
+async function sellNFT(_tokenId, _price) {
+    user = await Moralis.User.current();
+    const userAddress = user.get("ethAddress");
+
+    try {
+        let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({ from: userAddress, value: _price, gasLimit: 6721975,
+            gasPrice: web3.utils.toWei('20000000000', 'wei'), });
+
+        //if (sellNFT["status"] == true) {
+        //    const query = new Moralis.Query("ItemsForAuction");
+        //    query.equalTo("tokenId", _tokenId);
+        //    const result = await query.find();
+        //    const object = result[0];
+        //    object.destroy();
+        //}
+
+        return sellNFT["status"];
     } catch (error) { console.log(error); }
 }

@@ -82,8 +82,8 @@ class _AllOffersMobileViewState extends State<AllOffersMobileView> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 0,
-                          mainAxisExtent: 375,
-                          maxCrossAxisExtent: 405),
+                          mainAxisExtent: 405,
+                          maxCrossAxisExtent: double.maxFinite),
                       itemCount: snapshot.data.length,
                       itemBuilder: (ctx, idx) {
                         return SellingNFTGridView(

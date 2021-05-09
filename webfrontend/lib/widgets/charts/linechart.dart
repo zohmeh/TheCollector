@@ -15,8 +15,12 @@ class LineChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     //prices are Strings -> first convert them into an array of integers
     List intPrices = [];
+    double maxPrice = 0;
     for (var i = 0; i < prices.length; i++) {
       intPrices.add((int.parse(prices[i])) / 1000000000000000000);
+      if ((int.parse(prices[i]) / 1000000000000000000) > maxPrice) {
+        maxPrice = (int.parse(prices[i]) / 1000000000000000000);
+      }
     }
     // now create a list of spots to display the prices
     List<FlSpot> spots = intPrices.asMap().entries.map((e) {
@@ -24,6 +28,8 @@ class LineChartWidget extends StatelessWidget {
     }).toList();
     return LineChart(
       LineChartData(
+          maxY: maxPrice,
+          minY: 0,
           axisTitleData: FlAxisTitleData(
             leftTitle: AxisTitle(
                 showTitle: true,

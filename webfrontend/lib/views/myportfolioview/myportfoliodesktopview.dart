@@ -46,6 +46,12 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
+
+      var promise0 = getPriceHistory(myItemdecoded["token_id"]);
+      var prices = await promiseToFuture(promise0);
+
+      myItemdecoded["priceHistory"] = prices;
+
       var promise1 = getAuctionItem(myItemdecoded["token_id"]);
       var auction = await promiseToFuture(promise1);
 
@@ -126,19 +132,12 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                       SliverGridDelegateWithMaxCrossAxisExtent(
                                           crossAxisSpacing: 0,
                                           mainAxisSpacing: 0,
-                                          mainAxisExtent: 530,
+                                          mainAxisExtent: 560,
                                           maxCrossAxisExtent: 500),
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (ctx, idx) {
                                     return MyNFTGridDesktopView(
-                                      id: snapshot.data[idx]["token_id"],
-                                      name: snapshot.data[idx]["name"],
-                                      description: snapshot.data[idx]
-                                          ["description"],
-                                      isAuction: snapshot.data[idx]
-                                          ["isAuction"],
-                                      isOffer: snapshot.data[idx]["isOffer"],
-                                      image: snapshot.data[idx]["file"],
+                                      myNFT: snapshot.data[idx],
                                       buttonStartAuction: "Start Auction",
                                       functionStartAuction:
                                           Provider.of<Contractinteraction>(
@@ -194,7 +193,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                 snapshot.data == null) {
                               return Center(
                                   child: Text(
-                                      "You have no Bids for NFT Autions",
+                                      "You have no Bids for NFT Auctions",
                                       style: TextStyle(
                                           color: Theme.of(context)
                                               .highlightColor)));

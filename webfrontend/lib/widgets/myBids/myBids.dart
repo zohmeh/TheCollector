@@ -16,7 +16,6 @@ class MyBidsList extends StatelessWidget {
     var data = await http.get(Uri.parse(mybid["tokenuri"]));
     var jsonData = json.decode(data.body);
     var image = jsonData["file"];
-    print(image);
     return image;
   }
 
@@ -54,7 +53,7 @@ class MyBidsList extends StatelessWidget {
         title: Row(
           children: [
             Text(
-              "Token ID: ",
+              "Token Id: ",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).highlightColor),

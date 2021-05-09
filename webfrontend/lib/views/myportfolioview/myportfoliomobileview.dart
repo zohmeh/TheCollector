@@ -20,8 +20,6 @@ class MyPortfolioMobileView extends StatefulWidget {
 
 class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
   ScrollController _scrollController = ScrollController();
-  String addresse;
-  var user;
   Future myNFTs;
   Future myBids;
 
@@ -48,6 +46,12 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
 
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
+
+      var promise0 = getPriceHistory(myItemdecoded["token_id"]);
+      var prices = await promiseToFuture(promise0);
+
+      myItemdecoded["priceHistory"] = prices;
+
       var promise1 = getAuctionItem(myItemdecoded["token_id"]);
       var auction = await promiseToFuture(promise1);
 
@@ -117,17 +121,12 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                             crossAxisSpacing: 0,
                             mainAxisSpacing: 0,
-                            mainAxisExtent: 540,
+                            mainAxisExtent: 820,
                             maxCrossAxisExtent: double.maxFinite),
                         itemCount: snapshot.data.length,
                         itemBuilder: (ctx, idx) {
                           return MyNFTGridMobileView(
-                            id: snapshot.data[idx]["token_id"],
-                            name: snapshot.data[idx]["name"],
-                            description: snapshot.data[idx]["description"],
-                            isAuction: snapshot.data[idx]["isAuction"],
-                            isOffer: snapshot.data[idx]["isOffer"],
-                            image: snapshot.data[idx]["file"],
+                            myNFT: snapshot.data[idx],
                             buttonStartAuction: "Start Auction",
                             functionStartAuction:
                                 Provider.of<Contractinteraction>(context)
@@ -171,7 +170,7 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                   } else {
                     if (snapshot.data.length == 0 || snapshot.data == null) {
                       return Center(
-                          child: Text("You have no Bids for NFT Autions",
+                          child: Text("You have no Bids for NFT Auctions",
                               style: TextStyle(
                                   color: Theme.of(context).highlightColor)));
                     } else {

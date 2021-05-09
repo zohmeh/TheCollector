@@ -106,6 +106,33 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
               Row(
                 children: [
                   Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Creator: ",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).highlightColor),
+                      )),
+                  SizedBox(width: 2),
+                  Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(widget.auctionData["creatorName"],
+                              style: TextStyle(
+                                  color: Theme.of(context).highlightColor))),
+                      SizedBox(width: 10),
+                      Useravatar(
+                          image: widget.auctionData["creatorAvatar"],
+                          width: 20,
+                          height: 20),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
                     margin: EdgeInsets.symmetric(vertical: 5),
                     child: Text(
                       "Highest Bid in Eth: ",
