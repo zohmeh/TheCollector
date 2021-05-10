@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import '/provider/loginprovider.dart';
 import '../../widgets/buttons/button.dart';
 import 'package:path/path.dart' as Path;
@@ -41,6 +42,11 @@ class _AccountSettingsMobileViewState extends State<AccountSettingsMobileView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {});
+    }
     return Container(
       padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width - 150,

@@ -35,7 +35,13 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    Provider.of<Contractinteraction>(context);
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {
+        soldItems = _getSoldItems();
+      });
+    }
     return user != null
         ? Container(
             padding: EdgeInsets.all(10),

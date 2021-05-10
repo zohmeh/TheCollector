@@ -38,9 +38,17 @@ class MyNFTGridDesktopView extends StatefulWidget {
 
 class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   bool isOffer = false;
+  var txold;
 
   @override
   Widget build(BuildContext context) {
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
+    }
     return FlipCard(
         direction: FlipDirection.HORIZONTAL,
         front: Card(

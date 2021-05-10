@@ -46,6 +46,11 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {});
+    }
     return user != null
         ? Center(
             child: SingleChildScrollView(

@@ -53,7 +53,13 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    final tx = Provider.of<Contractinteraction>(context).tx;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {
+        auctionNFTs = _getNFTData();
+      });
+    }
     return Row(
       children: [
         SidebarDesktop(1),

@@ -3,6 +3,7 @@ import 'dart:js_util';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vs_scrollbar/vs_scrollbar.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
 import '/provider/loginprovider.dart';
 import '/widgets/javascript_controller.dart';
@@ -51,6 +52,13 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {
+        sellingNFTs = _getNFTData();
+      });
+    }
     return Row(
       children: [
         SidebarDesktop(2),

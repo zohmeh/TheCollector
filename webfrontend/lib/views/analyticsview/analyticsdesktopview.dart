@@ -36,7 +36,13 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    Provider.of<Contractinteraction>(context);
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {
+        soldItems = _getSoldItems();
+      });
+    }
     return Row(
       children: [
         SidebarDesktop(5),

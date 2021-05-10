@@ -22,7 +22,6 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
   ScrollController _scrollController = ScrollController();
   Future myNFTs;
   Future myBids;
-  Future balance;
 
   Future _getMyTokenBalance() async {
     var promise = getBalance();
@@ -47,7 +46,9 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
     return mybidsdecoded;
   }
 
-  Future _getNFTData() async {
+  Future _portfolioData() async {
+    var balance = await _getMyTokenBalance();
+
     List<dynamic> _myNFTs = [];
     var myItems = await _getMyItems();
 
@@ -82,24 +83,32 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
 
       _myNFTs.add(myItemdecoded);
     }
-    return (_myNFTs);
+    return ([_myNFTs, balance]);
   }
 
   @override
   void initState() {
-    myNFTs = _getNFTData();
+    myNFTs = _portfolioData();
     myBids = _getMyBids();
-    balance = _getMyTokenBalance();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
-    Provider.of<Contractinteraction>(context);
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {
+        myNFTs = _portfolioData();
+        myBids = _getMyBids();
+      });
+    }
     return user != null
         ? FlipCard(
-            front: VsScrollbar(
+            front:
+
+                /*VsScrollbar(
               controller: _scrollController,
               showTrackOnHover: true,
               isAlwaysShown: false,
@@ -111,87 +120,79 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                 thickness: 10.0,
                 color: Theme.of(context).highlightColor,
               ),
-              child: FutureBuilder(
-                  future: balance,
-                  builder: (ctx, balancesnapshot) {
-                    if (balancesnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return FutureBuilder(
-                        future: myNFTs,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Container();
-                          } else {
-                            if (snapshot.data.length == 0 ||
-                                snapshot.data == null) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      "CollectorToken Balance: " +
-                                          balancesnapshot.data,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .highlightColor)),
-                                  Text("No NFTs in your Portfolio",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .highlightColor)),
-                                ],
+              child: 
+              */
+                FutureBuilder(
+              future: myNFTs,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  if (snapshot.data[0].length == 0 ||
+                      snapshot.data[0] == null) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("CollectorToken Balance: " + snapshot.data[1],
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor)),
+                        Text("No NFTs in your Portfolio",
+                            style: TextStyle(
+                                color: Theme.of(context).highlightColor)),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("CollectorToken Balance: " + snapshot.data[1],
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor)),
+                        SizedBox(height: 10),
+                        Flexible(
+                          child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 0,
+                                    mainAxisSpacing: 0,
+                                    mainAxisExtent: 820,
+                                    maxCrossAxisExtent: double.maxFinite),
+                            itemCount: snapshot.data[0].length,
+                            itemBuilder: (ctx, idx) {
+                              return MyNFTGridMobileView(
+                                myNFT: snapshot.data[0][idx],
+                                buttonStartAuction: "Start Auction",
+                                functionStartAuction:
+                                    Provider.of<Contractinteraction>(context)
+                                        .startAuction,
+                                buttonRemoveAuction: "Delete Auction",
+                                functionRemoveAuction:
+                                    Provider.of<Contractinteraction>(context)
+                                        .removeAuction1,
+                                buttonStartOffer: "Sell NFT",
+                                buttonRemoveOffer: "Remove Offer",
+                                functionRemoveOffer:
+                                    Provider.of<Contractinteraction>(context)
+                                        .removeOffer1,
                               );
-                            } else {
-                              return Column(
-                                children: [
-                                  Text(
-                                      "CollectorToken Balance: " +
-                                          balancesnapshot.data,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .highlightColor)),
-                                  GridView.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithMaxCrossAxisExtent(
-                                            crossAxisSpacing: 0,
-                                            mainAxisSpacing: 0,
-                                            mainAxisExtent: 820,
-                                            maxCrossAxisExtent:
-                                                double.maxFinite),
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (ctx, idx) {
-                                      return MyNFTGridMobileView(
-                                        myNFT: snapshot.data[idx],
-                                        buttonStartAuction: "Start Auction",
-                                        functionStartAuction:
-                                            Provider.of<Contractinteraction>(
-                                                    context)
-                                                .startAuction,
-                                        buttonRemoveAuction: "Delete Auction",
-                                        functionRemoveAuction:
-                                            Provider.of<Contractinteraction>(
-                                                    context)
-                                                .removeAuction1,
-                                        buttonStartOffer: "Sell NFT",
-                                        buttonRemoveOffer: "Remove Offer",
-                                        functionRemoveOffer:
-                                            Provider.of<Contractinteraction>(
-                                                    context)
-                                                .removeOffer1,
-                                      );
-                                    },
-                                  ),
-                                ],
-                              );
-                            }
-                          }
-                        },
-                      );
-                    }
-                  }),
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                }
+              },
             ),
+            //),
             back: VsScrollbar(
               controller: _scrollController,
               showTrackOnHover: true,

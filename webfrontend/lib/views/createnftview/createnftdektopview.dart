@@ -47,6 +47,11 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {});
+    }
     return Row(
       children: [
         SidebarDesktop(4),

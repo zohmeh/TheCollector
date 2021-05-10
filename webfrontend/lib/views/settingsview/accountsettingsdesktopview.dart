@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:mime_type/mime_type.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/provider/contractinteraction.dart';
 import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
 import '/provider/loginprovider.dart';
 import '../../widgets/buttons/button.dart';
@@ -43,6 +44,11 @@ class _AccountSettingsDesktopViewState
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<LoginModel>(context).user;
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (tx == "true") {
+      setState(() {});
+    }
     return Row(
       children: [
         SidebarDesktop(6),

@@ -25,6 +25,7 @@ class AuctionNFTGridMobileView extends StatefulWidget {
 class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
   Future image;
   Future tokenData;
+  var txold;
 
   Future _getImage() async {
     var data = await http.get(Uri.parse(widget.auctionData["tokenuri"]));
@@ -53,6 +54,15 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
 
   @override
   Widget build(BuildContext context) {
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+        image = _getImage();
+        tokenData = _getTokenData();
+      });
+    }
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       front: Card(

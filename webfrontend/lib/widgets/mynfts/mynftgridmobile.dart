@@ -39,9 +39,17 @@ class MyNFTGridMobileView extends StatefulWidget {
 
 class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
   bool isOffer = false;
+  var txold;
 
   @override
   Widget build(BuildContext context) {
+    var tx = Provider.of<Contractinteraction>(context).tx;
+
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Card(
