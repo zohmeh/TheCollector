@@ -1,5 +1,5 @@
-Moralis.initialize("RWXhZEXIhPPqpvMwSp9Sds1U3L33YPqYQff82WtM")
-Moralis.serverURL = "https://9zv5pla0sgxg.moralis.io:2053/server";
+Moralis.initialize("EAkJdlkNCwvglnazs080R7nhhSqjypb4J8jXJIio")
+Moralis.serverURL = "https://m1z7jlrg0vwd.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -28,6 +28,18 @@ async function bidForNFT(_tokenId, _bid, _uid) {
         return bid["status"];
     } catch (error) { console.log(error); }
 }
+
+async function getBalance() {
+    user = await Moralis.User.current();
+    const userAddress = user.get("ethAddress");
+    const query = new Moralis.Query("EthTokenBalance");
+    query.equalTo("address", userAddress);
+    query.equalTo("token_address", "0x0f8825Ca5C7D2D60B639d92cee413DDCE4b7A1D3".toLowerCase());
+    const tokenbalance = await query.first();
+    const balance = tokenbalance.attributes["balance"];
+    return balance;
+}
+
 
 async function createNewNFT(_file, _name, _description) {
     user = await Moralis.User.current();

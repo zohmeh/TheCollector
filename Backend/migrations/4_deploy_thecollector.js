@@ -1,5 +1,6 @@
 const TheCollector = artifacts.require("TheCollector");
+const Reward = artifacts.require("Reward");
 
 module.exports = function (deployer) {
-  deployer.deploy(TheCollector);
+  deployer.deploy(TheCollector, Reward.address);
 };

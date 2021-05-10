@@ -1,9 +1,14 @@
 pragma solidity 0.6.2;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "./Reward.sol";
 
 contract TheCollector is ERC721 {
-    constructor() ERC721("TheCollcetorToken", "TCT") public {
+
+    Reward reward;
+
+    constructor(address _reward) ERC721("TheCollcetorToken", "TCT") public {
+        reward = Reward(_reward);
     }
 
     event NewCollectorToken(string message, uint256 tokenId, string tokenHash);
@@ -28,6 +33,9 @@ contract TheCollector is ERC721 {
 
         //_mint(msg.sender, _tokenId);
         _safeMint(msg.sender, _tokenId);
+
+        //pay reward
+        reward.payReward(msg.sender, 1);
 
         emit NewCollectorToken("New CollectorToken created", _tokenId, _hash);
 

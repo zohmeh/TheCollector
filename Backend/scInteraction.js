@@ -1,6 +1,8 @@
 //Contract ABIs
 const nftAuctionABI = require("./build/contracts/Marketplace.json");
 const collectorABI = require("./build/contracts/TheCollector.json");
+const collectorERC20ABI = require("./build/contracts/CollectorToken.json");
+const rewardABI = require("./build/contracts/Reward.json");
 const address = require("../addresses.json");
 //const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
@@ -12,8 +14,38 @@ const web3 = new Web3("HTTP://127.0.0.1:7545");
 // Connecting to SmartContract
 const nftMarketplaceContract = new web3.eth.Contract(nftAuctionABI.abi, address.marketplace);
 const collectorContract = new web3.eth.Contract(collectorABI.abi, address.thecollector);
+const collectorERC20Contract = new web3.eth.Contract(collectorERC20ABI.abi, address.collectorERC20);
+const rewardContract = new web3.eth.Contract(rewardABI.abi, address.reward);
 
 module.exports = {
+    approveERC20: async function (sendSettings, _address, _amount) {
+        try {
+            const approve = await collectorERC20Contract.methods.approve(_address, _amount).send(sendSettings);
+            return approve;
+        } catch (error) { console.log(error); }
+    },
+
+    balance: async function (_address) {
+        try {
+            const balance = await collectorERC20Contract.methods.balanceOf(_address).call();
+            return balance;
+        } catch (error) { console.log(error); }
+    },
+
+    allowanceERC20: async function (_owner, _spender) {
+        try {
+            const allowance = await collectorERC20Contract.methods.allowance(_owner, _spender).call();
+            return allowance;
+        } catch (error) { console.log(error); }
+    },
+
+    reward: async function (sendSettings, _recipient, _amount) {
+        try {
+            const pay = await rewardContract.methods.payReward(_recipient, _amount).send(sendSettings);
+            return pay;
+        } catch (error) { console.log(error); }
+    },
+
     createNewNFT: async function (sendSettings) {
         try {
             const nftID = await collectorContract.methods.mintNewCollectorNFT("Hallo erster Hash").send(sendSettings);

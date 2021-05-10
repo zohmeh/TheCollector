@@ -25,3 +25,4 @@ external dynamic getMyBids();
 external dynamic setUserData(var _file, String _username);
 external dynamic getPriceHistory(String _tokenId);
 external dynamic getSoldItems();
+external dynamic getBalance();

@@ -3,6 +3,7 @@ pragma solidity 0.6.2;
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./TheCollector.sol";
+import "./Reward.sol";
 
 contract Marketplace {
 
@@ -32,16 +33,18 @@ contract Marketplace {
     
     address public owner;
     TheCollector collector;
+    Reward reward;
 
     event newAuction(uint256 id, uint256 tokenId, uint256 ending, uint256 highestBid, address highestBidder);
     event newOffer(uint256 id, uint256 tokenId, uint256 price);
     event tokenSold(uint256 id, uint256 tokenId, uint256 price, address buyer);
     event newBid(uint256 id, uint256 tokenId, uint256 bid, address bidder);
 
-    constructor(address _collector) public {
+    constructor(address _collector, address _reward) public {
         require(address(this) != address(0));
         owner = msg.sender;
         collector = TheCollector(_collector);
+        reward = Reward(_reward);
     }
 
     function setOffer(uint256 _tokenId, uint256 _price) public {
@@ -93,6 +96,9 @@ contract Marketplace {
         address payable originalOwner = payable(collector.ownerOf(_tokenId));
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
+
+        //pay reward
+        reward.payReward(msg.sender, 1000000000000000000);
 
         emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
@@ -147,6 +153,9 @@ contract Marketplace {
         address payable originalOwner = payable(collector.ownerOf(_tokenId));
         collector.safeTransferFrom(originalOwner, msg.sender, _tokenId); 
         originalOwner.transfer(msg.value);
+
+        //pay reward
+        reward.payReward(msg.sender, 1000000000000000000);
 
         emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
