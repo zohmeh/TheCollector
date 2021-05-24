@@ -38,10 +38,8 @@ class MyBidsList extends StatelessWidget {
               return ClipRRect(
                 //radius: 20,
                 borderRadius: BorderRadius.circular(80),
-                child: Image.memory(
-                  Uint8List.fromList(
-                    snapshot.data.cast<int>(),
-                  ),
+                child: Image.network(
+                  snapshot.data,
                   height: 80,
                   width: 80,
                   fit: BoxFit.fill,

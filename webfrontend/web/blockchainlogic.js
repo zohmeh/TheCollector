@@ -1,5 +1,5 @@
-Moralis.initialize("EAkJdlkNCwvglnazs080R7nhhSqjypb4J8jXJIio")
-Moralis.serverURL = "https://m1z7jlrg0vwd.moralis.io:2053/server";
+Moralis.initialize("BpwuYVFOVhjI7pjtbK3716HLmcbUUPIkjj0tii1J")
+Moralis.serverURL = "https://j7wzmyvkm6bv.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -37,39 +37,46 @@ async function getBalance() {
     const userAddress = user.get("ethAddress");
     const query = new Moralis.Query("EthTokenBalance");
     query.equalTo("address", userAddress);
-    query.equalTo("token_address", "0x0f8825Ca5C7D2D60B639d92cee413DDCE4b7A1D3".toLowerCase());
+    query.equalTo("token_address", "0xf1cC3dC46B6BC8438e66Da027A820ca27Dc089ee".toLowerCase());
     const tokenbalance = await query.first();
     if (tokenbalance) {
         balance = tokenbalance.attributes["balance"];
     } else {
         balance = "0";
     }
-    return balance;    
+    return balance;
 }
-
 
 async function createNewNFT(_file, _name, _description) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    let file = [];
-    for (var i = 0; i < _file.length; i++) {
-        file.push(_file[i]);
-    }
-    const object = {
-        "name": _name,
-        "description": _description,
-        "file": file
-    }
-
     try {
-        //Store on IPFS get Hash in return
-        const file = new Moralis.File("upload.json", { base64: btoa(JSON.stringify(object)) });
-        await file.saveIPFS();
-        let hash = file.ipfs();
+        //Convert uint8 file from flutter into js array
+        let file = [];
+        for (var i = 0; i < _file.length; i++) {
+            file.push(_file[i]);
+        }
 
-        //Mint NFT and store Hash on blockchain in NFTToken.sol Contract
-        let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(hash).send({
+        //Store file on IPFS
+        const ipfsfile = new Moralis.File("upload.png", file);
+        response = await ipfsfile.saveIPFS();
+        var ipfsurl = ipfsfile.ipfs();
+
+        //Create an object to store all nft-Data       
+        const object = {
+            "name": _name,
+            "description": _description,
+            "file": ipfsurl
+        }
+
+        //Store this object on IPFS as well
+        const nftfile = new Moralis.File("upload.json", {base64 : btoa(JSON.stringify(object))});
+        await nftfile.saveIPFS();
+        var nfturl = nftfile.ipfs();
+
+        //Mint NFT and store nfturl on blockchain in NFTToken.sol Contract
+        let mint = await NFTTokencontractInstance.methods.mintNewCollectorNFT(nfturl).send({
             from: userAddress, gasLimit: 6721975,
             gasPrice: web3.utils.toWei('20000000000', 'wei'),
         });
@@ -93,7 +100,7 @@ async function getUserItems() {
     try {
         user = await Moralis.User.current();
         let userItems = [];
-        const query = new Moralis.Query("EthNFTTokenOwners");
+        const query = new Moralis.Query("EthNFTOwners");
         query.equalTo("owner_of", user.attributes.ethAddress);
         const ownedItems = await query.find();
         for (var i = 0; i < ownedItems.length; i++) {
@@ -131,11 +138,16 @@ async function getItemsForAuction() {
 
 async function getAuctionItem(_tokenId) {
     try {
+        let item;
         const query = new Moralis.Query("ItemsForAuction");
         query.equalTo("tokenId", _tokenId);
         query.notEqualTo("isSold", true);
-        const result = await query.first();
-        item = JSON.stringify(result);
+        const results = await query.find();
+        for (let i = 0; i < results.length; ++i) {
+            if (results[i].attributes.user && results[i].attributes.user != undefined) {
+                item = JSON.stringify(results[i]);
+            }
+        }
         return item;
     } catch (error) { console.log(error); }
 }
@@ -160,12 +172,16 @@ async function getPriceHistory(_tokenId) {
 
 async function getOfferItem(_tokenId) {
     try {
+        var item;
         const query = new Moralis.Query("ItemsForSale");
         query.equalTo("tokenId", _tokenId);
         query.notEqualTo("isSold", true);
-        const result = await query.first();
-        item = JSON.stringify(result);
-
+        const results = await query.find();
+        for (let i = 0; i < results.length; ++i) {
+            if (results[i].attributes.user && results[i].attributes.user != undefined) {
+                item = JSON.stringify(results[i]);
+            }
+        }
         return item;
     } catch (error) { console.log(error); }
 }
@@ -208,7 +224,7 @@ async function setUserData(_file, _username) {
         if (user) {
             user.set("username", _username);
             user.set("avatar", file);
-            return _username;
+            return [_username, file];
         }
     } catch (error) { console.log(error); }
 }
@@ -234,6 +250,7 @@ async function removeAuction(_tokenId) {
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
             const result = await query.first();
+            console.log(result);
             result.destroy();
         }
 
@@ -294,11 +311,15 @@ async function removeOffer(_tokenId) {
             const query = new Moralis.Query("ItemsForSale");
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
-            const result = await query.first();
-            result.destroy();
-        }
+            const results = await query.find();
+            for (let i = 0; i < results.length; ++i) {
 
-        return remove["status"];
+                if (results[i].attributes.user && results[i].attributes.user != undefined) {
+                    results[i].destroy();
+                }
+            }
+        }
+        return true;
     } catch (error) { console.log(error); }
 }
 

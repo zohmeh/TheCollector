@@ -7,7 +7,7 @@ contract TheCollector is ERC721 {
 
     Reward reward;
 
-    constructor(address _reward) ERC721("TheCollcetorToken", "TCT") public {
+    constructor(address _reward) ERC721("TheCollectorToken", "TCT") public {
         reward = Reward(_reward);
     }
 

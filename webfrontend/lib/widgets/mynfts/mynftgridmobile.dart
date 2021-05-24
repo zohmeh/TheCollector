@@ -66,12 +66,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
               Container(
                 height: 250,
                 width: double.infinity,
-                child: Image.memory(
-                  Uint8List.fromList(
-                    widget.myNFT["file"].cast<int>(),
-                  ),
-                  //fit: BoxFit.fill,
-                ),
+                child: Image.network(widget.myNFT["file"]),
               ),
               //),
               Row(

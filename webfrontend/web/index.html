@@ -31,24 +31,11 @@
 </head>
 <body>
   <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js" type="application/javascript"></script>
-  <script src="https://unpkg.com/moralis/dist/moralis.js" type="application/javascript"></script>
+  <script src="https://unpkg.com/moralis@0.0.22/dist/moralis.js" type="application/javascript"></script>
   <script src="./blockchainlogic.js" type="text/javascript"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client/dist/index.min.js"></script>
   <script src="./abi.js" type="application/javascript"></script>
   <script src="./addresses.js" type="application/javascript"></script>
   
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
-    const ipfs = window.IpfsHttpClient({ host: 'ipfs.infura.io', port: '5001', protocol: 'https' });
-  
-  </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

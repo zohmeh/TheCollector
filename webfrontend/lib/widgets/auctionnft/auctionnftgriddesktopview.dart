@@ -84,12 +84,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                     return Container(
                       height: 250,
                       width: double.infinity,
-                      child: Image.memory(
-                        Uint8List.fromList(
-                          snapshot.data.cast<int>(),
-                        ),
-                        //fit: BoxFit.fill,
-                      ),
+                      child: Image.network(snapshot.data),
                     );
                   }
                 },

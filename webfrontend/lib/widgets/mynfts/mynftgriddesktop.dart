@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_app_template/helpers/dateconverter.dart';
 import 'package:web_app_template/widgets/charts/linechart.dart';
 import '../useravatar.dart';
 import '/provider/contractinteraction.dart';
@@ -43,7 +44,6 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
   @override
   Widget build(BuildContext context) {
     var tx = Provider.of<Contractinteraction>(context).tx;
-
     if (txold != tx) {
       setState(() {
         txold = tx;
@@ -64,11 +64,8 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                 Container(
                   height: 250,
                   width: double.infinity,
-                  child: Image.memory(
-                    Uint8List.fromList(
-                      widget.myNFT["file"].cast<int>(),
-                    ),
-                    //fit: BoxFit.fill,
+                  child: Image.network(
+                    widget.myNFT["file"],
                   ),
                 ),
                 Row(
@@ -171,24 +168,48 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                   ],
                 ),
                 widget.myNFT["isAuction"]
-                    ? Row(
+                    ? Column(
                         children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Text(
-                              "NFT is in an Auction: ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).highlightColor),
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Text(
+                                  "NFT is in an Auction: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).highlightColor),
+                                ),
+                              ),
+                              SizedBox(width: 2),
+                              Container(
+                                  child: Text(
+                                "Yes",
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor),
+                              )),
+                            ],
                           ),
-                          SizedBox(width: 2),
-                          Container(
-                              child: Text(
-                            "Yes",
-                            style: TextStyle(
-                                color: Theme.of(context).highlightColor),
-                          )),
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Text(
+                                  "Aution Ending: ",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).highlightColor),
+                                ),
+                              ),
+                              SizedBox(width: 2),
+                              Container(
+                                  child: Text(
+                                convertDate(widget.myNFT["auctionEnding"]),
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor),
+                              )),
+                            ],
+                          ),
                         ],
                       )
                     : //SizedBox(height: 25),
@@ -270,7 +291,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                       Theme.of(context).highlightColor,
                                       widget.buttonStartAuction,
                                       widget.functionStartAuction,
-                                      [widget.myNFT["tokenId"], "3"]),
+                                      [widget.myNFT["token_id"], "3"]),
                                 ],
                               ),
                   ],

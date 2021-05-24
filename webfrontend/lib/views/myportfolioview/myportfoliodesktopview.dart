@@ -63,9 +63,14 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
       var promise1 = getAuctionItem(myItemdecoded["token_id"]);
       var auction = await promiseToFuture(promise1);
 
-      auction == null
-          ? myItemdecoded["isAuction"] = false
-          : myItemdecoded["isAuction"] = true;
+      if (auction == null) {
+        myItemdecoded["isAuction"] = false;
+      } else {
+        var auctiondecoded = json.decode(auction);
+        myItemdecoded["isAuction"] = true;
+        myItemdecoded["auctionEnding"] = auctiondecoded["ending"];
+        myItemdecoded["highestBid"] = auctiondecoded["highestBid"];
+      }
 
       var promise2 = getOfferItem(myItemdecoded["token_id"]);
       var offer = await promiseToFuture(promise2);

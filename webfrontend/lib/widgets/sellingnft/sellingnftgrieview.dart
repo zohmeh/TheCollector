@@ -80,12 +80,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                     return Container(
                       height: 245,
                       width: double.infinity,
-                      child: Image.memory(
-                        Uint8List.fromList(
-                          snapshot.data.cast<int>(),
-                        ),
-                        //fit: BoxFit.fill,
-                      ),
+                      child: Image.network(snapshot.data),
                     );
                   }
                 },
