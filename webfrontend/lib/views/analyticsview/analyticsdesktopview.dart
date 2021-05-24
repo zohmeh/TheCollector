@@ -19,6 +19,7 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
   List allItems = [];
   int _currentSortColumn = 0;
   bool _isAscending = true;
+  var txold;
 
   Future _getSoldItems() async {
     var promise = getSoldItems();
@@ -38,8 +39,9 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         soldItems = _getSoldItems();
       });
     }

@@ -22,6 +22,7 @@ class _AccountSettingsMobileViewState extends State<AccountSettingsMobileView> {
   var _loadedFile;
   var data;
   var _image;
+  var txold;
 
   Future _loadPicture() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
@@ -44,8 +45,10 @@ class _AccountSettingsMobileViewState extends State<AccountSettingsMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
-      setState(() {});
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
     }
     return Container(
       padding: EdgeInsets.all(10),

@@ -26,6 +26,7 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
   var _image;
   var name;
   var description;
+  var txold;
 
   Future _loadPicture() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
@@ -48,8 +49,10 @@ class _CreateNFTMobileViewState extends State<CreateNFTMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
-      setState(() {});
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
     }
     return user != null
         ? Center(

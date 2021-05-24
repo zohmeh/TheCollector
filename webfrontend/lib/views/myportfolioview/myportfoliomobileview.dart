@@ -22,6 +22,7 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
   ScrollController _scrollController = ScrollController();
   Future myNFTs;
   Future myBids;
+  var txold;
 
   Future _getMyTokenBalance() async {
     var promise = getBalance();
@@ -98,8 +99,9 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         myNFTs = _portfolioData();
         myBids = _getMyBids();
       });

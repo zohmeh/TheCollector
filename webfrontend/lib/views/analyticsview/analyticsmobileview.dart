@@ -18,6 +18,7 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
   List allItems = [];
   int _currentSortColumn = 0;
   bool _isAscending = true;
+  var txold;
 
   Future _getSoldItems() async {
     var promise = getSoldItems();
@@ -37,11 +38,13 @@ class _AnalyticsMobileViewState extends State<AnalyticsMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         soldItems = _getSoldItems();
       });
     }
+
     return user != null
         ? Container(
             padding: EdgeInsets.all(10),

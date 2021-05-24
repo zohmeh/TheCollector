@@ -16,6 +16,7 @@ class AllAuctionsMobileView extends StatefulWidget {
 class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
   ScrollController _scrollController = ScrollController();
   Future auctionNFTs;
+  var txold;
 
   Future _getItemsForAuction() async {
     var promise = getItemsForAuction();
@@ -54,8 +55,9 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         auctionNFTs = _getNFTData();
       });
     }

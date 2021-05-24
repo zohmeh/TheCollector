@@ -16,6 +16,7 @@ class AllOffersMobileView extends StatefulWidget {
 class _AllOffersMobileViewState extends State<AllOffersMobileView> {
   ScrollController _scrollController = ScrollController();
   Future sellingNFTs;
+  var txold;
 
   Future _getItemsForSale() async {
     var promise = getItemsForSale();
@@ -53,11 +54,13 @@ class _AllOffersMobileViewState extends State<AllOffersMobileView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         sellingNFTs = _getNFTData();
       });
     }
+
     return user != null
         ? VsScrollbar(
             controller: _scrollController,

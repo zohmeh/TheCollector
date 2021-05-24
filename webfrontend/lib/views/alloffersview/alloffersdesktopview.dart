@@ -17,6 +17,7 @@ class AllOffersDesktopView extends StatefulWidget {
 class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
   ScrollController _scrollController = ScrollController();
   Future sellingNFTs;
+  var txold;
 
   Future _getItemsForSale() async {
     var promise = getItemsForSale();
@@ -54,8 +55,9 @@ class _AllOffersDesktopViewState extends State<AllOffersDesktopView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         sellingNFTs = _getNFTData();
       });
     }

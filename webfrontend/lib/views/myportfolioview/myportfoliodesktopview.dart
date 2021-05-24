@@ -22,6 +22,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
   ScrollController _scrollController = ScrollController();
   Future myNFTs;
   Future myBids;
+  var txold;
 
   Future _getMyTokenBalance() async {
     var promise = getBalance();
@@ -88,6 +89,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
 
       _myNFTs.add(myItemdecoded);
     }
+
     return ([_myNFTs, balance]);
   }
 
@@ -103,8 +105,9 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
     var user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
+    if (txold != tx) {
       setState(() {
+        txold = tx;
         myNFTs = _portfolioData();
         myBids = _getMyBids();
       });

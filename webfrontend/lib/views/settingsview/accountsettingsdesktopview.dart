@@ -24,6 +24,7 @@ class _AccountSettingsDesktopViewState
   var _loadedFile;
   var data;
   var _image;
+  var txold;
 
   Future _loadPicture() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
@@ -46,8 +47,10 @@ class _AccountSettingsDesktopViewState
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
-      setState(() {});
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
     }
     return Row(
       children: [

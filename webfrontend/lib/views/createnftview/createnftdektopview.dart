@@ -27,6 +27,7 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
   var _image;
   var name;
   var description;
+  var txold;
 
   Future _loadPicture() async {
     var mediaData = await ImagePickerWeb.getImageInfo;
@@ -49,8 +50,10 @@ class _CreateNFTDesktopViewState extends State<CreateNFTDesktopView> {
     final user = Provider.of<LoginModel>(context).user;
     var tx = Provider.of<Contractinteraction>(context).tx;
 
-    if (tx == "true") {
-      setState(() {});
+    if (txold != tx) {
+      setState(() {
+        txold = tx;
+      });
     }
     return Row(
       children: [
