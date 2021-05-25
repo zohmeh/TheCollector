@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:web_app_template/helpers/dateconverter.dart';
@@ -111,27 +110,44 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "Creator: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).highlightColor),
-                      )),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatorname: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
                   SizedBox(width: 2),
-                  Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(widget.auctionData["creatorName"],
-                              style: TextStyle(
-                                  color: Theme.of(context).highlightColor))),
-                      SizedBox(width: 10),
-                      Useravatar(
-                          image: widget.auctionData["creatorAvatar"],
-                          width: 20,
-                          height: 20),
-                    ],
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(widget.auctionData["creatorName"],
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor)),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatoravatar: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Useravatar(
+                            image: widget.auctionData["creatorAvatar"],
+                            width: 25,
+                            height: 25)),
                   ),
                 ],
               ),
@@ -308,7 +324,7 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            "Current Owner: ",
+                            "Name current Owner: ",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).highlightColor),
@@ -318,22 +334,33 @@ class _AuctionNFTGridDesktopViewState extends State<AuctionNFTGridDesktopView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              children: [
-                                SingleChildScrollView(
-                                    child: Text(widget.auctionData["userName"],
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .highlightColor))),
-                                SizedBox(width: 10),
-                                Useravatar(
-                                    image: widget.auctionData["userAvatar"],
-                                    width: 25,
-                                    height: 25)
-                              ],
-                            ),
+                            child: Text(widget.auctionData["userName"],
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor)),
                           ),
-                        )
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "Avatar current Owner: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Flexible(
+                          child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Useravatar(
+                                  image: widget.auctionData["userAvatar"],
+                                  width: 25,
+                                  height: 25)),
+                        ),
                       ],
                     ),
                     Container(

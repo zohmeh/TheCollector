@@ -93,7 +93,7 @@ class _AllAuctionsMobileViewState extends State<AllAuctionsMobileView> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 0,
-                          mainAxisExtent: 560,
+                          mainAxisExtent: 595,
                           maxCrossAxisExtent: double.maxFinite),
                       itemCount: snapshot.data.length,
                       itemBuilder: (ctx, idx) {

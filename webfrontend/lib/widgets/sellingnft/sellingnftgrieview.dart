@@ -106,27 +106,44 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "Creator: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).highlightColor),
-                      )),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatorname: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
                   SizedBox(width: 2),
-                  Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(widget.itemdata["creatorName"],
-                              style: TextStyle(
-                                  color: Theme.of(context).highlightColor))),
-                      SizedBox(width: 10),
-                      Useravatar(
-                          image: widget.itemdata["creatorAvatar"],
-                          width: 20,
-                          height: 20),
-                    ],
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(widget.itemdata["creatorName"],
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor)),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatoravatar: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Useravatar(
+                            image: widget.itemdata["creatorAvatar"],
+                            width: 25,
+                            height: 25)),
                   ),
                 ],
               ),
@@ -227,7 +244,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
                             child: Text(
-                              "Current Owner: ",
+                              "Name current Owner: ",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).highlightColor),
@@ -235,19 +252,34 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
                           ),
                           SizedBox(width: 2),
                           Flexible(
-                            child: Row(
-                              children: [
-                                Text(widget.itemdata["userName"],
-                                    style: TextStyle(
-                                        color:
-                                            Theme.of(context).highlightColor)),
-                                SizedBox(width: 10),
-                                Useravatar(
-                                    image: widget.itemdata["userAvatar"],
-                                    width: 20,
-                                    height: 20),
-                              ],
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Text(widget.itemdata["userName"],
+                                  style: TextStyle(
+                                      color: Theme.of(context).highlightColor)),
                             ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: Text(
+                              "Avatar current Owner: ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).highlightColor),
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          Flexible(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Useravatar(
+                                    image: widget.itemdata["userAvatar"],
+                                    width: 25,
+                                    height: 25)),
                           ),
                         ],
                       ),

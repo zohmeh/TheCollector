@@ -111,39 +111,44 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "Creator: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).highlightColor),
-                      )),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatorname: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
                   SizedBox(width: 2),
                   Flexible(
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        widget.auctionData["creatorName"],
-                        style:
-                            TextStyle(color: Theme.of(context).highlightColor),
-                      ),
+                      child: Text(widget.auctionData["creatorName"],
+                          style: TextStyle(
+                              color: Theme.of(context).highlightColor)),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: Text(
-                            "         ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).highlightColor),
-                          )),
-                      Useravatar(
-                          image: widget.auctionData["creatorAvatar"],
-                          width: 20,
-                          height: 20),
-                    ],
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatoravatar: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Useravatar(
+                            image: widget.auctionData["creatorAvatar"],
+                            width: 25,
+                            height: 25)),
                   ),
                 ],
               ),
@@ -328,7 +333,7 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Text(
-                            "Current Owner: ",
+                            "Name current Owner: ",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).highlightColor),
@@ -338,20 +343,32 @@ class _AuctionNFTGridMobileViewState extends State<AuctionNFTGridMobileView> {
                         Flexible(
                           child: Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Row(
-                              children: [
-                                Text(widget.auctionData["userName"],
-                                    style: TextStyle(
-                                        color:
-                                            Theme.of(context).highlightColor)),
-                                SizedBox(width: 10),
-                                Useravatar(
-                                    image: widget.auctionData["userAvatar"],
-                                    width: 25,
-                                    height: 25)
-                              ],
-                            ),
+                            child: Text(widget.auctionData["userName"],
+                                style: TextStyle(
+                                    color: Theme.of(context).highlightColor)),
                           ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            "Avatar current Owner: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).highlightColor),
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Flexible(
+                          child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: Useravatar(
+                                  image: widget.auctionData["userAvatar"],
+                                  width: 25,
+                                  height: 25)),
                         ),
                       ],
                     ),

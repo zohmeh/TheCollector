@@ -1,5 +1,5 @@
-Moralis.initialize("BpwuYVFOVhjI7pjtbK3716HLmcbUUPIkjj0tii1J")
-Moralis.serverURL = "https://j7wzmyvkm6bv.moralis.io:2053/server";
+Moralis.initialize("qwlh2iN1YU2SPZax1h9mS58a7IkP565jWExl7qFT")
+Moralis.serverURL = "https://jpqfmvfsuwiz.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -37,7 +37,7 @@ async function getBalance() {
     const userAddress = user.get("ethAddress");
     const query = new Moralis.Query("EthTokenBalance");
     query.equalTo("address", userAddress);
-    query.equalTo("token_address", "0xf1cC3dC46B6BC8438e66Da027A820ca27Dc089ee".toLowerCase());
+    query.equalTo("token_address", addresses["collectorERC20"].toLowerCase());
     const tokenbalance = await query.first();
     if (tokenbalance) {
         balance = tokenbalance.attributes["balance"];

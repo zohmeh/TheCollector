@@ -93,7 +93,7 @@ class _AllOffersMobileViewState extends State<AllOffersMobileView> {
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 0,
-                          mainAxisExtent: 405,
+                          mainAxisExtent: 440,
                           maxCrossAxisExtent: double.maxFinite),
                       itemCount: snapshot.data.length,
                       itemBuilder: (ctx, idx) {

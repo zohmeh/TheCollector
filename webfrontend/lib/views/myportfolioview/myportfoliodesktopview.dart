@@ -187,7 +187,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
                                         SliverGridDelegateWithMaxCrossAxisExtent(
                                             crossAxisSpacing: 0,
                                             mainAxisSpacing: 0,
-                                            mainAxisExtent: 560,
+                                            mainAxisExtent: 595,
                                             maxCrossAxisExtent: 500),
                                     itemCount: snapshot.data[0].length,
                                     itemBuilder: (ctx, idx) {

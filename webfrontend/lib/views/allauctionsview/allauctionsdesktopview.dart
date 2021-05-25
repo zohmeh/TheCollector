@@ -102,7 +102,7 @@ class _AllAuctionsDesktopViewState extends State<AllAuctionsDesktopView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 0,
                                     mainAxisSpacing: 0,
-                                    mainAxisExtent: 530,
+                                    mainAxisExtent: 565,
                                     maxCrossAxisExtent: 500),
                             itemCount: snapshot.data.length,
                             itemBuilder: (ctx, idx) {

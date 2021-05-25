@@ -90,31 +90,45 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
               Row(
                 children: [
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(
-                        "Creator: ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).highlightColor),
-                      )),
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatorname: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
                   SizedBox(width: 2),
-                  Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          widget.myNFT["creator"]["username"],
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(widget.myNFT["creator"]["username"],
                           style: TextStyle(
-                              color: Theme.of(context).highlightColor),
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Useravatar(
-                          image: widget.myNFT["creator"]["avatar"],
-                          width: 20,
-                          height: 20),
-                    ],
-                  )
+                              color: Theme.of(context).highlightColor)),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Creatoravatar: ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).highlightColor),
+                    ),
+                  ),
+                  SizedBox(width: 2),
+                  Flexible(
+                    child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: Useravatar(
+                            image: widget.myNFT["creator"]["avatar"],
+                            width: 25,
+                            height: 25)),
+                  ),
                 ],
               ),
               Row(

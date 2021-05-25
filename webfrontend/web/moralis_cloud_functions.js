@@ -1,5 +1,5 @@
 Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
-  const query = new Moralis.Query("EthNFTOwnersPending");
+  const query = new Moralis.Query("EthNFTOwners");
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
   const object = await query.first();
@@ -21,7 +21,7 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
   }
 });
 
-Moralis.Cloud.beforeSave("EthNFTOwnersPending", async (request) => {
+Moralis.Cloud.beforeSave("EthNFTOwners", async (request) => {
   const query = new Moralis.Query("Item");
   query.equalTo("token_id", request.object.get('tokenId'));
   const object = await query.first();
@@ -29,7 +29,7 @@ Moralis.Cloud.beforeSave("EthNFTOwnersPending", async (request) => {
 });
 
 Moralis.Cloud.beforeSave("ItemsForAuction", async (request) => {
-  const query = new Moralis.Query("EthNFTOwnersPending");
+  const query = new Moralis.Query("EthNFTOwners");
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
   const object = await query.first();

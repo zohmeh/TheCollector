@@ -165,7 +165,7 @@ class _MyPortfolioMobileViewState extends State<MyPortfolioMobileView> {
                                 SliverGridDelegateWithMaxCrossAxisExtent(
                                     crossAxisSpacing: 0,
                                     mainAxisSpacing: 0,
-                                    mainAxisExtent: 820,
+                                    mainAxisExtent: 855,
                                     maxCrossAxisExtent: double.maxFinite),
                             itemCount: snapshot.data[0].length,
                             itemBuilder: (ctx, idx) {
