@@ -98,7 +98,7 @@ contract Marketplace {
         originalOwner.transfer(msg.value);
 
         //pay reward
-        reward.payReward(msg.sender, 1000000000000000000);
+        reward.payReward(msg.sender, 1);
 
         emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
@@ -155,7 +155,7 @@ contract Marketplace {
         originalOwner.transfer(msg.value);
 
         //pay reward
-        reward.payReward(msg.sender, 1000000000000000000);
+        reward.payReward(msg.sender, 1);
 
         emit tokenSold(_id, _tokenId, msg.value, msg.sender);
     }
@@ -163,7 +163,7 @@ contract Marketplace {
     function deleteAuction(uint256 _tokenId) public {
         require(collector.ownerOf(_tokenId) == msg.sender, "Only owner of NFT can end Auction");
         require(auctionMap[_tokenId].hasStarted == true, "Auction has not started yet");
-        require(auctionMap[_tokenId].highestBid == 0 || now > auctionMap[_tokenId].ending + 10 * 1 minutes, "There is already a bid for the NFT");
+        require(auctionMap[_tokenId].highestBid == 0 || now > auctionMap[_tokenId].ending + 1500 * 1 minutes, "There is already a bid for the NFT");
 
         delete auctionMap[_tokenId];
         uint256 _auctionId;

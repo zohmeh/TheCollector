@@ -294,7 +294,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                       Theme.of(context).highlightColor,
                                       widget.buttonStartAuction,
                                       widget.functionStartAuction,
-                                      [widget.myNFT["token_id"], "3"]),
+                                      [widget.myNFT["token_id"], "3000"]),
                                 ],
                               ),
                   ],

@@ -2,6 +2,7 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
   const query = new Moralis.Query("EthNFTOwners");
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
+  query.equalTo("token_address", '0x899a9002a0c7C0c187e0d6d6bfcfc8673e37d690');
   const object = await query.first();
 
   const creatorquery = new Moralis.Query("Item");
@@ -24,6 +25,7 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
 Moralis.Cloud.beforeSave("EthNFTOwners", async (request) => {
   const query = new Moralis.Query("Item");
   query.equalTo("token_id", request.object.get('tokenId'));
+  query.equalTo("token_address", '0x899a9002a0c7C0c187e0d6d6bfcfc8673e37d690');
   const object = await query.first();
   request.object.set("creator", object.attributes.creator);
 });
@@ -32,6 +34,7 @@ Moralis.Cloud.beforeSave("ItemsForAuction", async (request) => {
   const query = new Moralis.Query("EthNFTOwners");
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
+  query.equalTo("token_address", '0x899a9002a0c7C0c187e0d6d6bfcfc8673e37d690');
   const object = await query.first();
 
   const creatorquery = new Moralis.Query("Item");
@@ -57,6 +60,7 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
   const saleItem = await saleQuery.first();
   const creatorquery = new Moralis.Query("Item");
   creatorquery.equalTo("tokenId", request.object.get('tokenId'));
+  creatorquery.equalTo("token_address", '0x899a9002a0c7C0c187e0d6d6bfcfc8673e37d690');
   const objectItem = await creatorquery.first();
 
   if (saleItem) {
@@ -80,6 +84,7 @@ Moralis.Cloud.beforeSave("SoldItems", async (request) => {
   const auctionItem = await auctionQuery.first();
   const creatorquery = new Moralis.Query("Item");
   creatorquery.equalTo("tokenId", request.object.get('tokenId'));
+  creatorquery.equalTo("token_address", '0x899a9002a0c7C0c187e0d6d6bfcfc8673e37d690');
   const objectItem = await creatorquery.first();
 
   console.log(auctionItem);

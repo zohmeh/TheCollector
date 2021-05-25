@@ -7,7 +7,7 @@ import 'package:web_app_template/provider/contractinteraction.dart';
 import 'package:web_app_template/widgets/sidebar/sidebardesktop.dart';
 import '/provider/loginprovider.dart';
 import '/widgets/javascript_controller.dart';
-import '../../widgets/sellingnft/sellingnftgrieview.dart';
+import '../../widgets/sellingnft/sellingnftgridview.dart';
 
 class AllOffersDesktopView extends StatefulWidget {
   @override

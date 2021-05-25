@@ -33,6 +33,8 @@ class LoginModel with ChangeNotifier {
     await promiseToFuture(promise);
     user = _arguments[1];
     image = _arguments[0];
+    await logOut();
+    await logIn();
     notifyListeners();
   }
 }

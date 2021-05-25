@@ -38,6 +38,7 @@ class _SellingNFTGridViewState extends State<SellingNFTGridView> {
       "name": jsonData["name"],
       "description": jsonData["description"]
     };
+
     return tokenData;
   }
 
