@@ -15,8 +15,8 @@ async function bidForNFT(_tokenId, _bid, _uid) {
 
     try {
         const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send({
-            from: userAddress, gasLimit: 6721975,
-            gasPrice: web3.utils.toWei('20000000000', 'wei'),
+            from: userAddress//, gasLimit: 6721975,
+            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
         });
         if (bid["status"] == true) {
             const query = new Moralis.Query("ItemsForAuction");
@@ -234,16 +234,10 @@ async function removeAuction(_tokenId) {
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
-    sendsettings = {
-        from: ethereum.selectedAddress,
-        gasLimit: 6721975,
-        gasPrice: '20000000000',
-    };
-
     try {
         let remove = await NFTAuctioncontractInstance.methods.deleteAuction(_tokenId).send({
-            from: userAddress, gasLimit: 6721975,
-            gasPrice: web3.utils.toWei('20000000000', 'wei'),
+            from: userAddress//, gasLimit: 6721975,
+            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
         });
 
         if (remove["status"] == true) {
@@ -251,7 +245,6 @@ async function removeAuction(_tokenId) {
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
             const result = await query.first();
-            console.log(result);
             result.destroy();
         }
 
@@ -312,14 +305,18 @@ async function removeOffer(_tokenId) {
             const query = new Moralis.Query("ItemsForSale");
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
-            const results = await query.find();
-            
-            for (let i = 0; i < results.length; ++i) {
+            const result = await query.first();
+            result.destroy();
 
-                if (results[i].attributes.user && results[i].attributes.user != undefined) {
-                    results[i].destroy();
-                }
-            }
+            //const results = await query.find();
+
+            
+            //for (let i = 0; i < results.length; ++i) {
+
+//                if (results[i].attributes.user && results[i].attributes.user != undefined) {
+//                    results[i].destroy();
+//                }
+//            }
         }
         return true;
     } catch (error) { console.log(error); }
@@ -372,8 +369,8 @@ async function buy(_tokenId, _price) {
 
     try {
         let buy = await NFTAuctioncontractInstance.methods.buyNFT(_tokenId).send({
-            from: userAddress, value: _price, gasLimit: 6721975,
-            gasPrice: web3.utils.toWei('20000000000', 'wei'),
+            from: userAddress, value: _price//, gasLimit: 6721975,
+            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
         });
 
         //if (buy["status"] == true) {
@@ -394,8 +391,8 @@ async function sellNFT(_tokenId, _price) {
 
     try {
         let sellNFT = await NFTAuctioncontractInstance.methods.sellItem(_tokenId).send({
-            from: userAddress, value: _price, gasLimit: 6721975,
-            gasPrice: web3.utils.toWei('20000000000', 'wei'),
+            from: userAddress, value: _price//, gasLimit: 6721975,
+            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
         });
 
         //if (sellNFT["status"] == true) {

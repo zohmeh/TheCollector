@@ -2,14 +2,10 @@
 
 ![plot](./images/thecollector.png)
 
-The collector will be a complete universe for creating, selling, swapping and making Auctions with your NFT.
+The Collector is a Website to create, sell and starting auctions for NFTs. Everytime the user mints or buys an NFT on the side he/she will get some ERC20 CollectorToken as reward.
 
-It will have a WEB Frontend like this first example
-![plot](./images/webfrontend1.png)
+The Smart Contracts for the marketplace, the nft and the reward are alle deployed on Ropsten testnet.
 
-and also a Mobile Frontend both like this
-![plot](./images/mobilefrontend1.jpg)
+To dive into The Collector universe you can find the frontend here
 
-written with Flutter.
-
-The Backend is mainly directly on the Blockchain and IPFS as well as some parts are managed with Moralis.
+https://thecollectorropsten.web.app/#/home
