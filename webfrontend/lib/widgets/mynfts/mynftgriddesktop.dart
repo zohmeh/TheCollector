@@ -82,7 +82,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
                       child: Text(
-                        widget.myNFT["token_id"],
+                        widget.myNFT["tokenId"],
                         style:
                             TextStyle(color: Theme.of(context).highlightColor),
                       ),
@@ -104,7 +104,10 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                     Flexible(
                       child: Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(widget.myNFT["creator"]["username"],
+                        child: Text(
+                            widget.myNFT["creatorName"] != null
+                                ? widget.myNFT["creatorName"]
+                                : "",
                             style: TextStyle(
                                 color: Theme.of(context).highlightColor)),
                       ),
@@ -127,7 +130,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                       child: Container(
                           margin: EdgeInsets.symmetric(vertical: 5),
                           child: Useravatar(
-                              image: widget.myNFT["creator"]["avatar"],
+                              image: widget.myNFT["creatorAvatar"],
                               width: 25,
                               height: 25)),
                     ),

@@ -56,12 +56,12 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
     for (var i = 0; i < myItems.length; i++) {
       var myItemdecoded = json.decode(myItems[i]);
 
-      var promise0 = getPriceHistory(myItemdecoded["token_id"]);
+      var promise0 = getPriceHistory(myItemdecoded["tokenId"]);
       var prices = await promiseToFuture(promise0);
 
       myItemdecoded["priceHistory"] = prices;
 
-      var promise1 = getAuctionItem(myItemdecoded["token_id"]);
+      var promise1 = getAuctionItem(myItemdecoded["tokenId"]);
       var auction = await promiseToFuture(promise1);
 
       if (auction == null) {
@@ -73,14 +73,14 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
         myItemdecoded["highestBid"] = auctiondecoded["highestBid"];
       }
 
-      var promise2 = getOfferItem(myItemdecoded["token_id"]);
+      var promise2 = getOfferItem(myItemdecoded["tokenId"]);
       var offer = await promiseToFuture(promise2);
 
       offer == null
           ? myItemdecoded["isOffer"] = false
           : myItemdecoded["isOffer"] = true;
 
-      var data = await http.get(Uri.parse(myItemdecoded["token_uri"]));
+      var data = await http.get(Uri.parse(myItemdecoded["tokenUri"]));
       var jsonData = json.decode(data.body);
 
       myItemdecoded["name"] = jsonData["name"];
@@ -89,7 +89,7 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
 
       _myNFTs.add(myItemdecoded);
     }
-
+    print(_myNFTs);
     return ([_myNFTs, balance]);
   }
 

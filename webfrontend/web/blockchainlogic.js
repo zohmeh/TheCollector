@@ -98,17 +98,32 @@ async function createNewNFT(_file, _name, _description) {
 
 async function getUserItems() {
     try {
-        user = await Moralis.User.current();
         let userItems = [];
+        user = await Moralis.User.current();
+        const params = {address: user.attributes.ethAddress};
+        const queryItems = await Moralis.Cloud.run("getUserItems", params);
+        
+        for (var i = 0; i < queryItems.length; i++) {
+            let item = JSON.stringify(queryItems[i]);
+            console.log(item);
+            userItems.push(item);
+        }
+
+        return userItems;
+        
+        /*let userItems = [];
         const query = new Moralis.Query("EthNFTOwners");
         query.equalTo("owner_of", user.attributes.ethAddress);
         query.equalTo("token_address", addresses["thecollector"].toLowerCase());
         const ownedItems = await query.find();
         for (var i = 0; i < ownedItems.length; i++) {
+            console.log(ownedItems[i]);
             useritem = JSON.stringify(ownedItems[i]);
+            
             userItems.push(useritem);
-        }
-        return userItems;
+        }*/
+       
+        //return userItems;
     } catch (error) { console.log(error); }
 }
 
@@ -118,7 +133,7 @@ async function getItemsForSale() {
         const forSaleItems = await Moralis.Cloud.run("getItemsForSale");
         for (var i = 0; i < forSaleItems.length; i++) {
 
-            item = JSON.stringify(forSaleItems[i]);
+            let item = JSON.stringify(forSaleItems[i]);
             ItemsForSale.push(item);
         }
         return ItemsForSale;
@@ -351,16 +366,23 @@ async function getMyBids() {
 }
 
 async function getSoldItems() {
-    let soldItems = [];
+    const soldItems = await Moralis.Cloud.run("getSoldItems");
+    return JSON.stringify(soldItems);
+
+   /* let soldItems = [];
     const query = new Moralis.Query("SoldItems");
     const result = await query.find();
     for (var i = 0; i < result.length; i++) {
         let obj = result[i];
         if (obj.attributes.creator != undefined) {
+            var creator = obj.attributes.creator.id;
+            const creatorquery = new Moralis.Query("")
+            //var creatorname = creator.attributes.username;
+            console.log(creator);
             soldItems.push(obj);
         }
     }
-    return JSON.stringify(soldItems);
+    return JSON.stringify(soldItems); */
 }
 
 async function buy(_tokenId, _price) {

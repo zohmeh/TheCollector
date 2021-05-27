@@ -60,6 +60,8 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         allItems = snapshot.data;
+                        //print(allItems[0]["creator"]["username"]);
+                        //print(allItems[1]["creator"]["username"]);
                         return DataTable(
                           sortColumnIndex: _currentSortColumn,
                           sortAscending: _isAscending,
@@ -109,7 +111,7 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                                                 .highlightColor))),
                                     DataCell(Row(
                                       children: [
-                                        Text(element["creator"]["username"],
+                                        Text(element["creatorName"],
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .highlightColor)),
@@ -117,7 +119,7 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                                         Useravatar(
                                           width: 25,
                                           height: 25,
-                                          image: element["creator"]["avatar"],
+                                          image: element["creatorAvatar"],
                                         )
                                       ],
                                     ))
