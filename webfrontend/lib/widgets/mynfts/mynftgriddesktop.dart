@@ -261,14 +261,14 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                             Theme.of(context).highlightColor,
                             widget.buttonRemoveOffer,
                             widget.functionRemoveOffer,
-                            [widget.myNFT["token_id"]])
+                            [widget.myNFT["tokenId"]])
                         : widget.myNFT["isAuction"]
                             ? button(
                                 Theme.of(context).buttonColor,
                                 Theme.of(context).highlightColor,
                                 widget.buttonRemoveAuction,
                                 widget.functionRemoveAuction,
-                                [widget.myNFT["token_id"]])
+                                [widget.myNFT["tokenId"]])
                             : Column(
                                 children: [
                                   Row(children: [
@@ -299,7 +299,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                                 context)
                                             .startOffer,
                                         [
-                                          widget.myNFT["token_id"],
+                                          widget.myNFT["tokenId"],
                                           widget.sellpriceamountController.text
                                         ])
                                   ]),
@@ -308,7 +308,7 @@ class _MyNFTGridDesktopViewState extends State<MyNFTGridDesktopView> {
                                       Theme.of(context).highlightColor,
                                       widget.buttonStartAuction,
                                       widget.functionStartAuction,
-                                      [widget.myNFT["token_id"], "3000"]),
+                                      [widget.myNFT["tokenId"], "3000"]),
                                 ],
                               ),
                   ],

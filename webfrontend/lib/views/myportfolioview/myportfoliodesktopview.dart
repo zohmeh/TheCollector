@@ -89,7 +89,6 @@ class _MyPortfolioDesktopViewState extends State<MyPortfolioDesktopView> {
 
       _myNFTs.add(myItemdecoded);
     }
-    print(_myNFTs);
     return ([_myNFTs, balance]);
   }
 

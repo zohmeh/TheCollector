@@ -105,7 +105,6 @@ async function getUserItems() {
         
         for (var i = 0; i < queryItems.length; i++) {
             let item = JSON.stringify(queryItems[i]);
-            console.log(item);
             userItems.push(item);
         }
 

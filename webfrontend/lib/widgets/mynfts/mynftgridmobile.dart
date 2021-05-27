@@ -82,7 +82,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                   SizedBox(width: 2),
                   Container(
                       child: Text(
-                    widget.myNFT["token_id"],
+                    widget.myNFT["tokenId"],
                     style: TextStyle(color: Theme.of(context).highlightColor),
                   )),
                 ],
@@ -102,7 +102,10 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                   Flexible(
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 5),
-                      child: Text(widget.myNFT["creator"]["username"],
+                      child: Text(
+                          widget.myNFT["creatorName"] != null
+                              ? widget.myNFT["creatorName"]
+                              : "",
                           style: TextStyle(
                               color: Theme.of(context).highlightColor)),
                     ),
@@ -125,7 +128,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                     child: Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         child: Useravatar(
-                            image: widget.myNFT["creator"]["avatar"],
+                            image: widget.myNFT["creatorAvatar"],
                             width: 25,
                             height: 25)),
                   ),
@@ -251,14 +254,14 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                             Theme.of(context).highlightColor,
                             widget.buttonRemoveOffer,
                             widget.functionRemoveOffer,
-                            [widget.myNFT["token_id"]])
+                            [widget.myNFT["tokenId"]])
                         : widget.myNFT["isAuction"]
                             ? button(
                                 Theme.of(context).buttonColor,
                                 Theme.of(context).highlightColor,
                                 widget.buttonRemoveAuction,
                                 widget.functionRemoveAuction,
-                                [widget.myNFT["token_id"]])
+                                [widget.myNFT["tokenId"]])
                             : Column(
                                 children: [
                                   Container(
@@ -286,7 +289,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                       Provider.of<Contractinteraction>(context)
                                           .startOffer,
                                       [
-                                        widget.myNFT["token_id"],
+                                        widget.myNFT["tokenId"],
                                         widget.sellpriceamountController.text
                                       ]),
                                   button(
@@ -294,7 +297,7 @@ class _MyNFTGridMobileViewState extends State<MyNFTGridMobileView> {
                                       Theme.of(context).highlightColor,
                                       widget.buttonStartAuction,
                                       widget.functionStartAuction,
-                                      [widget.myNFT["token_id"], "3000"]),
+                                      [widget.myNFT["tokenId"], "3000"]),
                                 ],
                               ),
                   ],
