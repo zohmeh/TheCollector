@@ -275,12 +275,9 @@ async function startNewAuction(_tokenId, _duration) {
 
     try {
         //Approve NFT Auction Contract to use my NFT
-        let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
+        //let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
         
-        //await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
-        //    from: userAddress//, gasLimit: 6721975,
-            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
-        //});
+        await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({from: userAddress});
         //Start Auction
         let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send({
             from: userAddress//, gasLimit: 6721975,
@@ -298,12 +295,9 @@ async function startNewOffer(_tokenId, _price) {
     try {
         //Approve NFT Auction Contract to use my NFT
         
-        let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
+        //let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
         
-        //let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
-        //    from: userAddress//, gasLimit: 6721975,
-            /*gasPrice: web3.utils.toWei('20000000000', 'wei'*),*/
-        //});
+        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({from: userAddress});
         //Start Offer
         let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send({
             from: userAddress//, gasLimit: 6721975,
