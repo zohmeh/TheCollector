@@ -259,7 +259,8 @@ async function removeAuction(_tokenId) {
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
             const result = await query.first();
-            result.destroy();
+            //result.destroy();
+            result.set("isSold", true);
         }
 
         return remove["status"];
@@ -325,7 +326,8 @@ async function removeOffer(_tokenId) {
             query.equalTo("tokenId", _tokenId);
             query.notEqualTo("isSold", true);
             const result = await query.first();
-            result.destroy();
+            //result.destroy();
+            result.set("isSold", true);
 
             //const results = await query.find();
 
