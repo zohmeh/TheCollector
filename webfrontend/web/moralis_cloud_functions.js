@@ -2,7 +2,7 @@ Moralis.Cloud.beforeSave("ItemsForSale", async (request) => {
   const query = new Moralis.Query("EthNFTOwners");
   //query.equalTo("token_address", request.object.get('');
   query.equalTo("token_id", request.object.get('tokenId'));
-  query.equalTo("token_address", '0x2929aa0bb4ca5a601aa84a36e4b33f08f62d0931');
+  query.equalTo("token_address", '0x289b7ccb04d4b666bb92b272c758d6dcad47e0f2');
   const object = await query.first();
 
   const creatorquery = new Moralis.Query("Item");
@@ -203,7 +203,7 @@ Moralis.Cloud.define("getUserItems", async (request) => {
   const query = new Moralis.Query("EthNFTOwners");
   query.select("token_id", "token_uri", "creator.username", "creator.avatar");
   query.equalTo("owner_of", request.params.address);
-  query.equalTo("token_address", "0x2929aa0bb4ca5a601aa84a36e4b33f08f62d0931");
+  query.equalTo("token_address", "0x289B7CCB04d4B666bB92B272C758D6dCad47E0F2");
   const queryresults = await query.find({ useMasterKey: true });
   const results = [];
   if (!queryresults) return;

@@ -1,5 +1,5 @@
-Moralis.initialize("UBC1PqxHs1iYvaN4BWVRtbPCfImYcEqi9ML24Uav")
-Moralis.serverURL = "https://so6rbrhlwwdb.moralis.io:2053/server";
+Moralis.initialize("wQ50VBtBGHCbu87bluUmAWhCwPn4E26CRt6ReUIa")
+Moralis.serverURL = "https://amxku0lb1c1t.moralis.io:2053/server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -272,10 +272,12 @@ async function startNewAuction(_tokenId, _duration) {
 
     try {
         //Approve NFT Auction Contract to use my NFT
-        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
-            from: userAddress//, gasLimit: 6721975,
+        let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
+        
+        //await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
+        //    from: userAddress//, gasLimit: 6721975,
             /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
-        });
+        //});
         //Start Auction
         let auction = await NFTAuctioncontractInstance.methods.startAuction(_tokenId, _duration).send({
             from: userAddress//, gasLimit: 6721975,
@@ -292,10 +294,13 @@ async function startNewOffer(_tokenId, _price) {
 
     try {
         //Approve NFT Auction Contract to use my NFT
-        let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
-            from: userAddress//, gasLimit: 6721975,
+        
+        let approve = await NFTTokencontractInstance.methods.approve(addresses["marketplace"], _tokenId).send({from: userAddress});
+        
+        //let approve = await NFTTokencontractInstance.methods.setApprovalForAll(addresses["marketplace"], "true").send({
+        //    from: userAddress//, gasLimit: 6721975,
             /*gasPrice: web3.utils.toWei('20000000000', 'wei'*),*/
-        });
+        //});
         //Start Offer
         let offer = await NFTAuctioncontractInstance.methods.setOffer(_tokenId, _price).send({
             from: userAddress//, gasLimit: 6721975,
