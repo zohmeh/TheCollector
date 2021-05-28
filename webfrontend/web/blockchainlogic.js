@@ -261,6 +261,8 @@ async function removeAuction(_tokenId) {
             const result = await query.first();
             //result.destroy();
             result.set("isSold", true);
+            await result.save();
+
         }
 
         return remove["status"];
@@ -328,6 +330,8 @@ async function removeOffer(_tokenId) {
             const result = await query.first();
             //result.destroy();
             result.set("isSold", true);
+            await result.save();
+
 
             //const results = await query.find();
 
