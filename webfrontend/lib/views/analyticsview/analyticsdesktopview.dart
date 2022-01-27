@@ -60,8 +60,6 @@ class _AnalyticsDekstopViewState extends State<AnalyticsDekstopView> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         allItems = snapshot.data;
-                        //print(allItems[0]["creator"]["username"]);
-                        //print(allItems[1]["creator"]["username"]);
                         return DataTable(
                           sortColumnIndex: _currentSortColumn,
                           sortAscending: _isAscending,

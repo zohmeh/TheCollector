@@ -4,5 +4,5 @@ addresses = {
     "collectorERC20": "0x3eA9352A347cC7cef0Cc74716616A66c0d00E644",
     "reward": "0x7e9867AbE51fca864e22E5529E341DB30E8d82A4" ,
     "key": "0x15fccde3fe7a231ee2d25ac0ef67388846ab67f061238be049e7168378cee68e",
-    "https": "https://ropsten.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3"
+    "https": "your speedy node"
 }

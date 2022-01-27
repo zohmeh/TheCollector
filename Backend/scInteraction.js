@@ -4,12 +4,10 @@ const collectorABI = require("./build/contracts/TheCollector.json");
 const collectorERC20ABI = require("./build/contracts/CollectorToken.json");
 const rewardABI = require("./build/contracts/Reward.json");
 const address = require("../addresses.json");
-//const HDWalletProvider = require("@truffle/hdwallet-provider");
 const Web3 = require('web3');
 
 // Connecting to the Ethereum Blockchain 
 const web3 = new Web3("HTTP://127.0.0.1:7545");
-//const web3 = new Web3(new HDWalletProvider("0x1eb8c810ad16b73f69b0bd9a169f938d4c3f88d039d3b1ad3d8c0ebe5245be57", "https://kovan.infura.io/v3/134eb24f9b9d410baa2acac76d2a7be3"));
 
 // Connecting to SmartContract
 const nftMarketplaceContract = new web3.eth.Contract(nftAuctionABI.abi, address.marketplace);

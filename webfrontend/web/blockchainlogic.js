@@ -1,5 +1,5 @@
-Moralis.initialize("wQ50VBtBGHCbu87bluUmAWhCwPn4E26CRt6ReUIa")
-Moralis.serverURL = "https://amxku0lb1c1t.moralis.io:2053/server";
+Moralis.initialize("your moralis server id")
+Moralis.serverURL = "your moralis server";
 
 async function init() {
     window.web3 = await Moralis.Web3.enable();
@@ -10,25 +10,27 @@ async function init() {
 init()
 
 async function bidForNFT(_tokenId, _bid, _uid) {
+    
     user = await Moralis.User.current();
     const userAddress = user.get("ethAddress");
 
     try {
         const bid = await NFTAuctioncontractInstance.methods.bid(_tokenId, _bid).send({
             from: userAddress//, gasLimit: 6721975,
-            /*gasPrice: web3.utils.toWei('20000000000', 'wei'),*/
+            //gasPrice: web3.utils.toWei('20000000000', 'wei'),
         });
         if (bid["status"] == true) {
             const query = new Moralis.Query("ItemsForAuction");
             query.equalTo("uid", _uid);
             const result = await query.find();
             const object = result[0];
+            console.log(object);
             object.set("highestBidder", userAddress),
-                object.set("highestBid", _bid),
-                object.save();
+            object.set("highestBid", _bid),
+            object.save();
         }
         return bid["status"];
-    } catch (error) { console.log(error); }
+    } catch (error) { console.log(error); } 
 }
 
 async function getBalance() {
@@ -98,31 +100,18 @@ async function createNewNFT(_file, _name, _description) {
 
 async function getUserItems() {
     try {
-        let userItems = [];
+       let userItems = [];
         user = await Moralis.User.current();
-        const params = {address: user.attributes.ethAddress};
+        const userAddress = user.get("ethAddress");
+        const params = {address: userAddress};
         const queryItems = await Moralis.Cloud.run("getUserItems", params);
         
         for (var i = 0; i < queryItems.length; i++) {
             let item = JSON.stringify(queryItems[i]);
             userItems.push(item);
         }
-
         return userItems;
-        
-        /*let userItems = [];
-        const query = new Moralis.Query("EthNFTOwners");
-        query.equalTo("owner_of", user.attributes.ethAddress);
-        query.equalTo("token_address", addresses["thecollector"].toLowerCase());
-        const ownedItems = await query.find();
-        for (var i = 0; i < ownedItems.length; i++) {
-            console.log(ownedItems[i]);
-            useritem = JSON.stringify(ownedItems[i]);
-            
-            userItems.push(useritem);
-        }*/
-       
-        //return userItems;
+
     } catch (error) { console.log(error); }
 }
 

@@ -14,8 +14,6 @@ class CreateNFTDesktopView extends StatefulWidget {
   final TextEditingController nftNameController = TextEditingController();
   final TextEditingController nftDescriptionController =
       TextEditingController();
-  final nftName = FocusNode();
-  final nftDescription = FocusNode();
 
   @override
   _CreateNFTDesktopViewState createState() => _CreateNFTDesktopViewState();
